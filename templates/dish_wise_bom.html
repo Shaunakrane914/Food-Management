@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dish-wise BOM</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            background-color: #222;
+        }
+        
+        h1 {
+            color: #3498db;
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+        
+        h2 {
+            color: #3498db;
+            margin-top: 30px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        h3 {
+            color: #16a085;
+            margin-top: 20px;
+        }
+
+        .day-container {
+            background-color: #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .dish-bom {
+            background-color: #2c3e50;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .dish-bom h4 {
+            color: #3498db;
+            margin: 0 0 10px 0;
+        }
+
+        .dish-ingredients {
+            padding-left: 15px;
+        }
+
+        .dish-ingredients p {
+            margin: 5px 0;
+            font-size: 0.9em;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            color: #3498db;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .back-link:hover {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .print-btn {
+            display: block;
+            margin: 30px auto;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .print-btn:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dish-wise Bill of Materials</h1>
+
+    {% for day, dishes in dish_wise_bom.items() %}
+    <div class="day-container">
+        <h2>{{ day }}</h2>
+        {% for dish_name, ingredients in dishes.items() %}
+        <div class="dish-bom">
+            <h4>{{ dish_name }}</h4>
+            <div class="dish-ingredients">
+                {% if ingredients %}
+                {% for ing in ingredients %}
+                <p>{{ ing.name }}: {{ ing.quantity }} {{ ing.unit }}</p>
+                {% endfor %}
+                {% else %}
+                <p>No ingredients found</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+
+    <button class="print-btn" onclick="window.print()">Print Dish-wise BOM</button>
+    <div style="text-align: center;">
+        <a href="{{ url_for('edit_menu') }}" class="back-link">Back to Results</a>
+    </div>
+</body>
+</html>

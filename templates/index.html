@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weekly Menu Upload</title>
+    <style>
+        body {
+            background: #f8fff8;
+            color: #1a3d1a;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            color: #218838;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .container {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(34,139,34,0.08);
+            margin: 40px auto;
+            padding: 32px 24px;
+            max-width: 400px;
+            width: 90%;
+        }
+        label {
+            color: #218838;
+            font-weight: 500;
+        }
+        input[type="file"],
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0 20px 0;
+            border: 1px solid #cddfcc;
+            border-radius: 6px;
+            background: #f8fff8;
+        }
+        button {
+            background: #218838;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 22px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background: #176c2a;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Upload Weekly Menu</h1>
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="menu_file">Menu Excel File:</label>
+                <input type="file" id="menu_file" name="menu_file" required>
+            </div>
+            <div class="form-group">
+                <label for="num_students">Number of Students:</label>
+                <input type="number" id="num_students" name="num_students" required>
+            </div>
+            <button type="submit">Calculate Ingredients</button>
+        </form>
+    </div>
+</body>
+</html>

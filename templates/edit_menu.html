@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Weekly Menu</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        :root {
+            --dark-green: #145A32;
+            --light-green: #1E8449;
+            --background: #F4F6F7;
+            --text-color: #2C3E50;
+        }
+        body {
+            background: var(--background);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: var(--dark-green);
+            margin: 0;
+        }
+        .edit-toggle {
+            background: var(--dark-green);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+        .edit-toggle:hover {
+            background: var(--light-green);
+            transform: scale(1.05);
+        }
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(20,90,50,0.1);
+            margin: 0 auto;
+            padding: 32px;
+            max-width: 1200px;
+            width: 95%;
+        }
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        th, td {
+            padding: 15px;
+            border: 1px solid #E8F5E9;
+            text-align: left;
+        }
+        th {
+            background: var(--dark-green);
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #D5F5E3;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--light-green);
+            box-shadow: 0 0 5px rgba(30,132,73,0.3);
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        button {
+            background: var(--dark-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        button:hover {
+            background: var(--light-green);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+        }
+        .disabled-input {
+            background-color: #F0F4F0;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>Weekly Menu</h1>
+            <button class="edit-toggle" onclick="toggleEditMode()">
+                <i class='bx bx-pencil'></i>
+            </button>
+        </div>
+        <form method="post" id="menuForm">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Day</th>
+                        <th>Meal Type</th>
+                        <th>Dish 1</th>
+                        <th>Dish 2</th>
+                        <th>Dish 3</th>
+                        <th>Dish 4</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in menu_data %}
+                    <tr>
+                        <td>
+                            <input type="text" name="day[]" value="{{ row['Day'] }}" required disabled>
+                        </td>
+                        <td>
+                            <input type="text" name="meal_type[]" value="{{ row['Meal Type'] }}" required disabled>
+                        </td>
+                        <td>
+                            <input type="text" name="dish_1[]" value="{{ row['Dish 1'] }}" disabled>
+                        </td>
+                        <td>
+                            <input type="text" name="dish_2[]" value="{{ row['Dish 2'] }}" disabled>
+                        </td>
+                        <td>
+                            <input type="text" name="dish_3[]" value="{{ row['Dish 3'] }}" disabled>
+                        </td>
+                        <td>
+                            <input type="text" name="dish_4[]" value="{{ row['Dish 4'] }}" disabled>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="button-container">
+                <button type="submit" id="submitButton" style="display: none;">Calculate Ingredients</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function toggleEditMode() {
+            const inputs = document.querySelectorAll('input[type="text"]');
+            const submitButton = document.getElementById('submitButton');
+            
+            inputs.forEach(input => {
+                if (input.disabled) {
+                    input.disabled = false;
+                    input.classList.remove('disabled-input');
+                } else {
+                    input.disabled = true;
+                    input.classList.add('disabled-input');
+                }
+            });
+
+            submitButton.style.display = submitButton.style.display === 'none' ? 'inline-block' : 'none';
+        }
+    </script>
+</body>
+</html>
