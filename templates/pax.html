@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Demand Calculator</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #42603b;
+            --color-half: #a8c69e;
+            --color-success: #41f1b6;
+            --color-warning: #ffbb55;
+            --color-white: #fff;
+            --color-info-dark: #7d8da1;
+            --color-info-light: #dce1eb;
+            --color-dark: #363949;
+            --color-light: rgba(132,139,200,0.18);
+            --color-primary-variant: #111e88;
+            --color-dark-variant: #677483;
+            --color-background: #ffffff;
+
+            --card-border-radius: 2rem;
+            --border-radius-1: 0.4rem;
+            --border-radius-2: 0.8rem;
+            --border-radius-3: 1.2rem;
+
+            --card-padding: 1.8rem;
+            --padding-1: 1.2rem;
+
+            --box-shadow: 0 1rem 2rem var(--color-light);
+            --transition: all 0.25s cubic-bezier(.4,0,.2,1);
+        }
+
+        html {
+            font-size: 14px;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            font-size: 0.88rem;
+            background: var(--color-background);
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            appearance: none;
+            border: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+            font-family: 'montserrat';
+        }
+
+        .container {
+            display: grid;
+            width: 96%;
+            margin: 0 auto;
+            gap: 1.8rem;
+            grid-template-columns: 14rem auto 23rem;
+        }
+
+        a {
+            color: var(--color-dark);
+        }
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 1.8rem;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+        }
+
+        h3 {
+            font-size: 0.8rem;
+        }
+
+        h5 {
+            font-size: 0.7rem;
+        }
+
+        small {
+            font-size: 0.75rem;
+        }
+
+        .profile-photo {
+            width: 2.8rem;
+            height: 2.8rem;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .text-muted {
+            color: var(--color-info-dark);
+        }
+
+        p {
+            color: var(--color-dark-variant);
+        }
+
+        b {
+            color: var(--color-dark);
+        }
+
+        .primary {
+            color: var(--color-primary);
+        }
+
+        .half {
+            color: var(--color-half);
+        }
+
+        .success {
+            color: var(--color-success);
+        }
+
+        .warning {
+            color: var(--color-warning);
+        }
+
+        aside {
+            height: 100vh;
+        }
+
+        aside .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.4rem;
+            padding: 0 1rem;
+        }
+
+        aside h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        aside .logo {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        aside .logo img {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        aside .close-btn {
+            display: none;
+            font-size: 2rem;
+        }
+
+        aside .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 86vh;
+            position: relative;
+            top: 3rem;
+        }
+
+        aside h3 {
+            font-weight: 500;
+        }
+
+        aside .sidebar a {
+            display: flex;
+            color: var(--color-info-dark);
+            margin-left: 2rem;
+            gap: 1rem;
+            align-items: center;
+            position: relative;
+            height: 3.7rem;
+            transition: all 300ms ease;
+        }
+
+        aside .sidebar a i {
+            font-size: 1.6rem;
+            transition: all 300ms ease;
+        }
+
+        aside .sidebar a:last-child {
+            position: absolute;
+            bottom: 2rem;
+            width: 100%;
+        }
+
+        aside .sidebar a.active {
+            background: var(--color-light);
+            color: var(--color-primary);
+            margin-left: 0;
+        }
+
+        aside .sidebar a.active:before {
+            content: '';
+            width: 6px;
+            height: 100%;
+            background: var(--color-primary);
+        }
+
+        aside .sidebar a.active span {
+            color: var(--color-primary);
+            margin-left: calc(1rem - 3px);
+        }
+
+        aside .sidebar a:hover {
+            color: var(--color-primary);
+        }
+
+        aside .sidebar a:hover i {
+            margin-left: 1rem;
+        }
+
+        main {
+            margin-top: 4rem;
+            padding: 0 1rem;
+        }
+
+        .right {
+            margin-top: 1.4rem;
+        }
+
+        .right .top {
+            display: flex;
+            justify-content: end;
+            gap: 2rem;
+        }
+
+        .right .top button {
+            display: none;
+        }
+
+        .right .top .profile {
+            display: flex;
+            text-align: right;
+            gap: 0.5rem;
+        }
+
+        /* Original PAX styles */
+        .pax-container {
+            background: var(--color-white);
+            padding: var(--card-padding);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            text-align: center;
+            transition: var(--transition);
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.3rem;
+            text-align: left;
+        }
+
+        .form-group label {
+            color: var(--color-dark);
+            font-weight: 600;
+            font-size: 1.08rem;
+            display: block;
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 0.9rem 1rem;
+            border: 1.5px solid var(--color-info-light);
+            border-radius: var(--border-radius-1);
+            font-size: 1.08rem;
+            background: var(--color-light);
+            color: var(--color-dark);
+            transition: var(--transition);
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: var(--color-primary);
+            background: #f0f7f0;
+            box-shadow: 0 0 0 2px var(--color-half);
+        }
+
+        .submit-btn {
+            background: linear-gradient(90deg, var(--color-primary) 60%, var(--color-half) 100%);
+            color: var(--color-white);
+            padding: 1rem 2.2rem;
+            border-radius: var(--border-radius-1);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            box-shadow: 0 2px 8px 0 rgba(66, 96, 59, 0.10);
+            transition: var(--transition);
+            margin-top: 0.5rem;
+        }
+
+        .submit-btn:hover, .submit-btn:focus {
+            background: linear-gradient(90deg, var(--color-half) 0%, var(--color-primary) 100%);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 4px 16px 0 rgba(66, 96, 59, 0.13);
+        }
+
+        .results {
+            margin-top: 2rem;
+            display: none;
+            transition: var(--transition);
+        }
+
+        .results.show {
+            display: block;
+            animation: fadeIn 0.6s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+
+        .results table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 1rem;
+            background: var(--color-white);
+            border-radius: var(--border-radius-2);
+            overflow: hidden;
+            box-shadow: 0 2px 8px 0 rgba(66, 96, 59, 0.06);
+            transition: var(--transition);
+        }
+
+        .results th, .results td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--color-info-light);
+            text-align: left;
+            font-size: 1.08rem;
+            transition: var(--transition);
+        }
+
+        .results th {
+            background: var(--color-primary);
+            color: var(--color-white);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            border: none;
+        }
+
+        .results td {
+            background: var(--color-light);
+            color: var(--color-dark);
+            border: none;
+        }
+
+        .results tr:last-child td {
+            border-bottom: none;
+        }
+
+        .error {
+            color: var(--color-warning);
+            font-size: 1rem;
+            margin-top: 1rem;
+            display: none;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: var(--transition);
+        }
+
+        .error.show {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        /* Media Queries */
+        @media screen and (max-width:1200px) {
+            .container {
+                width: 94%;
+                grid-template-columns: 7rem auto 23rem;
+            }
+            aside .logo h2 {
+                display: none;
+            }
+            aside .sidebar h3 {
+                display: none;
+            }
+            aside .sidebar a:last-child {
+                position: relative;
+                margin-top: 1.8rem;
+            }
+        }
+
+        @media screen and (max-width:768px) {
+            .container {
+                width: 100%;
+                grid-template-columns: 1fr;
+            }
+            aside {
+                position: fixed;
+                left: -100%;
+                background: var(--color-white);
+                width: 18rem;
+                z-index: 3;
+                box-shadow: 1rem 3rem 4rem var(--color-light);
+                height: 100vh;
+                padding: var(--card-padding);
+                display: none;
+                animation: showMenu 400ms ease forwards;
+            }
+            @keyframes showMenu {
+                to {
+                    left: 0;
+                }
+            }
+            aside .logo {
+                margin-left: 1rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+            aside .logo h2 {
+                display: inline;
+                margin: 0;
+            }
+            aside .sidebar h3 {
+                display: inline;
+            }
+            aside .sidebar a {
+                width: 100%;
+                height: 3.4rem;
+            }
+            aside .sidebar a:last-child {
+                position: absolute;
+                bottom: 5rem;
+            }
+            aside .close-btn {
+                display: inline-block;
+                cursor: pointer;
+                margin: 0;
+                font-size: 1.5rem;
+            }
+            main {
+                margin-top: 8rem;
+                padding: 0 1rem;
+            }
+            .right {
+                width: 94%;
+                margin: 0 auto 4rem;
+            }
+            .right .top {
+                position: fixed;
+                top: 0;
+                left: 0;
+                align-items: center;
+                padding: 0 0.8rem;
+                height: 4.6rem;
+                background: var(--color-white);
+                width: 100%;
+                margin: 0;
+                z-index: 2;
+                box-shadow: 0 1rem 1rem var(--color-light);
+            }
+            .right .profile .info {
+                display: none;
+            }
+            .right .top button {
+                display: inline-block;
+                background: transparent;
+                cursor: pointer;
+                color: var(--color-dark);
+                position: absolute;
+                left: 1rem;
+            }
+            .right .top button span {
+                font-size: 2rem;
+            }
+            .pax-container {
+                padding: 1rem;
+            }
+            .form-group input, .form-group select {
+                font-size: 0.98rem;
+                padding: 0.7rem;
+            }
+            .submit-btn {
+                font-size: 0.98rem;
+                padding: 0.7rem 1.2rem;
+            }
+            .results th, .results td {
+                padding: 0.7rem;
+                font-size: 0.98rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <a href="/dashboard" style="display: flex; gap: 0.8rem; align-items: center; text-decoration: none; color: inherit;">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
+                        <h2>REF<span class="half">EEDO</span></h2>
+                    </a>
+                </div>
+                <div class="close-btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+            <div class="sidebar">
+                <a href="/dashboard" class="{% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <h3>DashBoard</h3>
+                </a>
+                <a href="/menu" class="{% if active_page == 'menu' %}active{% endif %}">
+                    <i class="fa-solid fa-plate-wheat"></i>
+                    <h3>Menu Management</h3>
+                </a>
+                <a href="/bom" class="{% if active_page == 'bom' %}active{% endif %}">
+                    <i class="fa-solid fa-paperclip"></i>
+                    <h3>BOM</h3>
+                </a>
+                <a href="/studentstaff" class="{% if active_page == 'studentstaff' %}active{% endif %}">
+                    <i class="fa-regular fa-folder-closed"></i>
+                    <h3>Student and Staff</h3>
+                </a>
+                <a href="/inventory" class="{% if active_page == 'inventory' %}active{% endif %}">
+                    <i class="fa-regular fa-cart-flatbed"></i>
+                    <h3>Inventory</h3>
+                </a>
+                <a href="/supplier" class="{% if active_page == 'supplier' %}active{% endif %}">
+                    <i class="fa-solid fa-boxes-packing"></i>
+                    <h3>Supplier</h3>
+                </a>
+                <a href="/analytics" class="{% if active_page == 'analytics' %}active{% endif %}">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="/pax" class="{% if active_page == 'pax' %}active{% endif %}">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <h3>Meal Predictor</h3>
+                </a>
+                <a href="/settings" class="{% if active_page == 'settings' %}active{% endif %}">
+                    <i class="fa-solid fa-gear"></i>
+                    <h3>Settings</h3>
+                </a>
+                <a href="/logout">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <h3>Log Out</h3>
+                </a>
+            </div>
+        </aside>
+
+        <main>
+            <h1>Meal Demand Calculator</h1>
+            <div class="pax-container">
+                <form id="demandForm">
+                    <div class="form-group">
+                        <label>Total Number of Students</label>
+                        <input type="number" id="totalStudents" required min="0" placeholder="Enter total students">
+                    </div>
+                    <div class="form-group">
+                        <label>Meal Type</label>
+                        <select id="mealType" required>
+                            <option value="all">All Meals</option>
+                            <option value="breakfast">Breakfast</option>
+                            <option value="brunch">Brunch</option>
+                            <option value="lunch">Lunch</option>
+                            <option value="evening_snacks">Evening Snacks</option>
+                            <option value="dinner">Dinner</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Exam Slot</label>
+                        <select id="examFactor">
+                            <option value="">None</option>
+                            <option value="morning_slot">Morning (10 to 1)</option>
+                            <option value="afternoon_slot">Afternoon (2 to 5)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Weekend Type</label>
+                        <select id="weekendType">
+                            <option value="weekday">Weekday</option>
+                            <option value="short_weekend">Short Weekend</option>
+                            <option value="long_weekend">Long Weekend</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Weather Condition</label>
+                        <select id="weatherCondition">
+                            <option value="normal">Normal</option>
+                            <option value="hot">Hot</option>
+                            <option value="extreme">Extreme Heat</option>
+                            <option value="cold">Cold</option>
+                            <option value="extreme_cold">Extreme Cold</option>
+                            <option value="showers">Showers</option>
+                            <option value="heavy">Heavy Rain</option>
+                            <option value="thunderstorm">Thunderstorm</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Event Type</label>
+                        <select id="eventType">
+                            <option value="">None</option>
+                            <option value="no_food_stalls">No Food Stalls</option>
+                            <option value="with_food_stalls">With Food Stalls</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-btn">Calculate Demand</button>
+                </form>
+                <div class="error" id="errorMessage"></div>
+                <div class="results" id="results">
+                    <h2>Predicted Number of Students</h2>
+                    <table id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>Meal</th>
+                                <th>Expected Number</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+        <div class="right">
+            <div class="top">
+                <button id="menu-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="profile">
+                    <div class="info">
+                        <p>Hey,</p>
+                        <small class="text-muted">Admin</small>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="{{ url_for('static', filename='images/profile2.jpg') }}" alt="profile">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Multiplier data from JSON
+        const multipliers = {
+            "base_multipliers": {
+                "breakfast": 0.5,
+                "lunch": 0.85,
+                "evening_snacks": 0.5,
+                "dinner": 0.85
+            },
+            "exam": {
+                "morning_slot": {
+                    "breakfast": 0.45,
+                    "lunch": 0.85,
+                    "evening_snacks": 0.5,
+                    "dinner": 0.8
+                },
+                "afternoon_slot": {
+                    "breakfast": 0.8,
+                    "lunch": 0.5,
+                    "evening_snacks": 0.7,
+                    "dinner": 0.8
+                }
+            },
+            "weekend": {
+                "weekday": {
+                    "breakfast": 0.5,
+                    "lunch": 0.85,
+                    "evening_snacks": 0.5,
+                    "dinner": 0.85
+                },
+                "short_weekend": {
+                    "breakfast": 0.4,
+                    "lunch": 0.7,
+                    "evening_snacks": 0.4,
+                    "dinner": 0.7
+                },
+                "long_weekend": {
+                    "breakfast": 0.3,
+                    "lunch": 0.6,
+                    "evening_snacks": 0.3,
+                    "dinner": 0.6
+                },
+                "sunday_brunch": {
+                    "brunch": 1.0,
+                    "evening_snacks": 0.5,
+                    "dinner": 0.85
+                }
+            },
+            "weather": {
+                "rain": {
+                    "showers": 1.0,
+                    "heavy": 0.8,
+                    "thunderstorm": 0.6
+                },
+                "summer": {
+                    "normal": 1.0,
+                    "hot": 0.85,
+                    "extreme": 0.6
+                },
+                "winter": {
+                    "normal": 1.0,
+                    "cold": 0.9,
+                    "extreme_cold": 0.7
+                }
+            },
+            "events": {
+                "no_food_stalls": {
+                    "dinner": 0.7
+                },
+                "with_food_stalls": {
+                    "dinner": 0.4
+                }
+            }
+        };
+
+        // Calculate effective multiplier for a meal
+        function calculateMultiplier(meal, examFactor, weekendType, weatherCondition, eventType) {
+            let base = meal === 'brunch' ? 1.0 : (multipliers.base_multipliers[meal] || 1.0);
+            let exam = 1.0;
+            let weekend = 1.0;
+            let weather = 1.0;
+            let event = 1.0;
+
+            // Apply exam factor (not applicable to brunch)
+            if (examFactor && multipliers.exam[examFactor] && meal !== 'brunch') {
+                exam = multipliers.exam[examFactor][meal] || 1.0;
+            }
+
+            // Apply weekend factor
+            if (weekendType && multipliers.weekend[weekendType]) {
+                if (meal === 'brunch') {
+                    weekend = multipliers.weekend.sunday_brunch.brunch || 1.0;
+                } else {
+                    weekend = multipliers.weekend[weekendType][meal] || 1.0;
+                }
+            }
+
+            // Apply weather factor
+            if (weatherCondition) {
+                if (['showers', 'heavy', 'thunderstorm'].includes(weatherCondition)) {
+                    weather = multipliers.weather.rain[weatherCondition] || 1.0;
+                } else if (['normal', 'hot', 'extreme'].includes(weatherCondition)) {
+                    weather = multipliers.weather.summer[weatherCondition] || 1.0;
+                } else if (['normal', 'cold', 'extreme_cold'].includes(weatherCondition)) {
+                    weather = multipliers.weather.winter[weatherCondition] || 1.0;
+                }
+            }
+
+            // Apply event factor (only for dinner)
+            if (eventType && multipliers.events[eventType] && meal === 'dinner') {
+                event = multipliers.events[eventType][meal] || 1.0;
+            }
+
+            return base * exam * weekend * weather * event;
+        }
+
+        // Form submission handler
+        document.getElementById('demandForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const totalStudents = parseInt(document.getElementById('totalStudents').value);
+            const mealType = document.getElementById('mealType').value;
+            const examFactor = document.getElementById('examFactor').value;
+            const weekendType = document.getElementById('weekendType').value;
+            const weatherCondition = document.getElementById('weatherCondition').value;
+            const eventType = document.getElementById('eventType').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const results = document.getElementById('results');
+            const resultsBody = document.getElementById('resultsBody');
+
+            // Validate input
+            if (isNaN(totalStudents) || totalStudents <= 0) {
+                errorMessage.textContent = 'Please enter a valid number of students.';
+                errorMessage.classList.add('show');
+                results.classList.remove('show');
+                return;
+            }
+
+            errorMessage.classList.remove('show');
+            resultsBody.innerHTML = '';
+
+            // Define meals to calculate
+            const meals = mealType === 'all' 
+                ? ['breakfast', 'brunch', 'lunch', 'evening_snacks', 'dinner']
+                : [mealType];
+
+            // Calculate predictions
+            meals.forEach(meal => {
+                const multiplier = calculateMultiplier(meal, examFactor, weekendType, weatherCondition, eventType);
+                const predictedStudents = Math.round(totalStudents * multiplier);
+                const difference = totalStudents - predictedStudents; // Calculate difference
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${meal.charAt(0).toUpperCase() + meal.slice(1)}</td>
+                    <td>${difference}</td>
+                `;
+                resultsBody.appendChild(row);
+            });
+
+            results.classList.add('show');
+        });
+
+        // Handle sidebar menu
+        const sideMenu = document.querySelector("aside");
+        const menuBtn = document.querySelector("#menu-btn");
+        const closeBtn = document.querySelector(".close-btn");
+
+        menuBtn.addEventListener('click', () => {
+            sideMenu.style.display = 'block';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            sideMenu.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

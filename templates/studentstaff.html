@@ -1,0 +1,1563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root{
+            --color-primary: #42603b;
+            --color-half:#a8c69e;
+            --color-success: #41f1b6;
+            --color-warning:#ffbb55;
+            --color-white: #fff;
+            --color-info-dark:#7d8da1;
+            --color-info-light: #dce1eb;
+            --color-dark:#363949;
+            --color-light: rgba(132,139,200,0.18);
+            --color-primary-variant:#111e88;
+            --color-dark-variant: #677483;
+            --color-background:#ffffff;
+
+            --card-border-radius: 2rem;
+            --border-radius-1: 0.4rem;
+            --border-radius-2: 0.8rem;
+            --border-radius-3: 1.2rem;
+
+            --card-padding: 1.8rem;
+            --padding-1: 1.2rem;
+
+            --box-shadow: 0 1rem 2rem var(--color-light);
+        }
+
+        html{
+            font-size: 14px;
+        }
+
+        body{
+            width: 100vw;
+            height: 100vh;
+            font-size: 0.88rem;
+            background: var(--color-background);
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        *{
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            appearance: none;
+            border: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+            font-family: 'montserrat';
+        }
+
+        .container{
+            display: grid;
+            width: 96%;
+            margin: 0 auto;
+            gap: 1.8rem;
+            grid-template-columns: 14rem auto 23rem;
+        }
+
+        a{
+            color: var(--color-dark);
+        }
+
+        img{
+            display: block;
+            width: 100%;
+        }
+
+        h1{
+            font-weight: 800;
+            font-size: 1.8rem;
+        }
+
+        h2{
+            font-size: 1.4rem;
+        }
+
+        h3{
+            font-size: 0.8rem;
+        }
+
+        h5{
+            font-size: 0.7rem;
+        }
+
+        small{
+            font-size: 0.75rem;
+        }
+
+        .profile-photo{
+            width: 2.8rem;
+            height: 2.8rem;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .text-muted{
+            color: var(--color-info-dark);
+        }
+
+        p{
+            color: var(--color-dark-variant);
+        }
+
+        b{
+            color: var(--color-dark);
+        }
+
+        .primary{
+            color: var(--color-primary);
+        }
+
+        .half{
+            color: var(--color-half);
+        }
+
+        .success{
+            color: var(--color-success);
+        }
+
+        .warning{
+            color: var(--color-warning);
+        }
+
+        aside{
+            height: 100vh;
+        }
+
+        aside .top{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.4rem;
+            padding: 0 1rem;
+        }
+
+        aside h2{
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        aside .logo{
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        aside .logo img{
+            width: 2rem;
+            height: 2rem;
+        }
+
+        aside .close-btn{
+            display: none;
+            font-size: 2rem;
+        }
+
+        aside .sidebar{
+            display: flex;
+            flex-direction: column;
+            height: 86vh;
+            position: relative;
+            top: 3rem;
+        }
+
+        aside h3{
+            font-weight: 500;
+        }
+
+        aside .sidebar a{
+            display: flex;
+            color: var(--color-info-dark);
+            margin-left: 2rem;
+            gap: 1rem;
+            align-items: center;
+            position: relative;
+            height: 3.7rem;
+            transition: all 300ms ease;
+        }
+
+        aside .sidebar a i{
+            font-size: 1.6rem;
+            transition: all 300ms ease;
+        }
+
+        aside .sidebar a:last-child{
+            position: absolute;
+            bottom: 2rem;
+            width: 100%;
+        }
+
+        aside .sidebar a.active{
+            background: var(--color-light);
+            color: var(--color-primary);
+            margin-left: 0;
+        }
+
+        aside .sidebar a.active:before{
+            content: '';
+            width: 6px;
+            height: 100%;
+            background: var(--color-primary);
+        }
+
+        aside .sidebar a.active span{
+            color: var(--color-primary);
+            margin-left: calc(1rem - 3px);
+        }
+
+        aside .sidebar a:hover{
+            color: var(--color-primary);
+        }
+
+        aside .sidebar a:hover i{
+            margin-left: 1rem;
+        }
+
+        main{
+            margin-top: 4rem;
+        }
+
+        .right{
+            margin-top: 1.4rem;
+        }
+
+        .right .top{
+            display: flex;
+            justify-content: end;
+            gap: 2rem;
+        }
+
+        .right .top button{
+            display: none;
+        }
+
+        .right .top .profile {
+            display: flex;
+            text-align: right;
+            gap: 0.5rem;
+        }
+
+        .right .top .profile .info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .right .top .profile .info p {
+            margin: 0;
+            font-weight: 400;
+            color: var(--color-dark);
+        }
+
+        .right .top .profile .info small {
+            color: var(--color-info-dark);
+        }
+
+        /* MEDIA QUERIES */
+        @media screen and (max-width:1200px) {
+            .container{
+                width: 94%;
+                grid-template-columns: 7rem auto 23rem;
+            }
+            aside .logo h2{
+                display: none;
+            }
+            aside .sidebar h3{
+                display: none;
+            }
+            aside .sidebar a:last-child{
+                position: relative;
+                margin-top: 1.8rem;
+            }
+        }
+
+        /* MEDIA QUERIES FOR MOBILE */
+        @media screen and (max-width:768px) {
+            .container{
+                width: 100%;
+                grid-template-columns: 1fr;
+            }
+            aside{
+                position: fixed;
+                left: -100%;
+                background: var(--color-white);
+                width: 18rem;
+                z-index: 3;
+                box-shadow: 1rem 3rem 4rem var(--color-light);
+                height: 100vh;
+                padding: var(--card-padding);
+                display: none;
+                animation: showMenu 400ms ease forwards;
+            }
+            @keyframes showMenu{
+                to{
+                    left: 0;
+                }
+            }
+            aside .logo{
+                margin-left: 1rem;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+            aside .logo h2{
+                display: inline;
+                margin: 0;
+            }
+            aside .sidebar h3{
+                display: inline;
+            }
+            aside .sidebar a{
+                width: 100%;
+                height: 3.4rem;
+            }
+            aside .sidebar a:last-child{
+                position: absolute;
+                bottom: 5rem;
+            }
+            aside .close-btn{
+                display: inline-block;
+                cursor: pointer;
+                margin: 0;
+                font-size: 1.5rem;
+            }
+            main{
+                margin-top: 8rem;
+                padding: 0 1rem;
+            }
+            .right{
+                width: 94%;
+                margin: 0 auto 4rem;
+            }
+            .right .top{
+                position: fixed;
+                top: 0;
+                left: 0;
+                align-items: center;
+                padding: 0 0.8rem;
+                height: 4.6rem;
+                background: var(--color-white);
+                width: 100%;
+                margin: 0;
+                z-index: 2;
+                box-shadow: 0 1rem 1rem var(--color-light);
+            }
+            .right .profile .info{
+                display: none;    
+            }
+            .right .top button{
+                display: inline-block;
+                background: transparent;
+                cursor: pointer;
+                color: var(--color-dark);
+                position: absolute;
+                left: 1rem;
+            }
+            .right .top button span{
+                font-size: 2rem;
+            }
+        }
+
+        .main-content {
+            margin-top: 2rem;
+        }
+        
+        .category-section {
+            background: var(--color-white);
+            padding: var(--card-padding);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+        }
+
+        .category-header {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--color-light);
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .category-controls {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .stats-container {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--color-white);
+            padding: 1.5rem;
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 300ms ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.1));
+            pointer-events: none;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .student-stat .stat-icon {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .staff-stat .stat-icon {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .staff-stat .stat-icon:hover {
+            background: var(--color-primary-variant);
+        }
+
+        .stat-info {
+            flex: 1;
+            position: relative;
+            z-index: 1;
+        }
+
+        .stat-info h3 {
+            font-size: 1.8rem;
+            color: var(--color-dark);
+            margin-bottom: 0.2rem;
+            display: flex;
+            align-items: baseline;
+            gap: 0.5rem;
+        }
+
+        .stat-info .sub-count {
+            font-size: 0.9rem;
+            color: var(--color-dark-variant);
+            font-weight: normal;
+        }
+
+        .stat-info p {
+            color: var(--color-dark-variant);
+            font-size: 0.9rem;
+        }
+
+        .action-buttons {
+            display: none;
+            gap: 0.8rem;
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 300ms ease;
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .action-buttons.show {
+            display: flex;
+            opacity: 1;
+            transform: translateY(-50%);
+        }
+
+        .action-button {
+            padding: 0.6rem;
+            border: none;
+            border-radius: var(--border-radius-1);
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 300ms ease;
+            box-shadow: var(--box-shadow);
+            width: 35px;
+            height: 35px;
+        }
+
+        .action-button i {
+            font-size: 0.9rem;
+        }
+
+        .add-button {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .add-button:hover {
+            background: var(--color-primary-variant);
+        }
+
+        .remove-button {
+            background: #ef4444;
+            color: white;
+        }
+
+        .remove-button:hover {
+            background: #dc2626;
+        }
+
+        .student-category-item {
+            background: var(--color-white);
+            padding: 1rem;
+            border-radius: var(--border-radius-1);
+            box-shadow: var(--box-shadow);
+            cursor: pointer;
+            transition: all 300ms ease;
+            position: relative;
+        }
+
+        .student-category-item:hover {
+            transform: translateX(10px);
+            background: var(--color-light);
+        }
+
+        .student-category-item.selected {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .student-category-item.selected h3 {
+            color: white;
+        }
+
+        .student-category-item h3 {
+            margin-right: 120px; /* Make space for action buttons */
+        }
+
+        .dropdown-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .main-dropdown {
+            background-color: var(--color-primary);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--border-radius-1);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            min-width: 200px;
+            justify-content: space-between;
+            transition: all 300ms ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-dropdown:hover {
+            background-color: var(--color-primary-variant);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .main-dropdown i {
+            transition: transform 300ms ease;
+        }
+
+        .main-dropdown:hover i {
+            transform: rotate(180deg);
+        }
+
+        .sub-dropdown {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 250px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-radius: var(--border-radius-1);
+            z-index: 1000;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 300ms ease;
+        }
+
+        .sub-dropdown.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .sub-dropdown a {
+            color: var(--color-dark);
+            padding: 1rem 2rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 300ms ease;
+            border-bottom: 1px solid var(--color-light);
+        }
+
+        .sub-dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .sub-dropdown a:hover {
+            background: var(--color-light);
+            color: var(--color-primary);
+        }
+
+        .sub-dropdown a i {
+            font-size: 0.8rem;
+        }
+
+        .student-categories {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .content-area {
+            background: var(--color-white);
+            padding: var(--card-padding);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            min-height: 400px;
+        }
+
+        .content-area h2 {
+            color: var(--color-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--color-light);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .content-area h2 i {
+            color: var(--color-primary);
+        }
+
+        .student-list, .staff-list {
+            display: grid;
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+
+        .student-card, .staff-card {
+            background: var(--color-white);
+            padding: 1.8rem;
+            border-radius: var(--border-radius-2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--color-light);
+            transition: all 300ms ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .student-card:hover, .staff-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--color-primary);
+        }
+
+        .student-card.active, .staff-card.active {
+            background: var(--color-light);
+            border-color: var(--color-primary);
+        }
+
+        .student-card h3, .staff-card h3 {
+            color: var(--color-dark);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .student-card h3 i {
+            color: var(--color-primary);
+            font-size: 1rem;
+        }
+
+        .staff-card h3 i {
+            color: var(--color-primary);
+            font-size: 1rem;
+        }
+
+        .allergy-info {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--color-light);
+            border-radius: var(--border-radius-1);
+            font-size: 0.95rem;
+            transition: all 300ms ease;
+            border-left: 4px solid var(--color-primary);
+        }
+
+        .allergy-info span {
+            color: var(--color-primary);
+            font-weight: 600;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .allergy-info p {
+            color: var(--color-dark-variant);
+            line-height: 1.6;
+        }
+
+        /* New styles for count display and action buttons */
+        .count-display {
+            background: var(--color-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-1);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--box-shadow);
+        }
+
+        .count-display i {
+            font-size: 1.1rem;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius-2);
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-header h3 {
+            color: var(--color-dark);
+            font-size: 1.5rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-dark-variant);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--color-dark);
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid var(--color-light);
+            border-radius: var(--border-radius-1);
+            font-size: 1rem;
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .modal-footer button {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: var(--border-radius-1);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 300ms ease;
+        }
+
+        .submit-button {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .cancel-button {
+            background: var(--color-light);
+            color: var(--color-dark);
+        }
+
+        .staff-card {
+            background: var(--color-white);
+            padding: 1.8rem;
+            border-radius: var(--border-radius-2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--color-light);
+            transition: all 300ms ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .staff-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--color-primary);
+        }
+
+        .staff-card.active {
+            background: var(--color-light);
+            border-color: var(--color-primary);
+        }
+
+        .staff-category-item {
+            background: var(--color-white);
+            padding: 1rem;
+            border-radius: var(--border-radius-1);
+            box-shadow: var(--box-shadow);
+            cursor: pointer;
+            transition: all 300ms ease;
+            position: relative;
+        }
+
+        .staff-category-item:hover {
+            transform: translateX(10px);
+            background: var(--color-light);
+        }
+
+        .staff-category-item.selected {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .staff-category-item.selected h3 {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <a href="/dashboard" style="display: flex; gap: 0.8rem; align-items: center; text-decoration: none; color: inherit;">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
+                        <h2>REF<span class="half">EEDO</span></h2>
+                    </a>
+                </div>
+                <div class="close-btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+            <div class="sidebar">
+                <a href="/dashboard" class="{% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <h3>DashBoard</h3>
+                </a>
+                <a href="/menu" class="{% if active_page == 'menu' %}active{% endif %}">
+                    <i class="fa-solid fa-plate-wheat"></i>
+                    <h3>Menu Management</h3>
+                </a>
+                <a href="/bom" class="{% if active_page == 'bom' %}active{% endif %}">
+                    <i class="fa-solid fa-paperclip"></i>
+                    <h3>BOM</h3>
+                </a>
+                <a href="/studentstaff" class="{% if active_page == 'studentstaff' %}active{% endif %}">
+                    <i class="fa-regular fa-folder-closed"></i>
+                    <h3>Student and Staff</h3>
+                </a>
+                <a href="/inventory" class="{% if active_page == 'inventory' %}active{% endif %}">
+                    <i class="fa-regular fa-cart-flatbed"></i>
+                    <h3>Inventory</h3>
+                </a>
+                <a href="/supplier" class="{% if active_page == 'supplier' %}active{% endif %}">
+                    <i class="fa-solid fa-boxes-packing"></i>
+                    <h3>Supplier</h3>
+                </a>
+                <a href="/analytics" class="{% if active_page == 'analytics' %}active{% endif %}">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="/pax" class="{% if active_page == 'pax' %}active{% endif %}">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <h3>Meal Predictor</h3>
+                </a>
+                <a href="/settings" class="{% if active_page == 'settings' %}active{% endif %}">
+                    <i class="fa-solid fa-gear"></i>
+                    <h3>Settings</h3>
+                </a>
+                <a href="/logout">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <h3>Log Out</h3>
+                </a>
+            </div>
+        </aside>
+
+        <main>
+            <h1>Student and Staff Management</h1>
+            <div class="main-content">
+                <div class="stats-container">
+                    <div class="stat-card student-stat">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalStudents">0 <span class="sub-count" id="studentSubCount"></span></h3>
+                            <p>Total Students</p>
+                        </div>
+                    </div>
+                    <div class="stat-card staff-stat">
+                        <div class="stat-icon">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3 id="totalStaff">0 <span class="sub-count" id="staffSubCount"></span></h3>
+                            <p>Total Staff</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="category-section">
+                    <div class="category-header">
+                        <div class="category-controls">
+                            <div class="dropdown-container">
+                                <button class="main-dropdown" onclick="toggleDropdown('mainDropdown')">
+                                    Select Category <i class="fa-solid fa-caret-down"></i>
+                                </button>
+                                <div class="sub-dropdown" id="mainDropdown">
+                                    <a href="javascript:void(0)" onclick="showSubDropdown('studentDropdown')">
+                                        Students <i class="fa-solid fa-caret-right"></i>
+                                    </a>
+                                    <a href="javascript:void(0)" onclick="showSubDropdown('staffDropdown')">
+                                        Staff <i class="fa-solid fa-caret-right"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="action-buttons" id="actionButtons" style="display: none;">
+                                <button class="action-button add-button" onclick="showAddModal()">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button class="action-button remove-button" onclick="showRemoveModal()">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="studentCategories" class="student-categories" style="display: none;">
+                        <div class="student-category-item" onclick="showContent('engineering')">
+                            <h3>Engineering Students</h3>
+                            <div class="action-buttons show">
+                                <button class="action-button add-button" onclick="showAddModal('engineering')">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button class="action-button remove-button" onclick="showRemoveModal('engineering')">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="student-category-item" onclick="showContent('design')">
+                            <h3>Design Students</h3>
+                            <div class="action-buttons show">
+                                <button class="action-button add-button" onclick="showAddModal('design')">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button class="action-button remove-button" onclick="showRemoveModal('design')">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="student-category-item" onclick="showContent('bba')">
+                            <h3>BBA Students</h3>
+                            <div class="action-buttons show">
+                                <button class="action-button add-button" onclick="showAddModal('bba')">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button class="action-button remove-button" onclick="showRemoveModal('bba')">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="student-category-item" onclick="showContent('mba')">
+                            <h3>MBA Students</h3>
+                            <div class="action-buttons show">
+                                <button class="action-button add-button" onclick="showAddModal('mba')">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button class="action-button remove-button" onclick="showRemoveModal('mba')">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="student-category-item" onclick="showContent('music')">
+                            <h3>Music Students</h3>
+                            <div class="action-buttons show">
+                                <button class="action-button add-button" onclick="showAddModal('music')">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button class="action-button remove-button" onclick="showRemoveModal('music')">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="staffCategories" class="student-categories" style="display: none;">
+                        <div class="staff-category-item" onclick="showContent('workers')">
+                            <h3>Workers</h3>
+                            <div class="action-buttons show">
+                                <button class="action-button add-button" onclick="showAddModal('workers')">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button class="action-button remove-button" onclick="showRemoveModal('workers')">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="staff-category-item" onclick="showContent('mentors')">
+                            <h3>Mentors</h3>
+                            <div class="action-buttons show">
+                                <button class="action-button add-button" onclick="showAddModal('mentors')">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button class="action-button remove-button" onclick="showRemoveModal('mentors')">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="staff-category-item" onclick="showContent('sodexo')">
+                            <h3>Chef Staff</h3>
+                            <div class="action-buttons show">
+                                <button class="action-button add-button" onclick="showAddModal('sodexo')">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <button class="action-button remove-button" onclick="showRemoveModal('sodexo')">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content-area" id="contentArea">
+                    <h2>Select a category to view details</h2>
+                </div>
+            </div>
+        </main>
+        <div class="right">
+            <div class="top">
+                <button id="menu-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="profile">
+                    <div class="info">
+                        <p>Hey,</p>
+                        <small class="text-muted">Admin</small>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="{{ url_for('static', filename='images/profile2.jpg') }}" alt="profile">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Member Modal -->
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Member</h3>
+                <button class="close-modal" onclick="closeModal('addModal')">&times;</button>
+            </div>
+            <form id="addMemberForm">
+                <div class="form-group">
+                    <label for="memberName">Name</label>
+                    <input type="text" id="memberName" required>
+                </div>
+                <div class="form-group">
+                    <label for="memberAllergies">Allergies</label>
+                    <input type="text" id="memberAllergies" placeholder="Enter allergies (if any)">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="cancel-button" onclick="closeModal('addModal')">Cancel</button>
+                    <button type="submit" class="submit-button">Add Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Remove Member Modal -->
+    <div class="modal" id="removeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Remove Member</h3>
+                <button class="close-modal" onclick="closeModal('removeModal')">&times;</button>
+            </div>
+            <form id="removeMemberForm">
+                <div class="form-group">
+                    <label for="memberToRemove">Select Member to Remove</label>
+                    <select id="memberToRemove" required>
+                        <!-- Will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="cancel-button" onclick="closeModal('removeModal')">Cancel</button>
+                    <button type="submit" class="submit-button">Remove Member</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            const allDropdowns = document.getElementsByClassName('sub-dropdown');
+            
+            // Close all other dropdowns
+            for (let d of allDropdowns) {
+                if (d.id !== dropdownId && d.classList.contains('show')) {
+                    d.classList.remove('show');
+                }
+            }
+            
+            // When opening the dropdown, show both options
+            if (!dropdown.classList.contains('show')) {
+                const options = dropdown.querySelectorAll('a');
+                options.forEach(option => {
+                    option.style.display = 'flex';
+                });
+            }
+            
+            dropdown.classList.toggle('show');
+        }
+
+        function showSubDropdown(category) {
+            const studentCategories = document.getElementById('studentCategories');
+            const staffCategories = document.getElementById('staffCategories');
+            const actionButtons = document.getElementById('actionButtons');
+            const categoryItems = document.querySelectorAll('.student-category-item');
+            const mainDropdown = document.getElementById('mainDropdown');
+            const options = mainDropdown.querySelectorAll('a');
+            
+            // Remove selected class from all items
+            categoryItems.forEach(item => {
+                item.classList.remove('selected');
+                item.style.display = 'block';
+            });
+            
+            // Hide action buttons when switching between student and staff
+            actionButtons.classList.remove('show');
+            
+            if (category === 'studentDropdown') {
+                studentCategories.style.display = 'flex';
+                staffCategories.style.display = 'none';
+                // Show total student count
+                updateTotalCount('allStudents');
+                // Hide staff option
+                options[1].style.display = 'none';
+            } else {
+                studentCategories.style.display = 'none';
+                staffCategories.style.display = 'flex';
+                // Show total staff count
+                updateTotalCount('allStaff');
+                // Hide student option
+                options[0].style.display = 'none';
+            }
+
+            // Close the dropdown after selection
+            mainDropdown.classList.remove('show');
+        }
+
+        const studentData = {
+            engineering: [
+                { name: "Rahul Sharma", allergies: "Peanuts, Shellfish" },
+                { name: "Priya Patel", allergies: "Dairy, Eggs" },
+                { name: "Amit Kumar", allergies: "None" },
+                { name: "Neha Singh", allergies: "Gluten" },
+                { name: "Vikram Mehta", allergies: "Tree Nuts" }
+            ],
+            design: [
+                { name: "Ananya Gupta", allergies: "Soy, Fish" },
+                { name: "Karan Malhotra", allergies: "None" },
+                { name: "Zara Khan", allergies: "Peanuts, Dairy" },
+                { name: "Rohan Verma", allergies: "Shellfish" },
+                { name: "Meera Joshi", allergies: "Eggs, Tree Nuts" }
+            ],
+            bba: [
+                { name: "Arjun Reddy", allergies: "None" },
+                { name: "Sanya Kapoor", allergies: "Dairy, Gluten" },
+                { name: "Ishaan Sharma", allergies: "Peanuts" },
+                { name: "Diya Patel", allergies: "Shellfish, Fish" },
+                { name: "Rohan Mehta", allergies: "Tree Nuts, Soy" }
+            ],
+            mba: [
+                { name: "Vikrant Singh", allergies: "None" },
+                { name: "Pooja Sharma", allergies: "Dairy, Eggs" },
+                { name: "Aditya Kumar", allergies: "Peanuts, Tree Nuts" },
+                { name: "Nisha Patel", allergies: "Gluten" },
+                { name: "Raj Malhotra", allergies: "Shellfish, Fish" }
+            ],
+            music: [
+                { name: "Aryan Verma", allergies: "None" },
+                { name: "Riya Gupta", allergies: "Dairy, Soy" },
+                { name: "Karthik Reddy", allergies: "Peanuts" },
+                { name: "Anjali Kapoor", allergies: "Eggs, Tree Nuts" },
+                { name: "Siddharth Joshi", allergies: "Shellfish, Fish" }
+            ]
+        };
+
+        const staffData = {
+            workers: [
+                { name: "Rajesh Kumar", allergies: "None" },
+                { name: "Sunita Devi", allergies: "Dairy" },
+                { name: "Mohammed Ali", allergies: "Peanuts" },
+                { name: "Lakshmi Sharma", allergies: "Shellfish" },
+                { name: "Ganesh Patel", allergies: "None" }
+            ],
+            mentors: [
+                { name: "Dr. Meera Kapoor", allergies: "None" },
+                { name: "Prof. Rajan Singh", allergies: "Tree Nuts" },
+                { name: "Dr. Anita Gupta", allergies: "Dairy, Eggs" },
+                { name: "Prof. Vikram Malhotra", allergies: "None" },
+                { name: "Dr. Priya Sharma", allergies: "Gluten" }
+            ],
+            sodexo: [
+                { name: "Chef Ramesh", allergies: "None" },
+                { name: "Manager Deepak", allergies: "Shellfish" },
+                { name: "Chef Anita", allergies: "Peanuts" },
+                { name: "Supervisor Raj", allergies: "None" },
+                { name: "Chef Priya", allergies: "Dairy" }
+            ]
+        };
+
+        function updateTotalCount(category = null) {
+            const actionButtons = document.getElementById('actionButtons');
+            
+            if (category === 'allStudents') {
+                // Show total count of all students
+                let totalStudents = 0;
+                Object.keys(studentData).forEach(key => {
+                    totalStudents += studentData[key].length;
+                });
+                document.getElementById('totalStudents').textContent = totalStudents;
+                document.getElementById('studentSubCount').textContent = '(All Students)';
+                document.getElementById('totalStaff').textContent = '0';
+                document.getElementById('staffSubCount').textContent = '';
+                actionButtons.classList.remove('show');
+            } 
+            else if (category === 'allStaff') {
+                // Show total count of all staff
+                let totalStaff = 0;
+                Object.keys(staffData).forEach(key => {
+                    totalStaff += staffData[key].length;
+                });
+                document.getElementById('totalStaff').textContent = totalStaff;
+                document.getElementById('staffSubCount').textContent = '(All Staff)';
+                document.getElementById('totalStudents').textContent = '0';
+                document.getElementById('studentSubCount').textContent = '';
+                actionButtons.classList.remove('show');
+            }
+            else if (category) {
+                // Show count for specific category
+                let count = 0;
+                let categoryName = '';
+                
+                if (category in studentData) {
+                    count = studentData[category].length;
+                    categoryName = category.charAt(0).toUpperCase() + category.slice(1) + ' Students';
+                    document.getElementById('totalStudents').textContent = count;
+                    document.getElementById('studentSubCount').textContent = `(${categoryName})`;
+                    document.getElementById('totalStaff').textContent = '0';
+                    document.getElementById('staffSubCount').textContent = '';
+                } else if (category in staffData) {
+                    count = staffData[category].length;
+                    categoryName = category.charAt(0).toUpperCase() + category.slice(1);
+                    document.getElementById('totalStaff').textContent = count;
+                    document.getElementById('staffSubCount').textContent = `(${categoryName})`;
+                    document.getElementById('totalStudents').textContent = '0';
+                    document.getElementById('studentSubCount').textContent = '';
+                }
+                
+                // Show action buttons for specific category
+                actionButtons.classList.add('show');
+            } else {
+                // Show total counts across all categories
+                let totalStudents = 0;
+                let totalStaff = 0;
+                
+                Object.keys(studentData).forEach(key => {
+                    totalStudents += studentData[key].length;
+                });
+                
+                Object.keys(staffData).forEach(key => {
+                    totalStaff += staffData[key].length;
+                });
+                
+                document.getElementById('totalStudents').textContent = totalStudents;
+                document.getElementById('totalStaff').textContent = totalStaff;
+                document.getElementById('studentSubCount').textContent = '';
+                document.getElementById('staffSubCount').textContent = '';
+                actionButtons.classList.remove('show');
+            }
+        }
+
+        function showContent(category) {
+            const contentArea = document.getElementById('contentArea');
+            const studentCategories = document.getElementById('studentCategories');
+            const staffCategories = document.getElementById('staffCategories');
+            const categoryItems = document.querySelectorAll('.student-category-item, .staff-category-item');
+            let content = '';
+            let data;
+            let title;
+            let icon;
+
+            // Check if the category is already selected
+            const selectedItem = document.querySelector(`[onclick*="${category}"]`);
+            const isSelected = selectedItem && selectedItem.classList.contains('selected');
+
+            // Remove selected class from all items
+            categoryItems.forEach(item => {
+                item.classList.remove('selected');
+            });
+
+            if (isSelected) {
+                // If already selected, show all categories again
+                if (category in studentData) {
+                    studentCategories.style.display = 'flex';
+                    staffCategories.style.display = 'none';
+                    updateTotalCount('allStudents');
+                } else {
+                    studentCategories.style.display = 'none';
+                    staffCategories.style.display = 'flex';
+                    updateTotalCount('allStaff');
+                }
+                contentArea.innerHTML = '<h2>Select a category to view details</h2>';
+                return;
+            }
+
+            // Add selected class to clicked item
+            if (selectedItem) {
+                selectedItem.classList.add('selected');
+            }
+
+            // Hide other categories
+            if (category in studentData) {
+                studentCategories.style.display = 'none';
+                staffCategories.style.display = 'none';
+                selectedItem.style.display = 'block';
+            } else if (category in staffData) {
+                studentCategories.style.display = 'none';
+                staffCategories.style.display = 'none';
+                selectedItem.style.display = 'block';
+            }
+
+            if (category in studentData) {
+                data = studentData[category];
+                title = category.charAt(0).toUpperCase() + category.slice(1) + ' Students';
+                icon = 'fa-graduation-cap';
+            } else if (category in staffData) {
+                data = staffData[category];
+                title = category.charAt(0).toUpperCase() + category.slice(1);
+                icon = 'fa-user-tie';
+            }
+
+            content = `
+                <h2><i class="fa-solid ${icon}"></i>${title}</h2>
+                <div class="${category.includes('student') ? 'student-list' : 'staff-list'}">
+                    ${data.map(person => `
+                        <div class="${category.includes('student') ? 'student-card' : 'staff-card'}" onclick="toggleCard(this)">
+                            <h3><i class="fa-solid fa-user"></i>${person.name}</h3>
+                            <div class="allergy-info">
+                                <span><i class="fa-solid fa-exclamation-triangle"></i> Allergies</span>
+                                <p>${person.allergies}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            contentArea.innerHTML = content;
+            updateTotalCount(category);
+        }
+
+        // Initialize totals on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTotalCount();
+        });
+
+        function showAddModal(category) {
+            event.stopPropagation(); // Prevent category selection when clicking add button
+            const modal = document.getElementById('addModal');
+            modal.dataset.category = category;
+            modal.style.display = 'flex';
+        }
+
+        function showRemoveModal(category) {
+            event.stopPropagation(); // Prevent category selection when clicking remove button
+            const modal = document.getElementById('removeModal');
+            const select = document.getElementById('memberToRemove');
+            modal.dataset.category = category;
+            
+            // Clear existing options
+            select.innerHTML = '';
+            
+            // Add current members to select
+            const data = category in studentData ? studentData[category] : staffData[category];
+            data.forEach(person => {
+                const option = document.createElement('option');
+                option.value = person.name;
+                option.textContent = person.name;
+                select.appendChild(option);
+            });
+            
+            modal.style.display = 'flex';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Update form submission handlers
+        document.getElementById('addMemberForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('memberName').value;
+            const allergies = document.getElementById('memberAllergies').value || 'None';
+            const category = this.closest('.modal').dataset.category;
+            
+            // Add new member to the data
+            if (category in studentData) {
+                studentData[category].push({ name, allergies });
+            } else if (category in staffData) {
+                staffData[category].push({ name, allergies });
+            }
+            
+            // Update the display
+            showContent(category);
+            closeModal('addModal');
+            this.reset();
+        });
+
+        document.getElementById('removeMemberForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const nameToRemove = document.getElementById('memberToRemove').value;
+            const category = this.closest('.modal').dataset.category;
+            
+            // Remove member from the data
+            if (category in studentData) {
+                studentData[category] = studentData[category].filter(person => person.name !== nameToRemove);
+            } else if (category in staffData) {
+                staffData[category] = staffData[category].filter(person => person.name !== nameToRemove);
+            }
+            
+            // Update the display
+            showContent(category);
+            closeModal('removeModal');
+        });
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const dropdowns = document.getElementsByClassName('sub-dropdown');
+            const mainDropdown = document.getElementById('mainDropdown');
+            
+            // Close all dropdowns when clicking outside
+            if (!event.target.closest('.dropdown-container')) {
+                Array.from(dropdowns).forEach(dropdown => {
+                    dropdown.classList.remove('show');
+                });
+            }
+
+            // Close modals when clicking outside
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+
+        function toggleCard(card) {
+            // Remove active class from all cards
+            const allCards = document.querySelectorAll('.student-card, .staff-card');
+            allCards.forEach(c => c.classList.remove('active'));
+            
+            // Add active class to clicked card
+            card.classList.add('active');
+        }
+
+        // Add click handler for category items
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryItems = document.querySelectorAll('.student-category-item');
+            categoryItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    // If this category is already active, deactivate it
+                    if (this.classList.contains('active')) {
+                        this.classList.remove('active');
+                        const contentArea = document.getElementById('contentArea');
+                        contentArea.innerHTML = '<h2>Select a category to view details</h2>';
+                        updateTotalCount();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

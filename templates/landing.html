@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Wastage Management</title>
+    <!-- <link rel="stylesheet" href="static/landing.css"> -->
+    <link rel="icon" href="logo.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        *{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'montserrat';
+}
+body{
+    overflow: hidden;
+    background-color:#edf3eb;
+}
+.main-1{
+    /* height: 500px; */
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.custom-shape-divider-top-1745483208 {
+    /* position: absolute; */
+    position: relative;
+    height: 367px;
+    /* top: 0;
+    left: 0; */
+    width: 100%;
+    line-height: 0;
+}
+
+.custom-shape-divider-top-1745483208 svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 367px;
+    z-index: 1;
+}
+
+.custom-shape-divider-top-1745483208 .shape-fill {
+    fill: #cfdeca;
+}
+.plate-text, .plate {
+    position: absolute;
+    z-index: 2;
+}
+
+.plate-text {
+    top: 190px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 170px;
+    color: white;
+    font-weight: bold;
+}
+.plate {
+    position: absolute;
+    top: 200px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+    background-image: url("{{ url_for('static', filename='images/plate.png') }}");
+    background-size: 100% 100%;
+    /* box-shadow:  5px 0  20px 0; */
+    /* box-shadow: 10px 10px 5px lightblue; */
+}
+.button {
+    margin-top: 530px;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    z-index: 2;
+}
+
+.get {
+    height: 70px;
+    width: 200px;
+    border-radius: 25px;
+    border: none;
+    background-color: #42603b;
+    color: #cfdeca;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.get i{
+    margin-left: 10px;
+    font-size: 18px;
+}
+/* .chilli {
+    background-image: url("chilli.png");
+    height: 100px;
+    width: 100px;
+    background-size: 100% 100%;
+    position: absolute;
+    top: 140px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    z-index: 2;
+} */
+/* Base chilli style */
+.chilli {
+    /* background-image: url("chilli.png"); */
+    height: 80px;
+    width: 80px;
+    background-size: 100% 100%;
+    position: absolute;
+    z-index: 2;
+    animation: float 3s ease-in-out infinite;
+}
+.float{
+    height: 400px;
+    width: 400px;
+    top: 150px;
+    left: 37%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+.chilli-top {
+    top: 160px;
+    left: 69%;
+    transform: translateX(-50%);
+    border-radius: 50px;
+    z-index: 1;
+}
+
+.chilli-right {
+    top: 70px;
+    /* left: calc(50% + 180px); */
+    left: 50%;
+    height: 150px;
+    width: 150px;
+    z-index: 1;
+}
+
+.chilli-bottom {
+    top: 320px;
+    left: 43%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.chilli-left {
+    top: 130px;
+    /* left: calc(50% - 10px); */
+    left: 25%;
+    height: 170px;
+    width: 170px;
+    z-index: 1;
+}
+
+/* Floating animation */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) scale(1.05);
+    }
+    50% {
+        transform: translateY(-10px) scale(1);
+    }
+}
+
+/* Add animation classes that will be added after page load */
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+.animate-fade-in {
+    animation: fadeIn 1s ease-in;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+    </style>
+</head>
+<body>
+    <div class="main-1">
+    <div class="custom-shape-divider-top-1745483208">
+        <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M0,0V7.23C0,65.52,268.63,112.77,600,112.77S1200,65.52,1200,7.23V0Z" class="shape-fill"></path>
+        </svg>
+    <div class="plate-text"><p>REFEEDO</p></div>
+    <div class="plate"></div>
+    <!-- <div class="chilli"></div> -->
+    <div class="float chilli" style="background-image: url('{{ url_for('static', filename='images/particles-removebg-preview.png') }}');"></div>
+    <div class="chilli chilli-top" style="background-image: url('{{ url_for('static', filename='images/chilli.png') }}');"></div>
+    <div class="chilli chilli-right" style="background-image: url('{{ url_for('static', filename='images/onion/ (1).png') }}');"></div>
+    <div class="chilli chilli-bottom" style="background-image: url('{{ url_for('static', filename='images/flakes.png') }}');"></div>
+    <div class="chilli chilli-left" style="background-image: url('{{ url_for('static', filename='images/leafs.png') }}');"></div>
+    
+</div>
+<div class="button">
+    <button class="get" onclick="gotoLink()">Get Started<i class="fa-solid fa-arrow-right"></i></button>
+</div>
+</div>
+<script>
+    function gotoLink() {
+        window.location.href = '/login';
+    }
+    
+    // Add animation classes after page load
+    window.addEventListener('load', function() {
+        document.querySelectorAll('.chilli').forEach(function(element) {
+            element.classList.add('animate-float');
+        });
+        document.querySelector('.main-1').classList.add('animate-fade-in');
+    });
+</script>
+</body>
+</html>

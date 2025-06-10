@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>15-Days Menu</title>
+  <link rel="icon" href="logo.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
+  <style>
+    :root{
+    /* --color-primary: #7380ec; */
+    --color-primary: #42603b;
+    /* --color-half:#ff7782; */
+    --color-half:#a8c69e;
+    --color-success: #41f1b6;
+    --color-warning:#ffbb55;
+    --color-white: #fff;
+    --color-info-dark:#7d8da1;
+    --color-info-light: #dce1eb;
+    --color-dark:#363949;
+    --color-light: rgba(132,139,200,0.18);
+    --color-primary-variant:#111e88;
+    --color-dark-variant: #677483;
+    --color-background:#ffffff;
+
+    --card-border-radius: 2rem;
+    --border-radius-1: 0.4rem;
+    --border-radius-2: 0.8rem;
+    --border-radius-3: 1.2rem;
+
+    --card-padding: 1.8rem;
+    --padding-1: 1.2rem;
+
+    --box-shadow: 0 1rem 2rem var(--color-light);
+
+
+}
+html{
+    font-size: 14px;
+}
+
+body{
+    width: 100vw;
+    height: 100vh;
+    font-size: 0.88rem;
+    background: var(--color-background);
+    user-select: none;
+    overflow-x: hidden;
+}
+    *{
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    appearance: none;
+    border: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+    font-family: 'montserrat';
+    }
+    .container{
+    display: grid;
+    width: 96%;
+    margin: 0 auto;
+    gap: 1.8rem;
+    grid-template-columns: 14rem auto;
+}
+    a{
+    color: var(--color-dark);
+}
+
+img{
+    display: block;
+    width: 100%;
+}
+
+h1{
+    font-weight: 800;
+    font-size: 1.8rem;
+}
+
+h2{
+    font-size: 1.4rem;
+}
+
+h3{
+    font-size: 0.8rem;
+}
+
+h5{
+    font-size: 0.7rem;
+}
+
+small{
+    font-size: 0.75rem;
+}
+
+.profile-photo{
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.text-muted{
+    color: var(--color-info-dark);
+}
+
+p{
+    color: var(--color-dark-variant);
+}
+b{
+    color: var(--color-dark);
+}
+
+.primary{
+    color: var(--color-primary);
+}
+.half{
+    color: var(--color-half);
+}
+.success{
+    color: var(--color-success);
+}
+.warning{
+    color: var(--color-warning);
+}
+aside{
+    height: 100vh;
+}
+aside .top{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 1.4rem;
+    padding: 0 1rem;
+}
+aside h2{
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+aside .logo{
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+aside .logo img{
+    width: 2rem;
+    height: 2rem;
+}
+
+aside .close-btn{
+    display: none;
+}
+
+aside .sidebar{
+    /* background-color: white; */
+    display: flex;
+    flex-direction: column;
+    height: 86vh;
+    position: relative;
+    top: 3rem;
+}
+aside h3{
+    font-weight: 500;
+}
+
+aside .sidebar a{
+    display: flex;
+    color: var(--color-info-dark);
+    margin-left: 2rem;
+    gap: 1rem;
+    align-items: center;
+    position: relative;
+    height: 3.7rem;
+    transition: all 300ms ease;
+}
+
+aside .sidebar a i{
+    font-size: 1.6rem;
+    transition: all 300ms ease; 
+}
+
+aside .sidebar a:last-child{
+    position: absolute;
+    bottom: 2rem;
+    width: 100%;
+}
+
+aside .sidebar a.active{
+   background: var(--color-light);
+   color: var(--color-primary);
+   margin-left: 0;
+}
+
+aside .sidebar a.active:before{
+    content: '';
+    width: 6px;
+    height: 100%;
+    background: var(--color-primary);
+}
+
+aside .sidebar a.active span{
+    color: var(--color-primary);
+    margin-left: calc(1rem - 3px);
+}
+
+aside .sidebar a:hover{
+    color: var(--color-primary);
+}
+
+aside .sidebar a:hover i{
+    margin-left: 1rem;
+}
+    main {
+      padding-top: 50px;
+    }
+    .button {
+      margin-top: 20px;
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .upload-line {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .menu-controls {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .manual-line {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .button label,
+    .button button,
+    .button select {
+      background-color: var(--color-primary);
+      color: rgb(255, 255, 255);
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 14px;
+      border: none;
+    }
+
+    .button label:hover,
+    .button button:hover,
+    .button select:hover {
+      background-color: var(--color-half);
+    }
+
+    .button input[type="file"] {
+      display: none;
+    }
+
+    .menu-type {
+      margin-left: 10px;
+    }
+
+    .menu-preference {
+      display: none;
+      margin-left: 10px;
+    }
+
+    .menu-preference.show {
+      display: block;
+    }
+
+    #manualMenuContainer {
+      margin-top: 30px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+      table-layout: fixed;
+    }
+
+    table th,
+    table td {
+      border: 1px solid #ccc;
+      padding: 16px 10px;
+      min-width: 130px;
+      height: 80px;
+      font-size: 14px;
+      vertical-align: middle;
+      word-wrap: break-word;
+    }
+
+    table th:first-child {
+      min-width: 160px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    table th {
+      background-color: var(--color-primary);
+      color: white;
+    }
+
+    table td[contenteditable="true"] {
+      background-color: var(--color-white);
+    }
+
+    .dropdown {
+      position: relative;
+      width: 100%;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: var(--color-white);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      min-width: 160px;
+    }
+
+    .dropdown-content a {
+      padding: 10px 14px;
+      display: block;
+      text-decoration: none;
+      color: black;
+    }
+
+    .dropdown-content a:hover {
+      background-color: var(--color-light);
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .dropdown button {
+      width: 100%;
+      background-color: var(--color-primary);
+      color: white;
+      padding: 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .search-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    .dropdown-list {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--color-white);
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .dropdown-list.show {
+      display: block;
+    }
+
+    .dropdown-item {
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+
+    .dropdown-item:hover {
+      background-color: var(--color-light);
+    }
+
+    .menu-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 8px;
+      table-layout: fixed;
+    }
+
+    .day-cell {
+      background-color: var(--color-primary);
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      width: 15%;
+    }
+
+    .meal-cell {
+      background-color: var(--color-white);
+      padding: 15px;
+      border-radius: 8px;
+      vertical-align: top;
+      width: 21.25%;
+      height: 100%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .meal-title {
+      font-weight: bold;
+      color: var(--color-primary);
+      margin-bottom: 10px;
+      font-size: 1.1em;
+      text-align: center;
+      padding-bottom: 5px;
+      border-bottom: 2px solid var(--color-primary);
+    }
+
+    .meal-items {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      height: calc(100% - 40px); 
+      overflow-y: auto;
+    }
+
+    .meal-items li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      text-align: center;
+      position: relative;
+    }
+
+    .edit-btn {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--color-primary);
+      cursor: pointer;
+      padding: 2px 5px;
+      display: none;
+    }
+
+    .meal-items li:hover .edit-btn {
+      display: inline-block;
+    }
+
+    .edit-btn:hover {
+      color: var(--color-half);
+    }
+
+    .edit-input {
+      width: 80%;
+      padding: 4px;
+      border: 1px solid var(--color-primary);
+      border-radius: 4px;
+      margin-right: 5px;
+    }
+
+    .save-btn {
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .save-btn:hover {
+      background: var(--color-half);
+    }
+
+    .meal-items li:last-child {
+      border-bottom: none;
+    }
+
+    #autoMenuContainer {
+      margin-top: 20px;
+      overflow-x: auto;
+      padding: 0 10px;
+    }
+
+    #menuTable {
+      min-width: 100%;
+    }
+    .protein-info {
+      font-size: 0.8em;
+      color: #666;
+      margin-top: 2px;
+      font-style: italic;
+    }
+
+    .date-selection {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin: 0 1rem;
+    }
+
+    .date-field {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .date-field label {
+      color: var(--color-dark);
+      font-weight: 500;
+    }
+
+    .date-field input[type="date"] {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-family: inherit;
+      background-color: #ffffff !important;
+      color: var(--color-dark);
+    }
+
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      background-color: #ffffff;
+      padding: 5px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+
+    input[type="date"]::-webkit-datetime-edit {
+      color: var(--color-dark);
+    }
+
+    .error-message {
+      color: #ff0000;
+      font-size: 0.9em;
+      margin-top: 5px;
+      display: none;
+    }
+    #startDateLabel {
+      color: white;
+    }
+
+    .arrow-container {
+      display: flex;
+      align-items: center;
+      margin: 0 2px;
+    }
+
+    .arrow-container i {
+      color: var(--color-primary);
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <aside>
+      <div class="logo">
+        <h2>UNI<span style="color:#a8c69e;">VETT</span></h2>
+      </div>
+      <div class="sidebar">
+        <a href="/dashboard">
+        <i class="fa-solid fa-table-columns"></i>
+        <h3>DashBoard</h3>
+      </a>
+        <a href="/menu" class="active">
+        <i class="fa-solid fa-plate-wheat"></i>
+        <h3>Menu Management</h3>
+      </a>
+        <a href="/bom"><i class="fa-solid fa-paperclip"></i><h3>BOM</h3></a>
+        <a href="/studentstaff"><i class="fa-regular fa-folder-closed"></i><h3>Student and Staff</h3></a>
+        <a href="/inventory"><i class="fa-regular fa-cart-flatbed"></i><h3>Inventory</h3></a>
+        <a href="supplier.html"><i class="fa-solid fa-boxes-packing"></i><h3>Supplier</h3></a>
+        <a href="analytics.html"><i class="fa-solid fa-chart-line"></i><h3>Analytics</h3></a>
+        <a href="/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i><h3>Log Out</h3></a>
+      </div>
+    </aside>
+
+    <main>
+      <h1>15-Days Menu</h1>
+      <div class="button">
+        <label for="excelUpload">Upload Excel/CSV</label>
+        <input type="file" id="excelUpload" accept=".xls,.xlsx,.csv" />
+        <div class="date-selection">
+          <div class="date-field">
+            <label for="startDate" id="startDateLabel">Start Date:</label>
+            <input type="date" id="startDate" required>
+          </div>
+          <div class="date-field">
+            <label for="endDate" id="startDateLabel">End Date:</label>
+            <input type="date" id="endDate" required>
+          </div>
+        </div>
+        <div class="arrow-container">
+          <i class="fas fa-arrow-right"></i>
+        </div>
+        <button class="auto-generate-btn">Auto Generate Menu</button>
+        <select id="menuType" class="menu-type">
+          <option value="all">All Items</option>
+          <option value="veg">Vegetarian Only</option>
+          <option value="non-veg">Non-Vegetarian Only</option>
+          <option value="jain">Jain Only</option>
+        </select>
+        <button class="Manual">Manual</button>
+      </div>
+
+      <div id="autoMenuContainer" style="margin-top: 20px; overflow-x: auto; display: none;">
+        <table id="menuTable" style="width: 100%; border-collapse: collapse; text-align: center;">
+          <tbody id="menuTableBody">
+          </tbody>
+        </table>
+      </div>
+
+      <div id="manualMenuContainer" style="margin-top: 20px; overflow-x: auto; display: none;">
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Function to format date
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+
+    // Function to display menu in table
+    function displayMenu(menuData) {
+      const tableBody = document.getElementById('menuTableBody');
+      tableBody.innerHTML = '';
+
+      // Group menu items by date
+      const menuByDate = {};
+      menuData.forEach(item => {
+        if (!menuByDate[item.Date]) {
+          menuByDate[item.Date] = {
+            Day: item.Day,
+            Breakfast: [],
+            Lunch: [],
+            Snacks: [],
+            Dinner: []
+          };
+        }
+        menuByDate[item.Date][item['Meal Type']].push(item.Item);
+      });
+
+      // Create table rows for each date
+      Object.entries(menuByDate).forEach(([date, dayMenu]) => {
+        const row = document.createElement('tr');
+        
+        // Date and Day cell
+        const dateCell = document.createElement('td');
+        dateCell.className = 'day-cell';
+        dateCell.innerHTML = `${date}<br>${dayMenu.Day}`;
+        row.appendChild(dateCell);
+
+        // Function to create meal cell with protein info
+        const createMealCell = (mealType, items) => {
+          const cell = document.createElement('td');
+          cell.className = 'meal-cell';
+          cell.innerHTML = `
+            <div class="meal-title">${mealType}</div>
+            <ul class="meal-items">
+              ${items.map(item => `
+                <li>
+                  <span class="item-text">${item}</span>
+                  <button class="edit-btn" onclick="editItem(this)">
+                    <i class="fas fa-edit"></i>
+                  </button>
+                  <div class="protein-info">${proteinInfo[item] || 'Protein info not available'}</div>
+                </li>
+              `).join('')}
+            </ul>
+          `;
+          return cell;
+        };
+
+        // Add cells for each meal type
+        row.appendChild(createMealCell('Breakfast', dayMenu.Breakfast));
+        row.appendChild(createMealCell('Lunch', dayMenu.Lunch));
+        row.appendChild(createMealCell('Snacks', dayMenu.Snacks));
+        row.appendChild(createMealCell('Dinner', dayMenu.Dinner));
+
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Menu items arrays with veg/non-veg/Jain separation
+    const breakfastItems = {
+      veg: ['Aloo Paratha', 'Idli Sambar', 'Poha', 'Upma', 'Besan Chilla', 'Dosa', 'Puri Sabzi', 'Methi Paratha', 'Moong Dal Chilla', 'Rava Idli', 'Sabudana Khichdi', 'Methi Thepla', 'Bread Butter', 'Cornflakes with Milk'],
+      nonVeg: ['Egg Paratha', 'Egg Bhurji', 'Omelette', 'Chicken Sandwich', 'Egg Sandwich', 'Egg Toast', 'Chicken Toast', 'Egg Noodles', 'Chicken Noodles', 'Egg Fried Rice'],
+      jain: ['Methi Thepla', 'Moong Dal Chilla', 'Rava Idli', 'Sabudana Khichdi', 'Poha', 'Upma', 'Besan Chilla', 'Dosa', 'Bread Butter', 'Cornflakes with Milk', 'Mung Dal Chilla', 'Rava Upma', 'Sabudana Vada', 'Khandvi']
+    };
+    
+    const lunchItems = {
+      veg: ['Rajma Chawal', 'Paneer Butter Masala', 'Dal Makhani', 'Chole Chawal', 'Kadhi Chawal', 'Aloo Jeera', 'Paneer Bhurji', 'Sambar Rice', 'Rasam Rice', 'Curd Rice', 'Mix Veg', 'Bhindi Masala', 'Baingan Bharta', 'Palak Paneer', 'Methi Malai Matar', 'Lauki Kofta', 'Turai Sabzi', 'Karela Sabzi'],
+      nonVeg: ['Chicken Curry', 'Chicken Biryani', 'Egg Curry', 'Chicken Tikka Masala', 'Butter Chicken', 'Chicken Do Pyaza', 'Chicken Korma', 'Chicken Kadai', 'Chicken Chettinad', 'Chicken Vindaloo', 'Chicken Rogan Josh', 'Chicken Makhani'],
+      jain: ['Paneer Butter Masala', 'Dal Makhani', 'Kadhi Chawal', 'Paneer Bhurji', 'Sambar Rice', 'Rasam Rice', 'Curd Rice', 'Moong Dal Khichdi', 'Lauki Kofta', 'Turai Sabzi', 'Karela Sabzi', 'Methi Malai Matar', 'Palak Paneer', 'Mix Veg', 'Bhindi Masala', 'Baingan Bharta']
+    };
+    
+    const dinnerItems = {
+      veg: ['Chole Puri', 'Dal Tadka with Rice', 'Paneer Bhurji with Roti', 'Mix Veg with Roti', 'Dal Chawal', 'Kadhi Chawal', 'Aloo Jeera with Roti', 'Paneer Butter Masala with Naan', 'Dal Makhani with Rice', 'Dosa with Sambar', 'Bhindi Masala with Roti', 'Baingan Bharta with Roti', 'Palak Paneer with Roti', 'Methi Malai Matar with Roti', 'Lauki Kofta with Roti', 'Turai Sabzi with Roti'],
+      nonVeg: ['Chicken Curry with Rice', 'Chicken Biryani', 'Egg Curry with Roti', 'Chicken Tikka Masala with Naan', 'Butter Chicken with Rice', 'Chicken Korma with Rice', 'Chicken Kadai with Roti', 'Chicken Chettinad with Rice', 'Chicken Vindaloo with Roti', 'Chicken Rogan Josh with Rice', 'Chicken Makhani with Rice'],
+      jain: ['Paneer Bhurji with Roti', 'Dal Makhani with Rice', 'Kadhi Chawal', 'Paneer Butter Masala with Roti', 'Moong Dal Khichdi', 'Lauki Kofta with Roti', 'Turai Sabzi with Roti', 'Karela Sabzi with Roti', 'Methi Malai Matar with Roti', 'Palak Paneer with Roti', 'Mix Veg with Roti', 'Bhindi Masala with Roti', 'Baingan Bharta with Roti']
+    };
+    
+    const snacksItems = {
+      veg: ['Samosa', 'Kachori', 'Pakora', 'Chaat', 'Dahi Bhalla', 'Aloo Tikki', 'Bread Pakora', 'Paneer Tikka', 'Aloo Chaat', 'Papdi Chaat', 'Dhokla', 'Khandvi', 'Muthiya', 'Fafda', 'Gathiya', 'Chakri'],
+      nonVeg: ['Chicken Pakora', 'Chicken Tikka', 'Egg Pakora', 'Chicken Samosa', 'Chicken Kebab', 'Chicken Cutlet', 'Chicken Spring Roll', 'Chicken Momos', 'Chicken Nuggets', 'Chicken Wings'],
+      jain: ['Khandvi', 'Dhokla', 'Muthiya', 'Fafda', 'Gathiya', 'Chakri', 'Dabeli', 'Sev Khamani', 'Fafda Jalebi', 'Khaman', 'Patra', 'Muthiya', 'Gota', 'Handvo', 'Khaman Dhokla', 'Rava Dhokla']
+    };
+
+    const commonItems = {
+      rice: ['Steamed Rice', 'Jeera Rice', 'Plain Rice', 'Brown Rice', 'Basmati Rice'],
+      dal: ['Dal Tadka', 'Yellow Dal', 'Moong Dal', 'Masoor Dal', 'Chana Dal', 'Toor Dal'],
+      salad: ['Mix Veg Salad', 'Cucumber Salad', 'Sprout Salad', 'Fruit Salad', 'Green Salad'],
+      beverages: ['Buttermilk', 'Lassi', 'Lemon Water', 'Masala Chaas', 'Sweet Lassi'],
+      hotBeverages: ['Tea', 'Coffee']
+    };
+
+    const proteinInfo = {
+      // Common Items
+      'Steamed Rice': '2g protein',
+      'Jeera Rice': '2g protein',
+      'Plain Rice': '2g protein',
+      'Brown Rice': '3g protein',
+      'Basmati Rice': '2g protein',
+      'Dal Tadka': '8g protein',
+      'Yellow Dal': '7g protein',
+      'Moong Dal': '9g protein',
+      'Masoor Dal': '8g protein',
+      'Chana Dal': '10g protein',
+      'Toor Dal': '8g protein',
+      'Mix Veg Salad': '2g protein',
+      'Cucumber Salad': '1g protein',
+      'Sprout Salad': '5g protein',
+      'Fruit Salad': '1g protein',
+      'Green Salad': '1g protein',
+      'Buttermilk': '3g protein',
+      'Lassi': '4g protein',
+      'Lemon Water': '0g protein',
+      'Masala Chaas': '3g protein',
+      'Sweet Lassi': '4g protein',
+      'Tea': '0g protein',
+      'Coffee': '0g protein',
+      'Apple': '0.5g protein',
+      'Banana': '1g protein',
+      'Orange': '1g protein',
+      'Papaya': '0.5g protein',
+      'Guava': '1g protein',
+
+      // Breakfast items
+      'Aloo Paratha': '8g protein',
+      'Idli Sambar': '6g protein',
+      'Poha': '4g protein',
+      'Upma': '5g protein',
+      'Besan Chilla': '12g protein',
+      'Dosa': '5g protein',
+      'Puri Sabzi': '6g protein',
+      'Methi Paratha': '7g protein',
+      'Moong Dal Chilla': '10g protein',
+      'Rava Idli': '4g protein',
+      'Sabudana Khichdi': '2g protein',
+      'Methi Thepla': '7g protein',
+      'Bread Butter': '4g protein',
+      'Cornflakes with Milk': '6g protein',
+      'Egg Paratha': '15g protein',
+      'Egg Bhurji': '14g protein',
+      'Omelette': '13g protein',
+      'Chicken Sandwich': '20g protein',
+      'Egg Sandwich': '12g protein',
+      'Egg Toast': '10g protein',
+      'Chicken Toast': '18g protein',
+      'Egg Noodles': '12g protein',
+      'Chicken Noodles': '22g protein',
+      'Egg Fried Rice': '11g protein',
+
+      // Lunch items
+      'Rajma Chawal': '12g protein',
+      'Paneer Butter Masala': '15g protein',
+      'Dal Makhani': '10g protein',
+      'Chole Chawal': '11g protein',
+      'Kadhi Chawal': '8g protein',
+      'Aloo Jeera': '4g protein',
+      'Paneer Bhurji': '14g protein',
+      'Sambar Rice': '7g protein',
+      'Rasam Rice': '5g protein',
+      'Curd Rice': '6g protein',
+      'Mix Veg': '5g protein',
+      'Bhindi Masala': '4g protein',
+      'Baingan Bharta': '3g protein',
+      'Palak Paneer': '16g protein',
+      'Methi Malai Matar': '8g protein',
+      'Lauki Kofta': '6g protein',
+      'Turai Sabzi': '3g protein',
+      'Karela Sabzi': '3g protein',
+      'Chicken Curry': '25g protein',
+      'Chicken Biryani': '28g protein',
+      'Egg Curry': '15g protein',
+      'Chicken Tikka Masala': '26g protein',
+      'Butter Chicken': '24g protein',
+      'Chicken Do Pyaza': '25g protein',
+      'Chicken Korma': '23g protein',
+      'Chicken Kadai': '26g protein',
+      'Chicken Chettinad': '25g protein',
+      'Chicken Vindaloo': '24g protein',
+      'Chicken Rogan Josh': '25g protein',
+      'Chicken Makhani': '24g protein',
+
+      // Dinner items
+      'Chole Puri': '11g protein',
+      'Dal Tadka with Rice': '10g protein',
+      'Paneer Bhurji with Roti': '14g protein',
+      'Mix Veg with Roti': '5g protein',
+      'Dal Chawal': '9g protein',
+      'Kadhi Chawal': '8g protein',
+      'Aloo Jeera with Roti': '4g protein',
+      'Paneer Butter Masala with Naan': '15g protein',
+      'Dal Makhani with Rice': '10g protein',
+      'Dosa with Sambar': '5g protein',
+      'Bhindi Masala with Roti': '4g protein',
+      'Baingan Bharta with Roti': '3g protein',
+      'Palak Paneer with Roti': '16g protein',
+      'Methi Malai Matar with Roti': '8g protein',
+      'Lauki Kofta with Roti': '6g protein',
+      'Turai Sabzi with Roti': '3g protein',
+      'Chicken Curry with Rice': '25g protein',
+      'Chicken Biryani': '28g protein',
+      'Egg Curry with Roti': '15g protein',
+      'Chicken Tikka Masala with Naan': '26g protein',
+      'Butter Chicken with Rice': '24g protein',
+      'Chicken Korma with Rice': '23g protein',
+      'Chicken Kadai with Roti': '26g protein',
+      'Chicken Chettinad with Rice': '25g protein',
+      'Chicken Vindaloo with Roti': '24g protein',
+      'Chicken Rogan Josh with Rice': '25g protein',
+      'Chicken Makhani with Rice': '24g protein',
+
+      // Snacks items
+      'Samosa': '5g protein',
+      'Kachori': '4g protein',
+      'Pakora': '6g protein',
+      'Chaat': '4g protein',
+      'Dahi Bhalla': '6g protein',
+      'Aloo Tikki': '4g protein',
+      'Bread Pakora': '5g protein',
+      'Paneer Tikka': '15g protein',
+      'Aloo Chaat': '3g protein',
+      'Papdi Chaat': '4g protein',
+      'Dhokla': '5g protein',
+      'Khandvi': '6g protein',
+      'Muthiya': '5g protein',
+      'Fafda': '4g protein',
+      'Gathiya': '3g protein',
+      'Chakri': '3g protein',
+      'Chicken Pakora': '18g protein',
+      'Chicken Tikka': '25g protein',
+      'Egg Pakora': '12g protein',
+      'Chicken Samosa': '15g protein',
+      'Chicken Kebab': '22g protein',
+      'Chicken Cutlet': '20g protein',
+      'Chicken Spring Roll': '16g protein',
+      'Chicken Momos': '18g protein',
+      'Chicken Nuggets': '20g protein',
+      'Chicken Wings': '25g protein'
+    };
+
+    // Function to get random items from array based on menu type
+    function getRandomItems(items, menuType, count) {
+      if (typeof items === 'string') {
+        return [items];
+      }
+      
+      if (Array.isArray(items)) {
+        const shuffled = [...items].sort(() => 0.5 - Math.random());
+        return shuffled.slice(0, count);
+      }
+
+      let selectedItems = [];
+      if (menuType === 'veg') {
+        selectedItems = [...items.veg];
+      } else if (menuType === 'non-veg') {
+        selectedItems = [...items.nonVeg];
+      } else if (menuType === 'jain') {
+        selectedItems = [...items.jain];
+      } else {
+        // For 'all' type, ensure a mix of all types
+        const isNonVegDay = ['Wednesday', 'Friday', 'Sunday'].includes(new Date().toLocaleDateString('en-US', { weekday: 'long' }));
+        if (isNonVegDay) {
+          // On non-veg days, include one item from each category
+          selectedItems = [
+            items.veg[Math.floor(Math.random() * items.veg.length)],
+            items.jain[Math.floor(Math.random() * items.jain.length)],
+            items.nonVeg[Math.floor(Math.random() * items.nonVeg.length)]
+          ];
+        } else {
+          // On other days, mix veg and jain items
+          selectedItems = [
+            items.veg[Math.floor(Math.random() * items.veg.length)],
+            items.jain[Math.floor(Math.random() * items.jain.length)],
+            items.veg[Math.floor(Math.random() * items.veg.length)]
+          ];
+        }
+        return selectedItems;
+      }
+
+      const shuffled = selectedItems.sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, count);
+    }
+
+    // Function to get random item from array based on menu type (for single items)
+    function getRandomItem(items, menuType) {
+      if (typeof items === 'string') {
+        return items;
+      }
+      
+      if (Array.isArray(items)) {
+        return items[Math.floor(Math.random() * items.length)];
+      }
+
+      let selectedItems = [];
+      if (menuType === 'veg') {
+        selectedItems = items.veg;
+      } else if (menuType === 'non-veg') {
+        selectedItems = items.nonVeg;
+      } else if (menuType === 'jain') {
+        selectedItems = items.jain;
+      } else {
+        // For 'all' type, ensure a mix of all types
+        const isNonVegDay = ['Wednesday', 'Friday', 'Sunday'].includes(new Date().toLocaleDateString('en-US', { weekday: 'long' }));
+        if (isNonVegDay) {
+          // On non-veg days, randomly choose from all categories
+          const allItems = [...items.veg, ...items.jain, ...items.nonVeg];
+          selectedItems = allItems;
+        } else {
+          // On other days, mix veg and jain items
+          const allItems = [...items.veg, ...items.jain];
+          selectedItems = allItems;
+        }
+      }
+
+      return selectedItems[Math.floor(Math.random() * selectedItems.length)];
+    }
+
+    // Add this to your existing JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set default dates (tomorrow and 14 days from tomorrow)
+      const today = new Date();
+      const tomorrow = new Date(today);
+      tomorrow.setDate(today.getDate() + 1);
+      
+      const endDate = new Date(tomorrow);
+      endDate.setDate(tomorrow.getDate() + 14);
+
+      document.getElementById('startDate').value = tomorrow.toISOString().split('T')[0];
+      document.getElementById('endDate').value = endDate.toISOString().split('T')[0];
+
+      // Add date validation
+      document.getElementById('startDate').addEventListener('change', validateDates);
+      document.getElementById('endDate').addEventListener('change', validateDates);
+    });
+
+    function validateDates() {
+      const startDate = new Date(document.getElementById('startDate').value);
+      const endDate = new Date(document.getElementById('endDate').value);
+      const today = new Date();
+      const maxDate = new Date();
+      maxDate.setDate(today.getDate() + 90); // Maximum 90 days from today
+
+      let isValid = true;
+      let errorMessage = '';
+
+      if (startDate < today) {
+        errorMessage = 'Start date cannot be in the past';
+        isValid = false;
+      } else if (endDate < startDate) {
+        errorMessage = 'End date cannot be before start date';
+        isValid = false;
+      } else if (endDate > maxDate) {
+        errorMessage = 'Menu can only be generated for up to 90 days';
+        isValid = false;
+      }
+
+      const errorElement = document.querySelector('.error-message');
+      if (!isValid) {
+        if (!errorElement) {
+          const error = document.createElement('div');
+          error.className = 'error-message';
+          error.textContent = errorMessage;
+          document.querySelector('.date-selection').appendChild(error);
+        } else {
+          errorElement.textContent = errorMessage;
+          errorElement.style.display = 'block';
+        }
+      } else if (errorElement) {
+        errorElement.style.display = 'none';
+      }
+
+      return isValid;
+    }
+
+    // Update the auto-generate button click handler
+    document.querySelector('.auto-generate-btn').addEventListener('click', async () => {
+      try {
+        if (!validateDates()) {
+          return;
+        }
+
+        // Hide manual container and show auto container
+        document.getElementById('manualMenuContainer').style.display = 'none';
+        document.getElementById('autoMenuContainer').style.display = 'block';
+        
+        const menuType = document.getElementById('menuType').value;
+        const startDate = new Date(document.getElementById('startDate').value);
+        const endDate = new Date(document.getElementById('endDate').value);
+        const menu = [];
+        
+        // Calculate number of days
+        const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
+        
+        // Generate menu for the selected date range
+        for (let i = 0; i < days; i++) {
+          const currentDate = new Date(startDate);
+          currentDate.setDate(startDate.getDate() + i);
+          const date = currentDate.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' });
+          const day = currentDate.toLocaleDateString('en-US', { weekday: 'long' });
+          const dayMenu = generateDayMenu(date, day, menuType);
+          if (dayMenu.length > 0) {
+            menu.push(...dayMenu);
+          }
+        }
+        
+        displayMenu(menu);
+      } catch (error) {
+        console.error('Error generating menu:', error);
+        alert('Error generating menu. Please try again.');
+      }
+    });
+
+    document.querySelector(".Manual").addEventListener("click", function () {
+      // Hide auto container and show manual container
+      document.getElementById('autoMenuContainer').style.display = 'none';
+      document.getElementById('manualMenuContainer').style.display = 'block';
+      
+      const container = document.getElementById("manualMenuContainer");
+      container.innerHTML = "";
+
+      const table = document.createElement("table");
+
+      const today = new Date();
+      const dates = [];
+      const days = [];
+
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(today);
+        date.setDate(today.getDate() + i);
+        dates.push(date.toLocaleDateString("en-GB"));
+        days.push(date.toLocaleDateString("en-US", { weekday: "short" }));
+      }
+
+      const headerRow = document.createElement("tr");
+      const mealHeader = document.createElement("th");
+      mealHeader.textContent = "Meal";
+      headerRow.appendChild(mealHeader);
+
+      for (let i = 0; i < 7; i++) {
+        const th = document.createElement("th");
+        th.innerHTML = `<div style="font-size: 15px; font-weight: bold;">${dates[i]}</div>
+                        <div style="font-size: 13px;">${days[i]}</div>`;
+        headerRow.appendChild(th);
+      }
+
+      table.appendChild(headerRow);
+
+      const meals = ["Breakfast", "Lunch", "Snacks", "Dinner"];
+
+      meals.forEach(meal => {
+        const row = document.createElement("tr");
+        const mealCell = document.createElement("th");
+        mealCell.textContent = meal;
+        row.appendChild(mealCell);
+
+        for (let i = 0; i < 7; i++) {
+          const td = document.createElement("td");
+          
+          if (meal === "Breakfast") {
+            const searchContainer = document.createElement("div");
+            searchContainer.className = "search-container";
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "search-input";
+            input.placeholder = "Search breakfast...";
+
+            const dropdown = document.createElement("div");
+            dropdown.className = "dropdown-list";
+
+            const options = ["Poha", "Upma", "Idli", "Aloo Paratha", "Tea"];
+            
+            input.addEventListener("input", function() {
+              const value = this.value.toLowerCase();
+              dropdown.innerHTML = "";
+              
+              const filteredOptions = options.filter(option => 
+                option.toLowerCase().includes(value)
+              );
+
+              filteredOptions.forEach(option => {
+                const item = document.createElement("div");
+                item.className = "dropdown-item";
+                item.textContent = option;
+                item.addEventListener("click", function() {
+                  input.value = option;
+                  dropdown.classList.remove("show");
+                });
+                dropdown.appendChild(item);
+              });
+
+              dropdown.classList.toggle("show", filteredOptions.length > 0);
+            });
+
+            input.addEventListener("focus", function() {
+              if (this.value === "") {
+                dropdown.innerHTML = "";
+                options.forEach(option => {
+                  const item = document.createElement("div");
+                  item.className = "dropdown-item";
+                  item.textContent = option;
+                  item.addEventListener("click", function() {
+                    input.value = option;
+                    dropdown.classList.remove("show");
+                  });
+                  dropdown.appendChild(item);
+                });
+                dropdown.classList.add("show");
+              }
+            });
+
+            document.addEventListener("click", function(e) {
+              if (!searchContainer.contains(e.target)) {
+                dropdown.classList.remove("show");
+              }
+            });
+
+            searchContainer.appendChild(input);
+            searchContainer.appendChild(dropdown);
+            td.appendChild(searchContainer);
+          } else if (meal === "Lunch") {
+            const searchContainer = document.createElement("div");
+            searchContainer.className = "search-container";
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "search-input";
+            input.placeholder = "Search lunch...";
+
+            const dropdown = document.createElement("div");
+            dropdown.className = "dropdown-list";
+
+            const options = ["Chole masala", "Puri", "dal rice", "bhindi fry", "chapati", "bhurji", "methi matar"];
+            
+            input.addEventListener("input", function() {
+              const value = this.value.toLowerCase();
+              dropdown.innerHTML = "";
+              
+              const filteredOptions = options.filter(option => 
+                option.toLowerCase().includes(value)
+              );
+
+              filteredOptions.forEach(option => {
+                const item = document.createElement("div");
+                item.className = "dropdown-item";
+                item.textContent = option;
+                item.addEventListener("click", function() {
+                  input.value = option;
+                  dropdown.classList.remove("show");
+                });
+                dropdown.appendChild(item);
+              });
+
+              dropdown.classList.toggle("show", filteredOptions.length > 0);
+            });
+
+            input.addEventListener("focus", function() {
+              if (this.value === "") {
+                dropdown.innerHTML = "";
+                options.forEach(option => {
+                  const item = document.createElement("div");
+                  item.className = "dropdown-item";
+                  item.textContent = option;
+                  item.addEventListener("click", function() {
+                    input.value = option;
+                    dropdown.classList.remove("show");
+                  });
+                  dropdown.appendChild(item);
+                });
+                dropdown.classList.add("show");
+              }
+            });
+
+            document.addEventListener("click", function(e) {
+              if (!searchContainer.contains(e.target)) {
+                dropdown.classList.remove("show");
+              }
+            });
+
+            searchContainer.appendChild(input);
+            searchContainer.appendChild(dropdown);
+            td.appendChild(searchContainer);
+          } else if (meal === "Snacks") {
+            const searchContainer = document.createElement("div");
+            searchContainer.className = "search-container";
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "search-input";
+            input.placeholder = "Search snacks...";
+
+            const dropdown = document.createElement("div");
+            dropdown.className = "dropdown-list";
+
+            const options = ["maggi", "bread pakoda", "kanda bhaji", "dabeli", "vadapav"];
+            
+            input.addEventListener("input", function() {
+              const value = this.value.toLowerCase();
+              dropdown.innerHTML = "";
+              
+              const filteredOptions = options.filter(option => 
+                option.toLowerCase().includes(value)
+              );
+
+              filteredOptions.forEach(option => {
+                const item = document.createElement("div");
+                item.className = "dropdown-item";
+                item.textContent = option;
+                item.addEventListener("click", function() {
+                  input.value = option;
+                  dropdown.classList.remove("show");
+                });
+                dropdown.appendChild(item);
+              });
+
+              dropdown.classList.toggle("show", filteredOptions.length > 0);
+            });
+
+            input.addEventListener("focus", function() {
+              if (this.value === "") {
+                dropdown.innerHTML = "";
+                options.forEach(option => {
+                  const item = document.createElement("div");
+                  item.className = "dropdown-item";
+                  item.textContent = option;
+                  item.addEventListener("click", function() {
+                    input.value = option;
+                    dropdown.classList.remove("show");
+                  });
+                  dropdown.appendChild(item);
+                });
+                dropdown.classList.add("show");
+              }
+            });
+
+            document.addEventListener("click", function(e) {
+              if (!searchContainer.contains(e.target)) {
+                dropdown.classList.remove("show");
+              }
+            });
+
+            searchContainer.appendChild(input);
+            searchContainer.appendChild(dropdown);
+            td.appendChild(searchContainer);
+          } else if (meal === "Dinner") {
+            const searchContainer = document.createElement("div");
+            searchContainer.className = "search-container";
+
+            const input = document.createElement("input");
+            input.type = "text";
+            input.className = "search-input";
+            input.placeholder = "Search dinner...";
+
+            const dropdown = document.createElement("div");
+            dropdown.className = "dropdown-list";
+
+            const options = ["pav bhaji", "chicken kohlapuri", "egg curry", "biryani"];
+            
+            input.addEventListener("input", function() {
+              const value = this.value.toLowerCase();
+              dropdown.innerHTML = "";
+              
+              const filteredOptions = options.filter(option => 
+                option.toLowerCase().includes(value)
+              );
+
+              filteredOptions.forEach(option => {
+                const item = document.createElement("div");
+                item.className = "dropdown-item";
+                item.textContent = option;
+                item.addEventListener("click", function() {
+                  input.value = option;
+                  dropdown.classList.remove("show");
+                });
+                dropdown.appendChild(item);
+              });
+
+              dropdown.classList.toggle("show", filteredOptions.length > 0);
+            });
+
+            input.addEventListener("focus", function() {
+              if (this.value === "") {
+                dropdown.innerHTML = "";
+                options.forEach(option => {
+                  const item = document.createElement("div");
+                  item.className = "dropdown-item";
+                  item.textContent = option;
+                  item.addEventListener("click", function() {
+                    input.value = option;
+                    dropdown.classList.remove("show");
+                  });
+                  dropdown.appendChild(item);
+                });
+                dropdown.classList.add("show");
+              }
+            });
+
+            document.addEventListener("click", function(e) {
+              if (!searchContainer.contains(e.target)) {
+                dropdown.classList.remove("show");
+              }
+            });
+
+            searchContainer.appendChild(input);
+            searchContainer.appendChild(dropdown);
+            td.appendChild(searchContainer);
+          } else {
+            td.contentEditable = true;
+          }
+          
+          row.appendChild(td);
+        }
+
+        table.appendChild(row);
+      });
+
+      container.appendChild(table);
+    });
+
+    // Add event listener for menu type change
+    document.getElementById('menuType').addEventListener('change', () => {
+      const menuType = document.getElementById('menuType').value;
+      const menu = [];
+      
+      // Generate menu for 15 days
+      for (let i = 0; i < 15; i++) {
+        const { date, day } = getDateForDaysFromNow(i);
+        const dayMenu = generateDayMenu(date, day, menuType);
+        if (dayMenu.length > 0) {  // Only add days that have menu items
+          menu.push(...dayMenu);
+        }
+      }
+      
+      displayMenu(menu);
+    });
+
+    // Function to generate date for n days from today
+    function getDateForDaysFromNow(days) {
+      const date = new Date();
+      date.setDate(date.getDate() + days);
+      return {
+        date: date.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' }),
+        day: date.toLocaleDateString('en-US', { weekday: 'long' })
+      };
+    }
+
+    // Function to generate menu for one day
+    function generateDayMenu(date, day, menuType) {
+      const menu = [];
+      const isNonVegDay = ['Wednesday', 'Friday', 'Sunday'].includes(day);
+      const usedItems = new Set(); // Track used items for the day
+      
+      // If it's not a non-veg day and non-veg is selected, skip this day
+      if (!isNonVegDay && menuType === 'non-veg') {
+        return menu;
+      }
+
+      // If it's not a non-veg day and 'all' is selected, show vegetarian and jain items
+      const effectiveMenuType = isNonVegDay ? menuType : (menuType === 'non-veg' ? 'veg' : menuType);
+      
+      // Helper function to get unique random items
+      function getUniqueRandomItems(items, count) {
+        let selectedItems = [];
+        let attempts = 0;
+        const maxAttempts = 50; // Prevent infinite loops
+        
+        while (selectedItems.length < count && attempts < maxAttempts) {
+          const item = getRandomItem(items, effectiveMenuType);
+          if (!usedItems.has(item)) {
+            selectedItems.push(item);
+            usedItems.add(item);
+          }
+          attempts++;
+        }
+        return selectedItems;
+      }
+
+      // Helper function to get unique random item
+      function getUniqueRandomItem(items) {
+        let attempts = 0;
+        const maxAttempts = 50;
+        
+        while (attempts < maxAttempts) {
+          const item = getRandomItem(items, effectiveMenuType);
+          if (!usedItems.has(item)) {
+            usedItems.add(item);
+            return item;
+          }
+          attempts++;
+        }
+        return null;
+      }
+      
+      // Breakfast items
+      menu.push({ Date: date, Day: day, 'Meal Type': 'Breakfast', Item: 'Tea' }); // Always include Tea
+      menu.push({ Date: date, Day: day, 'Meal Type': 'Breakfast', Item: 'Coffee' }); // Always include Coffee
+      // Don't add Tea and Coffee to usedItems since they can be repeated
+      
+      // Add 3 breakfast items
+      getUniqueRandomItems(breakfastItems, 3).forEach(item => {
+        menu.push({ Date: date, Day: day, 'Meal Type': 'Breakfast', Item: item });
+      });
+      
+      const fruit = getUniqueRandomItem(['Apple', 'Banana', 'Orange', 'Papaya', 'Guava']);
+      if (fruit) {
+        menu.push({ Date: date, Day: day, 'Meal Type': 'Breakfast', Item: fruit });
+      }
+
+      // Lunch items
+      // Add 3 main items
+      getUniqueRandomItems(lunchItems, 3).forEach(item => {
+        menu.push({ Date: date, Day: day, 'Meal Type': 'Lunch', Item: item });
+      });
+      
+      // Always include rice
+      const rice = getUniqueRandomItem(commonItems.rice);
+      if (rice) {
+        menu.push({ Date: date, Day: day, 'Meal Type': 'Lunch', Item: rice });
+      }
+      
+      // Add dal for veg and jain
+      if (effectiveMenuType !== 'non-veg') {
+        const dal = getUniqueRandomItem(commonItems.dal);
+        if (dal) {
+          menu.push({ Date: date, Day: day, 'Meal Type': 'Lunch', Item: dal });
+        }
+      }
+      
+      const salad = getUniqueRandomItem(commonItems.salad);
+      if (salad) {
+        menu.push({ Date: date, Day: day, 'Meal Type': 'Lunch', Item: salad });
+      }
+      
+      const beverage = getUniqueRandomItem(commonItems.beverages.filter(b => b !== 'Tea' && b !== 'Coffee'));
+      if (beverage) {
+        menu.push({ Date: date, Day: day, 'Meal Type': 'Lunch', Item: beverage });
+      }
+
+      // Snacks items
+      const snack = getUniqueRandomItem(snacksItems);
+      if (snack) {
+        menu.push({ Date: date, Day: day, 'Meal Type': 'Snacks', Item: snack });
+      }
+      // Add Tea and Coffee for snacks (can be repeated)
+      menu.push({ Date: date, Day: day, 'Meal Type': 'Snacks', Item: 'Tea' });
+      menu.push({ Date: date, Day: day, 'Meal Type': 'Snacks', Item: 'Coffee' });
+      
+      // Dinner items
+      // Add 3 main items
+      getUniqueRandomItems(dinnerItems, 3).forEach(item => {
+        menu.push({ Date: date, Day: day, 'Meal Type': 'Dinner', Item: item });
+      });
+      
+      // Always include rice
+      const dinnerRice = getUniqueRandomItem(commonItems.rice);
+      if (dinnerRice) {
+        menu.push({ Date: date, Day: day, 'Meal Type': 'Dinner', Item: dinnerRice });
+      }
+      
+      // Add dal for veg and jain
+      if (effectiveMenuType !== 'non-veg') {
+        const dinnerDal = getUniqueRandomItem(commonItems.dal);
+        if (dinnerDal) {
+          menu.push({ Date: date, Day: day, 'Meal Type': 'Dinner', Item: dinnerDal });
+        }
+      }
+      
+      const dinnerSalad = getUniqueRandomItem(commonItems.salad);
+      if (dinnerSalad) {
+        menu.push({ Date: date, Day: day, 'Meal Type': 'Dinner', Item: dinnerSalad });
+      }
+      
+      const dinnerBeverage = getUniqueRandomItem(commonItems.beverages.filter(b => b !== 'Tea' && b !== 'Coffee'));
+      if (dinnerBeverage) {
+        menu.push({ Date: date, Day: day, 'Meal Type': 'Dinner', Item: dinnerBeverage });
+      }
+
+      return menu;
+    }
+
+    function editItem(button) {
+      const li = button.parentElement;
+      const itemText = li.querySelector('.item-text');
+      const currentText = itemText.textContent;
+      
+      // Create input and save button
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.className = 'edit-input';
+      input.value = currentText;
+      
+      const saveButton = document.createElement('button');
+      saveButton.className = 'save-btn';
+      saveButton.innerHTML = '<i class="fas fa-save"></i>';
+      
+      // Replace text with input and save button
+      itemText.style.display = 'none';
+      button.style.display = 'none';
+      li.insertBefore(input, li.firstChild);
+      li.insertBefore(saveButton, input.nextSibling);
+      
+      // Focus the input
+      input.focus();
+      
+      // Handle save
+      saveButton.onclick = function() {
+        const newText = input.value.trim();
+        if (newText) {
+          itemText.textContent = newText;
+          // Update protein info if available
+          const proteinInfoDiv = li.querySelector('.protein-info');
+          proteinInfoDiv.textContent = proteinInfo[newText] || 'Protein info not available';
+        }
+        // Restore original view
+        input.remove();
+        saveButton.remove();
+        itemText.style.display = 'inline';
+        button.style.display = 'inline-block';
+      };
+      
+      // Handle enter key
+      input.onkeypress = function(e) {
+        if (e.key === 'Enter') {
+          saveButton.click();
+        }
+      };
+      
+      // Handle escape key
+      input.onkeydown = function(e) {
+        if (e.key === 'Escape') {
+          input.remove();
+          saveButton.remove();
+          itemText.style.display = 'inline';
+          button.style.display = 'inline-block';
+        }
+      };
+    }
+  </script>
+</body>
+</html>

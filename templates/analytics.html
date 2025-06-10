@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics</title>
+    <link rel="icon" href="logo.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #42603b;
+            --color-half: #a8c69e;
+            --color-success: #41f1b6;
+            --color-warning: #ffbb55;
+            --color-white: #fff;
+            --color-info-dark: #7d8da1;
+            --color-info-light: #dce1eb;
+            --color-dark: #363949;
+            --color-light: rgba(132,139,200,0.18);
+            --color-background: #ffffff;
+            --card-border-radius: 2rem;
+            --border-radius-1: 0.4rem;
+            --border-radius-2: 0.8rem;
+            --border-radius-3: 1.2rem;
+            --card-padding: 1.8rem;
+            --padding-1: 1.2rem;
+            --box-shadow: 0 1rem 2rem var(--color-light);
+        }
+
+        html {
+            font-size: 14px;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            font-size: 0.88rem;
+            background: var(--color-background);
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            appearance: none;
+            border: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+            font-family: 'montserrat';
+        }
+
+        .container {
+            display: grid;
+            width: 96%;
+            margin: 0 auto;
+            gap: 1.8rem;
+            grid-template-columns: 14rem auto 23rem;
+        }
+
+        a {
+            color: var(--color-dark);
+        }
+
+        img {
+            display: block;
+            width: 100%;
+        }
+
+        h1 {
+            font-weight: 800;
+            font-size: 1.8rem;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+        }
+
+        h3 {
+            font-size: 0.8rem;
+        }
+
+        h5 {
+            font-size: 0.7rem;
+        }
+
+        small {
+            font-size: 0.75rem;
+        }
+
+        .profile-photo {
+            width: 2.8rem;
+            height: 2.8rem;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+
+        .text-muted {
+            color: var(--color-info-dark);
+        }
+
+        p {
+            color: var(--color-dark-variant);
+        }
+
+        b {
+            color: var(--color-dark);
+        }
+
+        .primary {
+            color: var(--color-primary);
+        }
+
+        .half {
+            color: var(--color-half);
+        }
+
+        .success {
+            color: var(--color-success);
+        }
+
+        .warning {
+            color: var(--color-warning);
+        }
+
+        aside {
+            height: 100vh;
+        }
+
+        aside .top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 1.4rem;
+            padding: 0 1rem;
+        }
+
+        aside h2 {
+            margin: 0;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        aside .logo {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        aside .logo img {
+            width: 2rem;
+            height: 2rem;
+        }
+
+        aside .close-btn {
+            display: none;
+        }
+
+        aside .sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 86vh;
+            position: relative;
+            top: 3rem;
+        }
+
+        aside h3 {
+            font-weight: 500;
+        }
+
+        aside .sidebar a {
+            display: flex;
+            color: var(--color-info-dark);
+            margin-left: 2rem;
+            gap: 1rem;
+            align-items: center;
+            position: relative;
+            height: 3.7rem;
+            transition: all 300ms ease;
+        }
+
+        aside .sidebar a i {
+            font-size: 1.6rem;
+            transition: all 300ms ease;
+        }
+
+        aside .sidebar a:last-child {
+            position: absolute;
+            bottom: 2rem;
+            width: 100%;
+        }
+
+        aside .sidebar a.active {
+            background: var(--color-light);
+            color: var(--color-primary);
+            margin-left: 0;
+        }
+
+        aside .sidebar a.active:before {
+            content: '';
+            width: 6px;
+            height: 100%;
+            background: var(--color-primary);
+        }
+
+        aside .sidebar a.active span {
+            color: var(--color-primary);
+            margin-left: calc(1rem - 3px);
+        }
+
+        aside .sidebar a:hover {
+            color: var(--color-primary);
+        }
+
+        aside .sidebar a:hover i {
+            margin-left: 1rem;
+        }
+
+        main {
+            margin-top: 1.4rem;
+            padding: 0 1rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: var(--color-white);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .header h1 {
+            color: var(--color-primary);
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--color-info-dark);
+        }
+
+        .meal-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .meal-card {
+            background: var(--color-white);
+            padding: var(--card-padding);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--color-light);
+        }
+
+        .meal-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--color-primary);
+        }
+
+        .meal-card h3 {
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .meal-card h3 i {
+            color: var(--color-half);
+        }
+
+        .meal-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--color-light);
+            border-radius: var(--border-radius-2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-item:hover {
+            background: var(--color-half);
+            color: var(--color-white);
+        }
+
+        .stat-item:hover p,
+        .stat-item:hover h4 {
+            color: var(--color-white);
+        }
+
+        .stat-item p {
+            color: var(--color-info-dark);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .stat-item h4 {
+            color: var(--color-dark);
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .daily-summary {
+            background: var(--color-white);
+            padding: var(--card-padding);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            margin-top: 2rem;
+            border: 1px solid var(--color-light);
+        }
+
+        .daily-summary h2 {
+            color: var(--color-primary);
+            margin-bottom: 1.5rem;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .daily-summary h2 i {
+            color: var(--color-half);
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .summary-item {
+            text-align: center;
+            padding: 1.2rem;
+            background: var(--color-light);
+            border-radius: var(--border-radius-2);
+            transition: all 0.3s ease;
+        }
+
+        .summary-item:hover {
+            background: var(--color-half);
+            color: var(--color-white);
+        }
+
+        .summary-item:hover p,
+        .summary-item:hover h4 {
+            color: var(--color-white);
+        }
+
+        .summary-item p {
+            color: var(--color-info-dark);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .summary-item h4 {
+            color: var(--color-dark);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .wastage {
+            color: var(--color-warning);
+        }
+
+        .success {
+            color: var(--color-success);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: relative;
+            background: var(--color-white);
+            margin: 2rem auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--color-info-dark);
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--color-primary);
+        }
+
+        .meal-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .form-group label {
+            color: var(--color-dark);
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        .form-group input {
+            padding: 1rem;
+            border: 2px solid var(--color-info-light);
+            border-radius: var(--border-radius-1);
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            border-color: var(--color-primary);
+            outline: none;
+        }
+
+        .submit-btn {
+            background: var(--color-primary);
+            color: var(--color-white);
+            padding: 1rem;
+            border: none;
+            border-radius: var(--border-radius-1);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            background: var(--color-half);
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+
+            aside {
+                position: fixed;
+                left: -100%;
+                background: var(--color-white);
+                width: 18rem;
+                z-index: 3;
+                box-shadow: 1rem 3rem 4rem var(--color-light);
+                height: 100vh;
+                padding-right: var(--card-padding);
+                display: none;
+                animation: showMenu 0.4s ease forwards;
+            }
+
+            @keyframes showMenu {
+                to {
+                    left: 0;
+                }
+            }
+
+            aside .logo {
+                margin-left: 1rem;
+            }
+
+            aside .sidebar h3 {
+                display: inline;
+            }
+
+            aside .sidebar a {
+                width: 100%;
+                height: 3.4rem;
+            }
+
+            aside .sidebar a:last-child {
+                position: absolute;
+                bottom: 5rem;
+            }
+
+            aside .close-btn {
+                display: inline-block;
+                cursor: pointer;
+            }
+
+            .meal-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .meal-stats, .summary-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 1rem auto;
+                padding: 1.5rem;
+            }
+        }
+
+        /* Right Sidebar Styles */
+        .right {
+            margin-top: 1.4rem;
+        }
+        .right .top {
+            display: flex;
+            justify-content: end;
+            gap: 2rem;
+        }
+        .right .top button {
+            display: none;
+        }
+        .right .top .profile {
+            display: flex;
+            text-align: right;
+            gap: 0.5rem;
+        }
+        .right .top .profile .info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+        .right .top .profile .info p {
+            margin: 0;
+            font-weight: 400;
+            color: var(--color-dark);
+        }
+        .right .top .profile .info small {
+            color: var(--color-info-dark);
+        }
+        @media (max-width: 1200px) {
+            .container {
+                width: 94%;
+                grid-template-columns: 7rem auto 23rem;
+            }
+        }
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            .right .top {
+                position: fixed;
+                top: 0;
+                left: 0;
+                align-items: center;
+                padding: 0 0.8rem;
+                height: 4.6rem;
+                background: var(--color-white);
+                width: 100%;
+                margin: 0;
+                z-index: 2;
+                box-shadow: 0 1rem 1rem var(--color-light);
+            }
+            .right .profile .info {
+                display: none;
+            }
+            .right .top button {
+                display: inline-block;
+                background: transparent;
+                cursor: pointer;
+                color: var(--color-dark);
+                position: absolute;
+                left: 1rem;
+            }
+            .right .top button span {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <a href="/dashboard" style="display: flex; gap: 0.8rem; align-items: center; text-decoration: none; color: inherit;">
+                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
+                        <h2>REF<span class="half">EEDO</span></h2>
+                    </a>
+                </div>
+                <div class="close-btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+
+            <div class="sidebar">
+                <a href="/dashboard" class="{% if active_page == 'dashboard' %}active{% endif %}">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <h3>DashBoard</h3>
+                </a>
+                <a href="/menu" class="{% if active_page == 'menu' %}active{% endif %}">
+                    <i class="fa-solid fa-plate-wheat"></i>
+                    <h3>Menu Management</h3>
+                </a>
+                <a href="/bom" class="{% if active_page == 'bom' %}active{% endif %}">
+                    <i class="fa-solid fa-paperclip"></i>
+                    <h3>BOM</h3>
+                </a>
+                <a href="/studentstaff" class="{% if active_page == 'studentstaff' %}active{% endif %}">
+                    <i class="fa-regular fa-folder-closed"></i>
+                    <h3>Student and Staff</h3>
+                </a>
+                <a href="/inventory" class="{% if active_page == 'inventory' %}active{% endif %}">
+                    <i class="fa-regular fa-cart-flatbed"></i>
+                    <h3>Inventory</h3>
+                </a>
+                <a href="/supplier" class="{% if active_page == 'supplier' %}active{% endif %}">
+                    <i class="fa-solid fa-boxes-packing"></i>
+                    <h3>Supplier</h3>
+                </a>
+                <a href="/analytics" class="{% if active_page == 'analytics' %}active{% endif %}">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <h3>Analytics</h3>
+                </a>
+                <a href="/pax" class="{% if active_page == 'pax' %}active{% endif %}">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <h3>Meal Predictor</h3>
+                </a>
+                <a href="/settings" class="{% if active_page == 'settings' %}active{% endif %}">
+                    <i class="fa-solid fa-gear"></i>
+                    <h3>Settings</h3>
+                </a>
+                <a href="/logout">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <h3>Log Out</h3>
+                </a>
+            </div>
+        </aside>
+
+        <main>
+            <div class="header">
+                <h1><i class="fas fa-chart-line"></i> Meal Analytics</h1>
+                <p>Track meal consumption and wastage for 1000 servings</p>
+            </div>
+
+            <div class="meal-cards">
+                <div class="meal-card" onclick="openMealModal('breakfast')">
+                    <h3><i class="fas fa-sun"></i> Breakfast</h3>
+                    <div class="meal-stats">
+                        <div class="stat-item">
+                            <p>Predicted</p>
+                            <h4 id="breakfast-predicted">0</h4>
+                        </div>
+                        <div class="stat-item">
+                            <p>Served</p>
+                            <h4 id="breakfast-served">0</h4>
+                        </div>
+                        <div class="stat-item">
+                            <p>Wastage</p>
+                            <h4 id="breakfast-wastage" class="wastage">0</h4>
+                        </div>
+                        <div class="stat-item">
+                            <p>Wastage %</p>
+                            <h4 id="breakfast-wastage-percent" class="wastage">0%</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meal-card" onclick="openMealModal('lunch')">
+                    <h3><i class="fas fa-utensils"></i> Lunch</h3>
+                    <div class="meal-stats">
+                        <div class="stat-item">
+                            <p>Predicted</p>
+                            <h4 id="lunch-predicted">0</h4>
+                        </div>
+                        <div class="stat-item">
+                            <p>Served</p>
+                            <h4 id="lunch-served">0</h4>
+                        </div>
+                        <div class="stat-item">
+                            <p>Wastage</p>
+                            <h4 id="lunch-wastage" class="wastage">0</h4>
+                        </div>
+                        <div class="stat-item">
+                            <p>Wastage %</p>
+                            <h4 id="lunch-wastage-percent" class="wastage">0%</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meal-card" onclick="openMealModal('snacks')">
+                    <h3><i class="fas fa-coffee"></i> Snacks</h3>
+                    <div class="meal-stats">
+                        <div class="stat-item">
+                            <p>Predicted</p>
+                            <h4 id="snacks-predicted">0</h4>
+                        </div>
+                        <div class="stat-item">
+                            <p>Served</p>
+                            <h4 id="snacks-served">0</h4>
+                        </div>
+                        <div class="stat-item">
+                            <p>Wastage</p>
+                            <h4 id="snacks-wastage" class="wastage">0</h4>
+                        </div>
+                        <div class="stat-item">
+                            <p>Wastage %</p>
+                            <h4 id="snacks-wastage-percent" class="wastage">0%</h4>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="meal-card" onclick="openMealModal('dinner')">
+                    <h3><i class="fas fa-moon"></i> Dinner</h3>
+                    <div class="meal-stats">
+                        <div class="stat-item">
+                            <p>Predicted</p>
+                            <h4 id="dinner-predicted">0</h4>
+                        </div>
+                        <div class="stat-item">
+                            <p>Served</p>
+                            <h4 id="dinner-served">0</h4>
+                        </div>
+                        <div class="stat-item">
+                            <p>Wastage</p>
+                            <h4 id="dinner-wastage" class="wastage">0</h4>
+                        </div>
+                        <div class="stat-item">
+                            <p>Wastage %</p>
+                            <h4 id="dinner-wastage-percent" class="wastage">0%</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="daily-summary">
+                <h2><i class="fas fa-chart-pie"></i> Daily Summary</h2>
+                <div class="summary-stats">
+                    <div class="summary-item">
+                        <p>Total Predicted</p>
+                        <h4 id="total-predicted">0</h4>
+                    </div>
+                    <div class="summary-item">
+                        <p>Total Served</p>
+                        <h4 id="total-served">0</h4>
+                    </div>
+                    <div class="summary-item">
+                        <p>Total Wastage</p>
+                        <h4 id="total-wastage" class="wastage">0</h4>
+                    </div>
+                    <div class="summary-item">
+                        <p>Total Wastage %</p>
+                        <h4 id="total-wastage-percent" class="wastage">0%</h4>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="right">
+            <div class="top">
+                <button id="menu-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="profile">
+                    <div class="info">
+                        <p>Hey,</p>
+                        <small class="text-muted">Admin</small>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="{{ url_for('static', filename='images/profile2.jpg') }}" alt="profile">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Meal Modal -->
+    <div id="mealModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeMealModal()">&times;</span>
+            <h2 id="modalTitle">Enter Meal Data</h2>
+            <form class="meal-form" id="mealForm">
+                <div class="form-group">
+                    <label for="platesServed">Plates Served</label>
+                    <input type="number" id="platesServed" required min="0" max="1000" placeholder="Enter number of plates served">
+                </div>
+                <button type="submit" class="submit-btn">Save Changes</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Data for 1000 servings
+        const dummyData = {
+            totalServings: 1000
+        };
+
+        // Prediction percentages
+        const predictionPercentages = {
+            breakfast: 0.5, // 50%
+            lunch: 0.85,    // 85%
+            snacks: 0.5,    // 50%
+            dinner: 0.85    // 85%
+        };
+
+        let currentMeal = '';
+        let mealData = {
+            breakfast: { predicted: 0, served: 0 },
+            lunch: { predicted: 0, served: 0 },
+            snacks: { predicted: 0, served: 0 },
+            dinner: { predicted: 0, served: 0 }
+        };
+
+        // Calculate predictions on page load
+        window.onload = function() {
+            calculatePredictions();
+            updateDisplay();
+        };
+
+        function calculatePredictions() {
+            const totalServings = dummyData.totalServings;
+            
+            mealData.breakfast.predicted = Math.round(totalServings * predictionPercentages.breakfast);
+            mealData.lunch.predicted = Math.round(totalServings * predictionPercentages.lunch);
+            mealData.snacks.predicted = Math.round(totalServings * predictionPercentages.snacks);
+            mealData.dinner.predicted = Math.round(totalServings * predictionPercentages.dinner);
+        }
+
+        function updateDisplay() {
+            // Update individual meal displays
+            for (const meal in mealData) {
+                const data = mealData[meal];
+                const wastage = data.predicted - data.served;
+                const wastagePercent = data.predicted > 0 ? (wastage / data.predicted * 100).toFixed(1) : 0;
+
+                document.getElementById(`${meal}-predicted`).textContent = data.predicted;
+                document.getElementById(`${meal}-served`).textContent = data.served;
+                document.getElementById(`${meal}-wastage`).textContent = wastage;
+                document.getElementById(`${meal}-wastage-percent`).textContent = `${wastagePercent}%`;
+            }
+
+            // Update daily summary
+            const totalPredicted = Object.values(mealData).reduce((sum, meal) => sum + meal.predicted, 0);
+            const totalServed = Object.values(mealData).reduce((sum, meal) => sum + meal.served, 0);
+            const totalWastage = totalPredicted - totalServed;
+            const totalWastagePercent = totalPredicted > 0 ? (totalWastage / totalPredicted * 100).toFixed(1) : 0;
+
+            document.getElementById('total-predicted').textContent = totalPredicted;
+            document.getElementById('total-served').textContent = totalServed;
+            document.getElementById('total-wastage').textContent = totalWastage;
+            document.getElementById('total-wastage-percent').textContent = `${totalWastagePercent}%`;
+        }
+
+        function openMealModal(meal) {
+            currentMeal = meal;
+            const modal = document.getElementById('mealModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const platesServed = document.getElementById('platesServed');
+
+            modalTitle.textContent = `Enter ${meal.charAt(0).toUpperCase() + meal.slice(1)} Data`;
+            platesServed.value = mealData[meal].served;
+            modal.style.display = 'block';
+        }
+
+        function closeMealModal() {
+            document.getElementById('mealModal').style.display = 'none';
+        }
+
+        document.getElementById('mealForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const platesServed = parseInt(document.getElementById('platesServed').value);
+            
+            if (platesServed >= 0 && platesServed <= 1000) {
+                mealData[currentMeal].served = platesServed;
+                updateDisplay();
+                closeMealModal();
+            } else {
+                alert('Please enter a valid number between 0 and 1000');
+            }
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('mealModal');
+            if (event.target === modal) {
+                closeMealModal();
+            }
+        }
+
+        // Handle sidebar menu for mobile
+        const sideMenu = document.querySelector("aside");
+        const menuBtn = document.querySelector("#menu-btn");
+        const closeBtn = document.querySelector(".close-btn");
+
+        menuBtn.addEventListener('click', () => {
+            sideMenu.style.display = 'block';
+        });
+
+        closeBtn.addEventListener('click', () => {
+            sideMenu.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
