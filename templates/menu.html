@@ -1765,10 +1765,8 @@
       .then(response => response.json())
       .then(data => {
         if (data.error) {
-          console.error('Delete error:', data.error);
           alert('Error deleting menu item: ' + data.error);
         } else {
-          console.log('Successfully deleted menu item');
           // Remove the item from UI
           if (li && li.parentNode) {
             li.parentNode.removeChild(li);
@@ -1776,7 +1774,6 @@
         }
       })
       .catch(error => {
-        console.error('Error:', error);
         alert('Error deleting menu item. Please try again.');
       });
     }
@@ -1798,18 +1795,11 @@
       .then(response => response.json())
       .then(data => {
         if (data.error) {
-          console.error('Update error:', data.error);
           alert('Error updating menu item: ' + data.error);
-          // Revert the change in UI if there was an error - needs a more robust way to find the specific element
-          // For now, just log the error. Finding the exact element by category and subcat globally might be complex.
-        } else {
-          console.log('Successfully updated menu item');
         }
       })
       .catch(error => {
-        console.error('Error:', error);
         alert('Error updating menu item. Please try again.');
-        // Revert the change in UI if there was an error
       });
     }
 
@@ -1918,13 +1908,11 @@
         if (data.error) {
            throw new Error(data.error); // Throw if there's an error key in the JSON
         }
-        console.log('Successfully added new menu item');
         // Clear and hide the form
         input.value = '';
         form.classList.remove('active');
       })
       .catch(error => {
-        console.error('Error:', error);
         alert('Error adding menu item: ' + error.message);
         // Remove the item from UI if there was an error
         li.remove();
@@ -2000,12 +1988,9 @@
     }
 
     function downloadMenuAsExcel() {
-      console.log("Attempting to download menu as Excel...");
-
       // Get the menu table
       const menuTable = document.querySelector('.menu-table');
       if (!menuTable) {
-        console.error('Error: Menu table not found.');
         alert('Error: Menu table not found.');
         return;
       }
@@ -2019,14 +2004,12 @@
       // Get all data rows from the menu table body
       const rows = menuTable.querySelectorAll('tbody tr');
 
-      console.log(`Found ${rows.length} menu rows.`);
-
       // Process each row (each day in the menu)
       rows.forEach((row) => {
         // Extract Day and Date
         const dateDayCell = row.querySelector('.date-day-cell');
         const day = dateDayCell ? dateDayCell.querySelector('.day').textContent : '';
-        const date = dateDayCell ? dateDayCell.querySelector('.date').textContent : ''; // Keep date for potential future use or debugging
+        const date = dateDayCell ? dateDayCell.querySelector('.date').textContent : '';
 
         // Get all meal cells for this row
         const mealCells = row.querySelectorAll('.meal-cell');
@@ -2056,17 +2039,12 @@
         });
       });
 
-      console.log("Prepared sheet data:", sheetData);
-
       // Create a new workbook
       const wb = XLSX.utils.book_new();
 
       // Add data to worksheet starting from the second row (after header)
-      // Use origin: -1 to append data after the header already added with aoa_to_sheet
       if (sheetData.length > 0) {
            XLSX.utils.sheet_add_aoa(ws, sheetData, {origin: -1});
-      } else {
-           console.warn("No data to add to the Excel sheet.");
       }
 
       // Add worksheet to workbook
@@ -2076,9 +2054,7 @@
       const fileName = "menu_" + new Date().toISOString().split('T')[0] + ".xlsx";
       try {
           XLSX.writeFile(wb, fileName);
-          console.log(`Successfully generated and attempted to download ${fileName}`);
       } catch (error) {
-          console.error("Error writing or downloading Excel file:", error);
           alert("An error occurred while trying to save the Excel file.");
       }
     }

@@ -38,8 +38,12 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 # Initialize the model when starting the app
-print("Initializing menu generator...")
-generator.prepare_data('Weekly_Menu_Categorized.xlsx')
+try:
+    generator.prepare_data('Weekly_Menu_Categorized.xlsx')
+except Exception as e:
+    print(f"Error initializing menu generator: {e}")
+    import traceback
+    traceback.print_exc()
 
 # Helper for BOM calculation
 ATTENDANCE = {
@@ -61,7 +65,7 @@ def calculate_bom(menu_data, num_students, dish_filter=None):
         # Check if dish_ingredients table exists
         cur.execute("SHOW TABLES LIKE 'dish_ingredients'")
         if not cur.fetchone():
-            print("dish_ingredients table does not exist. Creating sample BOM data.")
+            # print("dish_ingredients table does not exist. Creating sample BOM data.")
             # Return sample BOM data for now
             sample_ingredients = [
                 {'ingredient': 'Rice', 'quantity': round(num_students * 0.1, 2), 'unit': 'kg'},
@@ -111,7 +115,7 @@ def calculate_bom(menu_data, num_students, dish_filter=None):
         return sample_ingredients
         
     except Exception as e:
-        print(f"Error in BOM calculation: {e}")
+        # print(f"Error in BOM calculation: {e}")
         # Return sample BOM data as fallback
         sample_ingredients = [
             {'ingredient': 'Rice', 'quantity': round(num_students * 0.1, 2), 'unit': 'kg'},
@@ -236,10 +240,10 @@ def create_tables():
                 ''', (dish_id, dish_name, category))
             
             mysql.connection.commit()
-            print("Tables created successfully!")
+            # print("Tables created successfully!")
             
         except Exception as e:
-            print(f"Error creating tables: {str(e)}")
+            # print(f"Error creating tables: {str(e)}")
             mysql.connection.rollback()
         finally:
             if 'cur' in locals():
@@ -255,50 +259,53 @@ def create_tables():
             dishes_table_exists = cur_bom.fetchone()
             
             if dishes_table_exists:
-                print("dishes table exists, checking schema...")
+                # print("dishes table exists, checking schema...")
                 cur_bom.execute("DESCRIBE dishes")
                 columns = cur_bom.fetchall()
-                print("Current dishes table schema:")
-                for col in columns:
-                    print(f"  {col}")
+                # print("Current dishes table schema:")
+                # for col in columns:
+                #     print(f"  {col}")
                 
                 # Verify the expected schema
                 expected_columns = ['dish_id', 'Name', 'Meal_Category']
                 actual_columns = [col[0] for col in columns]
                 if all(col in actual_columns for col in expected_columns):
-                    print("✓ dishes table has correct schema")
+                    # print("✓ dishes table has correct schema")
+                    pass
                 else:
-                    print("⚠ dishes table schema may not match expected format")
+                    # print("⚠ dishes table schema may not match expected format")
+                    pass
             else:
-                print("No dishes table exists")
+                # print("No dishes table exists")
+                pass
 
             # Check ingredients table schema
             cur_bom.execute("SHOW TABLES LIKE 'ingredients'")
             ingredients_table_exists = cur_bom.fetchone()
             if ingredients_table_exists:
-                print("ingredients table exists, checking schema...")
+                # print("ingredients table exists, checking schema...")
                 cur_bom.execute("DESCRIBE ingredients")
                 columns = cur_bom.fetchall()
-                print("Current ingredients table schema:")
-                for col in columns:
-                    print(f"  {col}")
+                # print("Current ingredients table schema:")
+                # for col in columns:
+                #     print(f"  {col}")
 
             # Check dish_ingredients table schema
             cur_bom.execute("SHOW TABLES LIKE 'dish_ingredients'")
             dish_ingredients_table_exists = cur_bom.fetchone()
             if dish_ingredients_table_exists:
-                print("dish_ingredients table exists, checking schema...")
+                # print("dish_ingredients table exists, checking schema...")
                 cur_bom.execute("DESCRIBE dish_ingredients")
                 columns = cur_bom.fetchall()
-                print("Current dish_ingredients table schema:")
-                for col in columns:
-                    print(f"  {col}")
+                # print("Current dish_ingredients table schema:")
+                # for col in columns:
+                #     print(f"  {col}")
 
             mysql_bom.connection.commit()
-            print("BOM database schema checked successfully!")
+            # print("BOM database schema checked successfully!")
 
         except Exception as e:
-            print(f"Error checking BOM database schema: {str(e)}")
+            # print(f"Error checking BOM database schema: {str(e)}")
             mysql_bom.connection.rollback()
         finally:
             if 'cur_bom' in locals():
@@ -314,7 +321,7 @@ def save_menu_to_database(menu_data):
             try:
                 menu_date = datetime.strptime(date_str, '%d-%b-%Y').date()
             except ValueError:
-                print(f"Invalid date format: {date_str}")
+                # print(f"Invalid date format: {date_str}")
                 continue
             
             day_name = day_data['Day']
@@ -350,11 +357,11 @@ def save_menu_to_database(menu_data):
                                 ''', (menu_day_id, meal_category, item_category, item, item_order))
         
         mysql.connection.commit()
-        print("Menu data saved to database successfully!")
+        # print("Menu data saved to database successfully!")
         return True
         
     except Exception as e:
-        print(f"Error saving menu to database: {str(e)}")
+        # print(f"Error saving menu to database: {str(e)}")
         mysql.connection.rollback()
         return False
     finally:
@@ -375,7 +382,7 @@ def get_menu_from_database(start_date, end_date):
                 start_dt = datetime.strptime(start_date, '%d-%m-%Y').date()
                 end_dt = datetime.strptime(end_date, '%d-%m-%Y').date()
             except ValueError:
-                print(f"Invalid date format: {start_date} or {end_date}")
+                # print(f"Invalid date format: {start_date} or {end_date}")
                 return {}
         
         # Get menu days in date range
@@ -422,7 +429,7 @@ def get_menu_from_database(start_date, end_date):
         return menu_data
         
     except Exception as e:
-        print(f"Error retrieving menu from database: {str(e)}")
+        # print(f"Error retrieving menu from database: {str(e)}")
         return {}
     finally:
         if 'cur' in locals():
@@ -442,7 +449,7 @@ def delete_menu_from_database(start_date, end_date):
                 start_dt = datetime.strptime(start_date, '%d-%m-%Y').date()
                 end_dt = datetime.strptime(end_date, '%d-%m-%Y').date()
             except ValueError:
-                print(f"Invalid date format: {start_date} or {end_date}")
+                # print(f"Invalid date format: {start_date} or {end_date}")
                 return False
         
         # Delete menu items and days in date range
@@ -452,11 +459,11 @@ def delete_menu_from_database(start_date, end_date):
         ''', (start_dt, end_dt))
         
         mysql.connection.commit()
-        print(f"Menu data deleted from database for date range {start_date} to {end_date}")
+        # print(f"Menu data deleted from database for date range {start_date} to {end_date}")
         return True
         
     except Exception as e:
-        print(f"Error deleting menu from database: {str(e)}")
+        # print(f"Error deleting menu from database: {str(e)}")
         mysql.connection.rollback()
         return False
     finally:
@@ -626,7 +633,7 @@ def settings():
             })
             
     except Exception as e:
-        print(f"Error fetching dishes for settings page: {e}")
+        # print(f"Error fetching dishes for settings page: {e}")
         flash('Error loading dishes for settings page.', 'danger')
     finally:
         if cur:
@@ -639,12 +646,8 @@ def generate_menu():
         # Get start_date and end_date from form data
         start_date = request.form.get('start_date', '')
         end_date = request.form.get('end_date', '')
-        print(f"Received form data: {request.form}")
-        print(f"Start date received: {start_date}")
-        print(f"End date received: {end_date}")
-        print("Checking if generator is initialized...")
+        
         if not hasattr(generator, 'items_by_category') or not generator.items_by_category:
-            print("Error: Menu generator not properly initialized")
             return render_template('menu.html', error='Menu generator not properly initialized')
 
         # Validate and format start and end dates
@@ -658,7 +661,6 @@ def generate_menu():
                 try:
                     start_dt = datetime.strptime(start_date, '%d-%m-%Y')
                 except ValueError:
-                    print(f"Invalid start date format: {start_date}")
                     return render_template('menu.html', error='Invalid start date format. Use YYYY-MM-DD or DD-MM-YYYY')
             # Try both formats for end_date
             try:
@@ -667,20 +669,14 @@ def generate_menu():
                 try:
                     end_dt = datetime.strptime(end_date, '%d-%m-%Y')
                 except ValueError:
-                    print(f"Invalid end date format: {end_date}")
                     return render_template('menu.html', error='Invalid end date format. Use YYYY-MM-DD or DD-MM-YYYY')
-            print(f"Parsed start_date: {start_dt}")
-            print(f"Parsed end_date: {end_dt}")
         except ValueError:
-            print(f"Invalid date format: {start_date} or {end_date}")
             return render_template('menu.html', error='Invalid date format. Use YYYY-MM-DD or DD-MM-YYYY')
 
         # Calculate number of days (inclusive)
         days = (end_dt - start_dt).days + 1
         if days <= 0:
-            print("End date must be after or equal to start date")
             return render_template('menu.html', error='End date must be after or equal to start date')
-        print(f"Parsed days: {days}")
 
         # Generate menu for the specified date range
         menu = {}
@@ -693,15 +689,18 @@ def generate_menu():
                 else ['Breakfast', 'Lunch', 'Snacks', 'Dinner']
             )
             for category in meal_categories:
-                meal_packet = generator.generate_meal(category, day_name)
-                day_menu[category] = meal_packet
+                try:
+                    meal_packet = generator.generate_meal(category, day_name)
+                    day_menu[category] = meal_packet
+                except Exception as e:
+                    print(f"Error generating {category} for {day_name}: {e}")
+                    day_menu[category] = {}
             menu[current_date.strftime('%d-%b-%Y')] = {
                 'Date': current_date.strftime('%d-%b-%Y'),
                 'Day': day_name,
                 'Items': day_menu
             }
             current_date += timedelta(days=1)
-        print(f"Menu to be returned: {menu}")
         
         # Save menu to database
         if save_menu_to_database(menu):
@@ -711,10 +710,6 @@ def generate_menu():
         
         # Store the generated menu in the generator instance
         generator.current_menu = menu
-        
-        # Debug print the menu structure before rendering
-        print("Menu data structure:")
-        print(json.dumps(menu, indent=2))
         
         # Pass the menu data to the template
         return render_template('menu.html', menu=menu, start_date=start_date, end_date=end_date)
@@ -735,7 +730,7 @@ def update_menu_item():
         new_value = data.get('newValue')
         date = data.get('date')
         
-        print(f"Updating menu item - Category: {category}, Subcat: {subcat}, Old Value: {old_value}, New Value: {new_value}, Date: {date}")
+        # print(f"Updating menu item - Category: {category}, Subcat: {subcat}, Old Value: {old_value}, New Value: {new_value}, Date: {date}")
         
         # Convert date string to MySQL DATE format
         try:
@@ -763,7 +758,7 @@ def update_menu_item():
             
             if cur.rowcount > 0:
                 mysql.connection.commit()
-                print(f"Successfully updated item from '{old_value}' to '{new_value}' in database")
+                # print(f"Successfully updated item from '{old_value}' to '{new_value}' in database")
                 
                 # Update the generator instance as well
                 menu = getattr(generator, 'current_menu', None)
@@ -784,13 +779,13 @@ def update_menu_item():
                 
         except Exception as e:
             mysql.connection.rollback()
-            print(f"Database error in update_menu_item: {str(e)}")
+            # print(f"Database error in update_menu_item: {str(e)}")
             return jsonify({'error': f'Database error: {str(e)}'}), 500
         finally:
             cur.close()
             
     except Exception as e:
-        print(f"Error in update_menu_item: {str(e)}")
+        # print(f"Error in update_menu_item: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/delete_menu_item', methods=['POST'])
@@ -802,7 +797,7 @@ def delete_menu_item():
         value = data.get('value')
         date = data.get('date')
         
-        print(f"Deleting menu item - Category: {category}, Subcat: {subcat}, Value: {value}, Date: {date}")
+        # print(f"Deleting menu item - Category: {category}, Subcat: {subcat}, Value: {value}, Date: {date}")
         
         # Convert date string to MySQL DATE format
         try:
@@ -829,7 +824,7 @@ def delete_menu_item():
             
             if cur.rowcount > 0:
                 mysql.connection.commit()
-                print(f"Successfully deleted item: {value} from database")
+                # print(f"Successfully deleted item: {value} from database")
                 
                 # Update the generator instance as well
                 menu = getattr(generator, 'current_menu', None)
@@ -849,13 +844,13 @@ def delete_menu_item():
                 
         except Exception as e:
             mysql.connection.rollback()
-            print(f"Database error in delete_menu_item: {str(e)}")
+            # print(f"Database error in delete_menu_item: {str(e)}")
             return jsonify({'error': f'Database error: {str(e)}'}), 500
         finally:
             cur.close()
             
     except Exception as e:
-        print(f"Error in delete_menu_item: {str(e)}")
+        # print(f"Error in delete_menu_item: {str(e)}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/add_menu_item', methods=['POST'])
@@ -863,7 +858,7 @@ def add_menu_item():
     try:
         data = request.get_json()
         if not data:
-            print("No JSON data received")
+            # print("No JSON data received")
             return jsonify({'error': 'No data received'}), 400
 
         category = data.get('category')
@@ -871,7 +866,7 @@ def add_menu_item():
         value = data.get('value')
         date = data.get('date')
         
-        print(f"Adding menu item - Category: {category}, Subcat: {subcat}, Value: {value}, Date: {date}")
+        # print(f"Adding menu item - Category: {category}, Subcat: {subcat}, Value: {value}, Date: {date}")
         
         # Convert date string to MySQL DATE format
         try:
@@ -910,7 +905,7 @@ def add_menu_item():
             ''', (menu_day_id, category, subcat, value, item_order))
             
             mysql.connection.commit()
-            print(f"Successfully added new item: {value} to database")
+            # print(f"Successfully added new item: {value} to database")
             
             # Update the generator instance as well
             menu = getattr(generator, 'current_menu', None)
@@ -931,15 +926,15 @@ def add_menu_item():
             
         except Exception as e:
             mysql.connection.rollback()
-            print(f"Database error in add_menu_item: {str(e)}")
+            # print(f"Database error in add_menu_item: {str(e)}")
             return jsonify({'error': f'Database error: {str(e)}'}), 500
         finally:
             cur.close()
             
     except Exception as e:
         import traceback
-        print(f"Error in add_menu_item: {str(e)}")
-        print("Full traceback:")
+        # print(f"Error in add_menu_item: {str(e)}")
+        # print("Full traceback:")
         traceback.print_exc()
         return jsonify({'error': str(e)}), 500
 
@@ -947,8 +942,8 @@ def add_menu_item():
 def add_dish():
     cur = None
     try:
-        print("=== ADD DISH DEBUG ===")
-        print(f"Form data received: {request.form}")
+        # print("=== ADD DISH DEBUG ===")
+        # print(f"Form data received: {request.form}")
         
         # Validate required fields
         if 'dish_name' not in request.form or not request.form['dish_name'].strip():
@@ -965,11 +960,11 @@ def add_dish():
         quantities = request.form.getlist('quantity[]')
         units = request.form.getlist('unit[]')
         
-        print(f"Dish name: {dish_name}")
-        print(f"Category: {category}")
-        print(f"Ingredient names: {ingredient_names}")
-        print(f"Quantities: {quantities}")
-        print(f"Units: {units}")
+        # print(f"Dish name: {dish_name}")
+        # print(f"Category: {category}")
+        # print(f"Ingredient names: {ingredient_names}")
+        # print(f"Quantities: {quantities}")
+        # print(f"Units: {units}")
         
         # Validate ingredient data
         if not ingredient_names or not quantities or not units:
@@ -1001,7 +996,7 @@ def add_dish():
 
         cur = mysql_bom.connection.cursor()
         cur.execute("USE bom1;") # Explicitly select the bom1 database
-        print("Connected to bom1 database")
+        # print("Connected to bom1 database")
 
         # STEP 1: Check if dish already exists (case-insensitive)
         cur.execute("SELECT dish_id, Name FROM dishes WHERE TRIM(LOWER(Name)) = TRIM(LOWER(%s))", (dish_name,))
@@ -1017,19 +1012,19 @@ def add_dish():
         max_id = max_id_result[0] if max_id_result[0] is not None else 0
         next_id = max_id + 1
         dish_id = f"D{next_id:03d}"
-        print(f"Generated new dish_id: {dish_id}")
+        # print(f"Generated new dish_id: {dish_id}")
 
         # STEP 3: Insert new dish into dishes table
         cur.execute("INSERT INTO dishes (dish_id, Name, Meal_Category) VALUES (%s, %s, %s)",
                     (dish_id, dish_name, category))
-        print(f"Successfully inserted dish '{dish_name}' with ID: {dish_id}")
+        # print(f"Successfully inserted dish '{dish_name}' with ID: {dish_id}")
 
         # STEP 4: Process each ingredient
         for ingredient in valid_ingredients:
             ing_name = ingredient['name']
             qty = ingredient['quantity']
             unit = ingredient['unit']
-            print(f"Processing ingredient: {ing_name}, {qty}, {unit}")
+            # print(f"Processing ingredient: {ing_name}, {qty}, {unit}")
 
             # Check if ingredient exists (case-insensitive)
             cur.execute("SELECT Ingredient_id, Ingredient_name FROM ingredients WHERE TRIM(LOWER(Ingredient_name)) = TRIM(LOWER(%s))", (ing_name,))
@@ -1038,7 +1033,7 @@ def add_dish():
             if ingredient_result:
                 # Ingredient already exists
                 ingredient_id, existing_ing_name = ingredient_result
-                print(f"✓ Ingredient '{existing_ing_name}' already exists with ID: {ingredient_id}")
+                # print(f"✓ Ingredient '{existing_ing_name}' already exists with ID: {ingredient_id}")
             else:
                 # Ingredient doesn't exist - create new one
                 cur.execute("SELECT MAX(CAST(SUBSTRING(Ingredient_id, 2) AS UNSIGNED)) FROM ingredients WHERE Ingredient_id LIKE 'I%'")
@@ -1046,29 +1041,29 @@ def add_dish():
                 max_ing_id = max_ing_id_result[0] if max_ing_id_result[0] is not None else 0
                 next_ing_id = max_ing_id + 1
                 ingredient_id = f"I{next_ing_id:03d}"
-                print(f"Creating new ingredient '{ing_name}' with ID: {ingredient_id}")
+                # print(f"Creating new ingredient '{ing_name}' with ID: {ingredient_id}")
                 
                 # Insert new ingredient
                 cur.execute("INSERT INTO ingredients (Ingredient_id, Ingredient_name) VALUES (%s, %s)", 
                            (ingredient_id, ing_name))
-                print(f"✓ Successfully created new ingredient '{ing_name}' with ID: {ingredient_id}")
+                # print(f"✓ Successfully created new ingredient '{ing_name}' with ID: {ingredient_id}")
 
             # STEP 5: Insert into dish_ingredients table (final table)
             cur.execute("INSERT INTO dish_ingredients (dish_id, Ingredient_id, Serving_per_person, Unit_of_measure) VALUES (%s, %s, %s, %s)",
                         (dish_id, ingredient_id, qty, unit))
-            print(f"✓ Linked ingredient '{ing_name}' (ID: {ingredient_id}) to dish '{dish_name}' (ID: {dish_id}) with quantity: {qty} {unit}")
+            # print(f"✓ Linked ingredient '{ing_name}' (ID: {ingredient_id}) to dish '{dish_name}' (ID: {dish_id}) with quantity: {qty} {unit}")
 
         # Commit all changes
         mysql_bom.connection.commit()
-        print("=== ADD DISH SUCCESS ===")
+        # print("=== ADD DISH SUCCESS ===")
         flash(f'✅ Dish "{dish_name}" added successfully with ID: {dish_id}!', 'success')
         return redirect(url_for('settings'))
 
     except Exception as e:
         if cur:
             mysql_bom.connection.rollback()
-        print(f"=== ADD DISH ERROR ===")
-        print(f"Error adding dish: {str(e)}")
+        # print(f"=== ADD DISH ERROR ===")
+        # print(f"Error adding dish: {str(e)}")
         import traceback
         traceback.print_exc()
         flash(f'❌ Error adding dish: {str(e)}', 'danger')
@@ -1141,7 +1136,7 @@ def update_dish():
 
     except Exception as e:
         mysql_bom.connection.rollback()
-        print(f"Error updating dish: {str(e)}")
+        # print(f"Error updating dish: {str(e)}")
         flash(f'Error updating dish: {str(e)}', 'danger')
         return redirect(url_for('settings'))
     finally:
@@ -1179,7 +1174,7 @@ def delete_dish():
 
     except Exception as e:
         mysql_bom.connection.rollback()
-        print(f"Error deleting dish: {str(e)}")
+        # print(f"Error deleting dish: {str(e)}")
         flash(f'Error deleting dish: {str(e)}', 'danger')
         return redirect(url_for('settings'))
     finally:
@@ -1194,6 +1189,184 @@ def bom():
         return redirect(url_for('login'))
     
     return render_template('bom.html', active_page='bom')
+
+@app.route('/bom_database')
+def bom_database():
+    # Check if user is logged in
+    if 'user_id' not in session:
+        flash('Please log in to access BOM Database.', 'warning')
+        return redirect(url_for('login'))
+
+    cur = None
+    dishes_data = []
+    try:
+        cur = mysql_bom.connection.cursor()
+        cur.execute("USE bom1;")
+
+        # Fetch all dishes and their categories
+        cur.execute("SELECT dish_id, Name, Meal_Category FROM dishes ORDER BY Name;")
+        dishes = cur.fetchall()
+
+        for dish_id, dish_name, meal_category in dishes:
+            # Fetch ingredients for each dish
+            cur.execute("""
+                SELECT i.Ingredient_id, i.Ingredient_name, di.Serving_per_person, di.Unit_of_measure
+                FROM dish_ingredients di
+                JOIN ingredients i ON di.Ingredient_id = i.Ingredient_id
+                WHERE di.dish_id = %s
+            """, (dish_id,))
+            ingredients = cur.fetchall()
+
+            ingredients_list = []
+            for ing_id, ing_name, serving, unit in ingredients:
+                ingredients_list.append({
+                    'id': ing_id,
+                    'name': ing_name,
+                    'serving': serving,
+                    'unit': unit
+                })
+
+            dishes_data.append({
+                'dish_id': dish_id,
+                'dish_name': dish_name,
+                'meal_category': meal_category,
+                'ingredients': ingredients_list
+            })
+
+    except Exception as e:
+        flash(f'Error loading BOM database: {str(e)}', 'danger')
+        # print(f"Error loading BOM database: {e}")
+    finally:
+        if cur:
+            cur.close()
+
+    return render_template('bom_database.html', active_page='bom', dishes_data=dishes_data)
+
+@app.route('/debug_db_schema')
+def debug_db_schema():
+    try:
+        cur = mysql_bom.connection.cursor()
+        cur.execute("USE bom1;")
+        cur.execute("DESCRIBE dishes;")
+        schema = cur.fetchall()
+        cur.close()
+        return jsonify({'schema': schema})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/update_dish_ingredient', methods=['POST'])
+def update_dish_ingredient():
+    try:
+        data = request.get_json()
+        dish_id = data.get('dish_id')
+        ingredient_id = data.get('ingredient_id')
+        new_name = data.get('new_name')
+        new_serving = data.get('new_serving')
+        new_unit = data.get('new_unit')
+
+        cur = mysql_bom.connection.cursor()
+        cur.execute("USE bom1;")
+
+        # Update ingredient name in the ingredients table
+        cur.execute("UPDATE ingredients SET Ingredient_name = %s WHERE Ingredient_id = %s", (new_name, ingredient_id))
+
+        # Update serving per person and unit of measure in the dish_ingredients table
+        cur.execute("UPDATE dish_ingredients SET Serving_per_person = %s, Unit_of_measure = %s WHERE dish_id = %s AND Ingredient_id = %s",
+                    (new_serving, new_unit, dish_id, ingredient_id))
+
+        mysql_bom.connection.commit()
+        return jsonify({'success': True, 'message': 'Ingredient updated successfully!'})
+
+    except Exception as e:
+        mysql_bom.connection.rollback()
+        # print(f"Error updating dish ingredient: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': f'Error updating ingredient: {str(e)}'}), 500
+    finally:
+        if cur:
+            cur.close()
+
+@app.route('/delete_dish_ingredient', methods=['POST'])
+def delete_dish_ingredient():
+    try:
+        data = request.get_json()
+        dish_id = data.get('dish_id')
+        ingredient_id = data.get('ingredient_id')
+
+        cur = mysql_bom.connection.cursor()
+        cur.execute("USE bom1;")
+
+        # Delete the ingredient from the dish_ingredients table
+        cur.execute("DELETE FROM dish_ingredients WHERE dish_id = %s AND Ingredient_id = %s", (dish_id, ingredient_id))
+
+        mysql_bom.connection.commit()
+        return jsonify({'success': True, 'message': 'Ingredient deleted successfully!'})
+
+    except Exception as e:
+        mysql_bom.connection.rollback()
+        # print(f"Error deleting dish ingredient: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': f'Error deleting ingredient: {str(e)}'}), 500
+    finally:
+        if cur:
+            cur.close()
+
+@app.route('/add_dish_ingredient', methods=['POST'])
+def add_dish_ingredient():
+    try:
+        data = request.get_json()
+        dish_id = data.get('dish_id')
+        ingredient_name = data.get('ingredient_name')
+        serving = data.get('serving')
+        unit = data.get('unit')
+
+        cur = mysql_bom.connection.cursor()
+        cur.execute("USE bom1;")
+
+        # Check if ingredient exists, if not, add it
+        cur.execute("SELECT Ingredient_id FROM ingredients WHERE TRIM(LOWER(Ingredient_name)) = TRIM(LOWER(%s))", (ingredient_name,))
+        ingredient_result = cur.fetchone()
+        if ingredient_result:
+            ingredient_id = ingredient_result[0]
+        else:
+            # Generate new Ingredient_id
+            cur.execute("SELECT MAX(CAST(SUBSTRING(Ingredient_id, 2) AS UNSIGNED)) FROM ingredients WHERE Ingredient_id LIKE 'I%'")
+            max_ing_id_result = cur.fetchone()
+            max_ing_id = max_ing_id_result[0] if max_ing_id_result[0] is not None else 0
+            next_ing_id = max_ing_id + 1
+            ingredient_id = f"I{next_ing_id:03d}"
+
+            # Insert new ingredient
+            cur.execute("INSERT INTO ingredients (Ingredient_id, Ingredient_name) VALUES (%s, %s)", (ingredient_id, ingredient_name))
+
+        # Check if the dish-ingredient link already exists
+        cur.execute("SELECT * FROM dish_ingredients WHERE dish_id = %s AND Ingredient_id = %s", (dish_id, ingredient_id))
+        existing_link = cur.fetchone()
+        if existing_link:
+            # If link exists, update it
+            cur.execute("UPDATE dish_ingredients SET Serving_per_person = %s, Unit_of_measure = %s WHERE dish_id = %s AND Ingredient_id = %s",
+                        (serving, unit, dish_id, ingredient_id))
+            message = 'Ingredient link updated successfully!'
+        else:
+            # Insert into dish_ingredients table
+            cur.execute("INSERT INTO dish_ingredients (dish_id, Ingredient_id, Serving_per_person, Unit_of_measure) VALUES (%s, %s, %s, %s)",
+                        (dish_id, ingredient_id, serving, unit))
+            message = 'Ingredient added to dish successfully!'
+
+        mysql_bom.connection.commit()
+        return jsonify({'success': True, 'message': message})
+
+    except Exception as e:
+        mysql_bom.connection.rollback()
+        # print(f"Error adding dish ingredient: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        return jsonify({'success': False, 'error': f'Error adding ingredient: {str(e)}'}), 500
+    finally:
+        if cur:
+            cur.close()
 
 @app.route('/generate_bom', methods=['GET', 'POST'])
 def generate_bom():
@@ -1229,26 +1402,26 @@ def generate_bom():
 def generate_bom_from_menu():
     try:
         num_students = int(request.form.get('num_students', 0))
-        print(f"BOM Generation - Number of students: {num_students}")
+        # print(f"BOM Generation - Number of students: {num_students}")
         if num_students <= 0:
             flash('Please enter a valid number of students', 'error')
             return redirect(url_for('menu'))
         # Get the current menu data from the generator or database
         menu_data = getattr(generator, 'current_menu', None)
         if not menu_data:
-            print("BOM Generation - No menu data in generator, trying database fallback")
+            # print("BOM Generation - No menu data in generator, trying database fallback")
             end_date = datetime.today().date()
             start_date = end_date - timedelta(days=6)
             menu_data = get_menu_from_database(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
             if not menu_data:
                 flash('No menu data found. Please generate a menu first.', 'error')
                 return redirect(url_for('menu'))
-        print(f"BOM Generation - Menu data keys: {list(menu_data.keys()) if menu_data else 'None'}")
+        # print(f"BOM Generation - Menu data keys: {list(menu_data.keys()) if menu_data else 'None'}")
         # Flatten menu data for BOM calculation
         flat_menu = flatten_menu_data(menu_data)
         # Calculate BOM using real logic
         bom_results = calculate_detailed_bom(flat_menu, num_students)
-        print(f"BOM Generation - BOM results calculated: {len(bom_results['total']) if bom_results else 0} items")
+        # print(f"BOM Generation - BOM results calculated: {len(bom_results['total']) if bom_results else 0} items")
         # Render BOM results page directly (do not store in session)
         return render_template('bom_results.html', 
                               bom_results=bom_results['total'], 
@@ -1256,7 +1429,7 @@ def generate_bom_from_menu():
                               num_students=num_students, 
                               menu_data=menu_data)
     except Exception as e:
-        print(f"Error generating BOM from menu: {str(e)}")
+        # print(f"Error generating BOM from menu: {str(e)}")
         import traceback
         traceback.print_exc()
         flash('Error generating BOM. Please try again.', 'error')
@@ -1311,9 +1484,9 @@ def calculate_detailed_bom(menu_data, num_students):
         # Debug: Check what columns exist in dishes table
         cur.execute("SHOW COLUMNS FROM dishes")
         columns = cur.fetchall()
-        print("DEBUG: dishes table columns:")
-        for col in columns:
-            print(f"  {col}")
+        # print("DEBUG: dishes table columns:")
+        # for col in columns:
+        #     print(f"  {col}")
         
         ATTENDANCE = {
             "breakfast": 0.5,
@@ -1344,13 +1517,13 @@ def calculate_detailed_bom(menu_data, num_students):
                 if not dish_name or dish_name.strip() == '':
                     continue
                 
-                print(f'Processing dish: {dish_name} for {day} {meal_type}')
+                # print(f'Processing dish: {dish_name} for {day} {meal_type}')
                 
                 # Look up dish in database using the correct column name 'Name'
                 cur.execute("SELECT dish_id FROM dishes WHERE TRIM(LOWER(Name)) = TRIM(LOWER(%s))", (dish_name,))
                 dish = cur.fetchone()
                 if not dish:
-                    print(f'WARNING: Dish not found in bom1.dishes: {dish_name}')
+                    # print(f'WARNING: Dish not found in bom1.dishes: {dish_name}')
                     # Add dish with empty ingredients list for display
                     detailed_bom[day][meal_type][dish_name] = []
                     continue
@@ -1359,15 +1532,14 @@ def calculate_detailed_bom(menu_data, num_students):
                 
                 # Get ingredients for this dish
                 cur.execute("""
-                    SELECT i.Ingredient_name, di.Serving_per_person, di.Unit_of_measure 
+                    SELECT i.Ingredient_id, i.Ingredient_name, di.Serving_per_person, di.Unit_of_measure 
                     FROM dish_ingredients di 
                     JOIN ingredients i ON di.Ingredient_id = i.Ingredient_id 
                     WHERE di.dish_id=%s
                 """, (dish_id,))
                 
                 dish_ingredients = []
-                for ing in cur.fetchall():
-                    ing_name, serving, unit = ing
+                for ing_id, ing_name, serving, unit in cur.fetchall():
                     qty = float(serving) * num_students * percent
                     
                     # Unit conversion
@@ -1381,7 +1553,8 @@ def calculate_detailed_bom(menu_data, num_students):
                         display_unit = 'L'
                     
                     dish_ingredients.append({
-                        'ingredient': ing_name,
+                        'id': ing_id,
+                        'name': ing_name,
                         'quantity': display_qty,
                         'unit': display_unit
                     })
@@ -1436,7 +1609,7 @@ def upload_and_calculate_bom():
         filename = secure_filename(excel_file.filename)
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
         excel_file.save(filepath)
-        print(f"File saved to: {filepath}")
+        # print(f"File saved to: {filepath}")
 
         # Read the Excel file into a pandas DataFrame
         df = pd.read_excel(filepath)
@@ -1449,26 +1622,27 @@ def upload_and_calculate_bom():
             return redirect(url_for('dashboard'))
 
         # Dynamically find Dish columns and other relevant columns
-        dish_cols = [col for col in df.columns if 'Dish' in col]
-        # Assuming the structure is similar to the flatten_menu_data output
-        # We need to ensure 'Category' column isn't missing if it's used in menu_generator or calculate_detailed_bom's underlying logic
-        # For this specific flow, calculate_detailed_bom takes flat_menu directly, so we just need to ensure the DataFrame can be converted to that flat_menu format.
+        # Updated to correctly map ItemX columns from Excel to Dish X
+        excel_item_cols = [col for col in df.columns if col.startswith('Item') and len(col) == 5 and col[4].isdigit()]
+        excel_item_cols.sort()
 
         # Prepare data in a format suitable for calculate_detailed_bom
-        # The image shows Day, Meal Type, Category, Dish 1, Dish 2, etc.
-        # calculate_detailed_bom expects a list of dictionaries like: {'Day': 'Monday', 'Meal Type': 'Breakfast', 'Dish 1': 'Idli', 'Dish 2': 'Sambar', ...}
-        
-        # Convert DataFrame to list of dictionaries, filling NaN values for dishes
         flat_menu_from_upload = []
         for index, row in df.iterrows():
             row_dict = {
                 'Day': row['Day'],
                 'Meal Type': row['Meal Type']
             }
-            # Add dish columns, handling missing ones by filling with empty string
-            for i in range(1, 5): # Assuming up to Dish 4 based on previous code
-                dish_col_name = f'Dish {i}'
-                row_dict[dish_col_name] = str(row[dish_col_name]) if dish_col_name in row and pd.notna(row[dish_col_name]) else ''
+            # Map ItemX columns to Dish X, up to Dish 4 as expected by calculate_detailed_bom
+            for i in range(4):
+                dish_col_name = f'Dish {i+1}'
+                # Use excel_item_cols to access the correct item column, default to empty string if not present
+                item_col_in_excel = excel_item_cols[i] if i < len(excel_item_cols) else None
+                
+                if item_col_in_excel and pd.notna(row[item_col_in_excel]):
+                    row_dict[dish_col_name] = str(row[item_col_in_excel])
+                else:
+                    row_dict[dish_col_name] = ''
             flat_menu_from_upload.append(row_dict)
 
         # Calculate BOM
@@ -1496,7 +1670,7 @@ def upload_and_calculate_bom():
             if category_key not in uploaded_menu_summary[day]['Items'][meal_type]:
                 uploaded_menu_summary[day]['Items'][meal_type][category_key] = []
             
-            for col in dish_cols:
+            for col in excel_item_cols:
                 if pd.notna(row[col]):
                     uploaded_menu_summary[day]['Items'][meal_type][category_key].append(row[col])
         
@@ -1508,7 +1682,7 @@ def upload_and_calculate_bom():
                                menu_data=uploaded_menu_summary) # Pass the summarized menu
 
     except Exception as e:
-        print(f"Error in upload_and_calculate_bom: {str(e)}")
+        # print(f"Error in upload_and_calculate_bom: {str(e)}")
         import traceback
         traceback.print_exc()
         flash(f'An error occurred: {str(e)}', 'error')
@@ -1517,7 +1691,7 @@ def upload_and_calculate_bom():
         # Clean up the uploaded file
         if 'filepath' in locals() and os.path.exists(filepath):
             os.remove(filepath)
-            print(f"Cleaned up temporary file: {filepath}")
+            # print(f"Cleaned up temporary file: {filepath}")
 
 @app.route('/get_dish_details/<dish_name>', methods=['GET'])
 def get_dish_details(dish_name):
@@ -1537,15 +1711,16 @@ def get_dish_details(dish_name):
         dish_id, fetched_dish_name, category = dish
 
         # Then, get the ingredients for this dish from 'dish_ingredients' table
-        cur.execute("SELECT i.Ingredient_name, di.Serving_per_person, di.Unit_of_measure FROM dish_ingredients di JOIN ingredients i ON di.Ingredient_id = i.Ingredient_id WHERE di.dish_id = %s", (dish_id,))
+        cur.execute("SELECT i.Ingredient_id, i.Ingredient_name, di.Serving_per_person, di.Unit_of_measure FROM dish_ingredients di JOIN ingredients i ON di.Ingredient_id = i.Ingredient_id WHERE di.dish_id = %s", (dish_id,))
         ingredients = cur.fetchall()
 
         ingredients_list = []
-        for ing_name, serving, unit in ingredients:
+        for ing_id, ing_name, serving, unit in ingredients:
             ingredients_list.append({
-                'ingredient_name': ing_name,
-                'serving_per_person': serving,
-                'unit_of_measure': unit
+                'id': ing_id,
+                'name': ing_name,
+                'serving': serving,
+                'unit': unit
             })
 
         return jsonify({
@@ -1556,7 +1731,7 @@ def get_dish_details(dish_name):
         })
 
     except Exception as e:
-        print(f"Error fetching dish details: {e}")
+        # print(f"Error fetching dish details: {e}")
         import traceback
         traceback.print_exc()
         return jsonify({'error': f'Database error: {str(e)}'}), 500
@@ -1567,4 +1742,4 @@ def get_dish_details(dish_name):
 if __name__ == '__main__':
     # Create database tables when starting the app
     create_tables()
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0', port=5000)

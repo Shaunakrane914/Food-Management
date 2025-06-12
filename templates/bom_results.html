@@ -852,9 +852,6 @@
                 <button onclick="exportToCSV()" class="btn btn-secondary">
                     <i class="fas fa-file-csv"></i> Export to CSV
                 </button>
-                <button onclick="testExcelExport()" class="btn btn-secondary" style="font-size: 0.8rem;">
-                    <i class="fas fa-bug"></i> Test Excel
-                </button>
             </div>
         </main>
         <div class="right">
@@ -885,7 +882,6 @@
         // Check if SheetJS library is loaded
         function checkSheetJS() {
             if (typeof XLSX === 'undefined') {
-                console.warn('SheetJS library not loaded. Excel export will not work.');
                 // Disable Excel button and show warning
                 const excelBtn = document.querySelector('button[onclick="exportToExcel()"]');
                 if (excelBtn) {
@@ -901,10 +897,8 @@
                 const testWb = XLSX.utils.book_new();
                 const testWs = XLSX.utils.aoa_to_sheet([['Test']]);
                 XLSX.utils.book_append_sheet(testWb, testWs, "Test");
-                console.log('SheetJS library is working correctly');
                 return true;
             } catch (error) {
-                console.error('SheetJS library test failed:', error);
                 return false;
             }
         }
@@ -937,7 +931,6 @@
             try {
                 // Check if XLSX library is loaded
                 if (typeof XLSX === 'undefined') {
-                    console.error('XLSX library not loaded');
                     alert('Excel library not loaded. Please refresh the page and try again, or use the CSV export option.');
                     return;
                 }
@@ -948,14 +941,9 @@
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
                 btn.disabled = true;
                 
-                console.log('Starting Excel export...');
-                
                 // Get BOM data from hidden inputs
                 const detailedBomData = JSON.parse(document.getElementById('detailedBomData').value);
                 const totalBomData = JSON.parse(document.getElementById('bomData').value);
-                
-                console.log('Detailed BOM data:', detailedBomData);
-                console.log('Total BOM data:', totalBomData);
                 
                 // Create workbook
                 const wb = XLSX.utils.book_new();
@@ -988,8 +976,6 @@
                     }
                 }
                 
-                console.log('Detailed rows created:', detailedRows.length);
-                
                 const detailedWs = XLSX.utils.aoa_to_sheet(detailedRows);
                 XLSX.utils.book_append_sheet(wb, detailedWs, "Detailed BOM");
                 
@@ -999,20 +985,14 @@
                     totalRows.push([item.ingredient, item.quantity, item.unit]);
                 }
                 
-                console.log('Total rows created:', totalRows.length);
-                
                 const totalWs = XLSX.utils.aoa_to_sheet(totalRows);
                 XLSX.utils.book_append_sheet(wb, totalWs, "Total BOM");
                 
                 // Generate and trigger download
                 const fileName = `BOM_Detailed_{{ num_students }}_students.xlsx`;
                 
-                console.log('Attempting to download file:', fileName);
-                
                 // Try to write the file
                 XLSX.writeFile(wb, fileName);
-                
-                console.log('Excel file generated successfully!');
                 
                 // Show success message and restore button
                 setTimeout(() => {
@@ -1022,8 +1002,6 @@
                 }, 1000);
                 
             } catch (error) {
-                console.error("Error in exportToExcel:", error);
-                
                 // Restore button state
                 const btn = event.target;
                 btn.innerHTML = '<i class="fas fa-file-excel"></i> Export to Excel';
@@ -1049,9 +1027,11 @@
                 btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
                 btn.disabled = true;
                 
+                // Get BOM data from hidden inputs
                 const detailedBomData = JSON.parse(document.getElementById('detailedBomData').value);
                 const totalBomData = JSON.parse(document.getElementById('bomData').value);
                 
+                // Create CSV content
                 let csvContent = "data:text/csv;charset=utf-8,";
                 
                 // Add detailed BOM data
@@ -1072,13 +1052,12 @@
                 }
                 
                 // Add total BOM data
-                csvContent += "\n\nTOTAL INGREDIENTS\n";
-                csvContent += "Ingredient,Total Quantity,Unit\n";
-                
+                csvContent += "\nIngredient,Total Quantity,Unit\n";
                 for (const item of totalBomData) {
                     csvContent += `${item.ingredient},${item.quantity},${item.unit}\n`;
                 }
                 
+                // Trigger download
                 const encodedUri = encodeURI(csvContent);
                 const link = document.createElement("a");
                 link.setAttribute("href", encodedUri);
@@ -1086,8 +1065,6 @@
                 document.body.appendChild(link);
                 link.click();
                 document.body.removeChild(link);
-                
-                console.log('CSV file downloaded successfully!');
                 
                 // Show success message and restore button
                 setTimeout(() => {
@@ -1097,8 +1074,6 @@
                 }, 1000);
                 
             } catch (error) {
-                console.error("Error in exportToCSV:", error);
-                
                 // Restore button state
                 const btn = event.target;
                 btn.innerHTML = '<i class="fas fa-file-csv"></i> Export to CSV';
@@ -1107,61 +1082,8 @@
                 alert('Error generating CSV file: ' + error.message);
             }
         }
-
-        // Test function to debug Excel export issues
-        function testExcelExport() {
-            console.log('=== Excel Export Test ===');
-            console.log('XLSX library status:', typeof XLSX !== 'undefined' ? 'Loaded' : 'Not loaded');
-            
-            if (typeof XLSX === 'undefined') {
-                alert('❌ XLSX library is not loaded!\n\nPlease refresh the page and try again.');
-                return;
-            }
-            
-            try {
-                console.log('Testing basic Excel functionality...');
-                
-                // Create a simple test workbook
-                const testWb = XLSX.utils.book_new();
-                const testData = [
-                    ['Test', 'Data'],
-                    ['Hello', 'World'],
-                    [1, 2, 3]
-                ];
-                const testWs = XLSX.utils.aoa_to_sheet(testData);
-                XLSX.utils.book_append_sheet(testWb, testWs, "Test Sheet");
-                
-                // Try to write the file
-                const testFileName = 'test_excel_export.xlsx';
-                XLSX.writeFile(testWb, testFileName);
-                
-                console.log('✅ Excel test successful!');
-                alert('✅ Excel export is working!\n\nA test file "test_excel_export.xlsx" should have been downloaded.');
-                
-            } catch (error) {
-                console.error('❌ Excel test failed:', error);
-                alert('❌ Excel test failed!\n\nError: ' + error.message + '\n\nPlease check the browser console for more details.');
-            }
-        }
     </script>
     <!-- Add SheetJS library for Excel export -->
     <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
-    <!-- Fallback SheetJS CDN -->
-    <script>
-        // Fallback if the main CDN fails
-        if (typeof XLSX === 'undefined') {
-            console.log('Loading fallback SheetJS library...');
-            const script = document.createElement('script');
-            script.src = 'https://unpkg.com/xlsx@0.19.3/dist/xlsx.full.min.js';
-            script.onload = function() {
-                console.log('Fallback SheetJS library loaded successfully');
-                checkSheetJS();
-            };
-            script.onerror = function() {
-                console.error('Both SheetJS CDNs failed to load');
-            };
-            document.head.appendChild(script);
-        }
-    </script>
 </body>
 </html> 

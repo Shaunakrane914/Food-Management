@@ -285,4 +285,4 @@ def dish_wise_bom():
     return render_template('dish_wise_bom.html', dish_wise_bom=results['dish_wise_bom'])
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False, host='0.0.0.0', port=5001)
