@@ -11,7 +11,7 @@ def get_db_connection():
         host=os.environ.get("MYSQLHOST", "localhost"),
         user=os.environ.get("MYSQLUSER", "root"),
         password=os.environ.get("MYSQLPASSWORD", "Shaunak43@ra"),
-        database=os.environ.get("MYSQLDATABASE", "bom1"),
+        database=os.environ.get("MYSQLDATABASE", "bom"),
         port=int(os.environ.get("MYSQLPORT", 3306))
     )
 

@@ -5,7 +5,7 @@ from datetime import datetime
 generator = IndianMenuGenerator()
 
 # Prepare data from your Excel file - Updated file name
-generator.prepare_data('Menu Gen.xlsx')
+generator.prepare_data('Final Menu Modified.xlsx')
 
 # Get today's date
 start_date = datetime.now().strftime('%d-%b-%Y')

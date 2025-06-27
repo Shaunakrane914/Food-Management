@@ -55,7 +55,7 @@
       font-family: 'montserrat';
     }
 
-    .container{
+    .container {
       display: grid;
       width: 96%;
       margin: 0 auto;
@@ -223,7 +223,8 @@
     }
 
     main {
-      margin-top: 4rem;
+      margin-top: 2rem;
+      width: 100%;
     }
 
     .button {
@@ -318,6 +319,8 @@
 
     table {
       width: 100%;
+      max-width: 1800px;
+      margin: 0 auto;
       border-collapse: collapse;
       text-align: center;
       table-layout: fixed;
@@ -378,12 +381,13 @@
 
     .meal-cell {
       background-color: white;
-      padding: 12px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       vertical-align: top;
       text-align: left;
-      min-width: 150px;
+      min-width: 220px;
+      max-width: 350px;
     }
 
     .meal-title {
@@ -749,8 +753,9 @@
     /* Add new styles for menu display */
     .menu-container {
       padding: 20px;
-      max-width: 1200px;
+      max-width: 100%;
       margin: 0 auto;
+      overflow-x: auto;
     }
 
     .menu-grid {
@@ -1216,6 +1221,10 @@
     .right .top .profile .info small {
       color: var(--color-info-dark);
     }
+
+    .menu-table {
+      min-width: 900px;
+    }
   </style>
 </head>
 <body>
@@ -1339,45 +1348,35 @@
                 <td class="meal-cell brunch-cell" colspan="2">
                   {% if 'Brunch' in day_data.Items %}
                   <div class="meal-title">Brunch</div>
-                  {% for subcategory, items in day_data.Items['Brunch'].items() %}
-                  <div class="meal-section" data-category="Brunch" data-subcat="{{ subcategory }}">
-                    <b>
-                      {{ subcategory }}
-                      <button class="add-item-btn" onclick="showAddItemForm(this)">
-                        <i class="fas fa-plus"></i>
-                      </button>
-                    </b>
-                    <ul>
-                      {% for item in items %}
-                      <li>
-                        <span class="food-item">{{ item }}</span>
-                        <div class="item-actions">
-                          <button class="action-btn edit-btn" onclick="editItem(this)" title="Edit">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                          <button class="action-btn delete-btn" onclick="deleteItem(this)" title="Delete">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </div>
-                        <div class="edit-form">
-                          <input type="text" class="edit-input" value="{{ item }}">
-                          <div class="save-cancel-btns">
-                            <button class="save-btn" onclick="saveEdit(this)">Save</button>
-                            <button class="cancel-btn" onclick="cancelEdit(this)">Cancel</button>
-                          </div>
-                        </div>
-                      </li>
-                      {% endfor %}
-                    </ul>
-                    <div class="new-item-form">
-                      <input type="text" class="new-item-input" placeholder="Enter new dish">
-                      <div class="save-cancel-btns">
-                        <button class="save-btn" onclick="addNewItem(this)">Add</button>
-                        <button class="cancel-btn" onclick="cancelAddItem(this)">Cancel</button>
+                  <ul>
+                    {% for item in day_data.Items['Brunch'] %}
+                    <li>
+                      <span class="food-item">{{ item }}</span>
+                      <div class="item-actions">
+                        <button class="action-btn edit-btn" onclick="editItem(this)" title="Edit">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteItem(this)" title="Delete">
+                          <i class="fas fa-trash"></i>
+                        </button>
                       </div>
+                      <div class="edit-form">
+                        <input type="text" class="edit-input" value="{{ item }}">
+                        <div class="save-cancel-btns">
+                          <button class="save-btn" onclick="saveEdit(this)">Save</button>
+                          <button class="cancel-btn" onclick="cancelEdit(this)">Cancel</button>
+                        </div>
+                      </div>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  <div class="new-item-form">
+                    <input type="text" class="new-item-input" placeholder="Enter new dish">
+                    <div class="save-cancel-btns">
+                      <button class="save-btn" onclick="addNewItem(this)">Add</button>
+                      <button class="cancel-btn" onclick="cancelAddItem(this)">Cancel</button>
                     </div>
                   </div>
-                  {% endfor %}
                   {% endif %}
                 </td>
                 {# Continue with Snacks and Dinner for Sunday #}
@@ -1385,45 +1384,35 @@
                 <td class="meal-cell">
                   {% if meal_type in day_data.Items %}
                   <div class="meal-title">{{ meal_type }}</div>
-                  {% for subcategory, items in day_data.Items[meal_type].items() %}
-                  <div class="meal-section" data-category="{{ meal_type }}" data-subcat="{{ subcategory }}">
-                    <b>
-                      {{ subcategory }}
-                      <button class="add-item-btn" onclick="showAddItemForm(this)">
-                        <i class="fas fa-plus"></i>
-                      </button>
-                    </b>
-                    <ul>
-                      {% for item in items %}
-                      <li>
-                        <span class="food-item">{{ item }}</span>
-                        <div class="item-actions">
-                          <button class="action-btn edit-btn" onclick="editItem(this)" title="Edit">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                          <button class="action-btn delete-btn" onclick="deleteItem(this)" title="Delete">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </div>
-                        <div class="edit-form">
-                          <input type="text" class="edit-input" value="{{ item }}">
-                          <div class="save-cancel-btns">
-                            <button class="save-btn" onclick="saveEdit(this)">Save</button>
-                            <button class="cancel-btn" onclick="cancelEdit(this)">Cancel</button>
-                          </div>
-                        </div>
-                      </li>
-                      {% endfor %}
-                    </ul>
-                    <div class="new-item-form">
-                      <input type="text" class="new-item-input" placeholder="Enter new dish">
-                      <div class="save-cancel-btns">
-                        <button class="save-btn" onclick="addNewItem(this)">Add</button>
-                        <button class="cancel-btn" onclick="cancelAddItem(this)">Cancel</button>
+                  <ul>
+                    {% for item in day_data.Items[meal_type] %}
+                    <li>
+                      <span class="food-item">{{ item }}</span>
+                      <div class="item-actions">
+                        <button class="action-btn edit-btn" onclick="editItem(this)" title="Edit">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteItem(this)" title="Delete">
+                          <i class="fas fa-trash"></i>
+                        </button>
                       </div>
+                      <div class="edit-form">
+                        <input type="text" class="edit-input" value="{{ item }}">
+                        <div class="save-cancel-btns">
+                          <button class="save-btn" onclick="saveEdit(this)">Save</button>
+                          <button class="cancel-btn" onclick="cancelEdit(this)">Cancel</button>
+                        </div>
+                      </div>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  <div class="new-item-form">
+                    <input type="text" class="new-item-input" placeholder="Enter new dish">
+                    <div class="save-cancel-btns">
+                      <button class="save-btn" onclick="addNewItem(this)">Add</button>
+                      <button class="cancel-btn" onclick="cancelAddItem(this)">Cancel</button>
                     </div>
                   </div>
-                  {% endfor %}
                   {% endif %}
                 </td>
                 {% endfor %}
@@ -1433,45 +1422,35 @@
                 <td class="meal-cell">
                   {% if meal_type in day_data.Items %}
                   <div class="meal-title">{{ meal_type }}</div>
-                  {% for subcategory, items in day_data.Items[meal_type].items() %}
-                  <div class="meal-section" data-category="{{ meal_type }}" data-subcat="{{ subcategory }}">
-                    <b>
-                      {{ subcategory }}
-                      <button class="add-item-btn" onclick="showAddItemForm(this)">
-                        <i class="fas fa-plus"></i>
-                      </button>
-                    </b>
-                    <ul>
-                      {% for item in items %}
-                      <li>
-                        <span class="food-item">{{ item }}</span>
-                        <div class="item-actions">
-                          <button class="action-btn edit-btn" onclick="editItem(this)" title="Edit">
-                            <i class="fas fa-edit"></i>
-                          </button>
-                          <button class="action-btn delete-btn" onclick="deleteItem(this)" title="Delete">
-                            <i class="fas fa-trash"></i>
-                          </button>
-                        </div>
-                        <div class="edit-form">
-                          <input type="text" class="edit-input" value="{{ item }}">
-                          <div class="save-cancel-btns">
-                            <button class="save-btn" onclick="saveEdit(this)">Save</button>
-                            <button class="cancel-btn" onclick="cancelEdit(this)">Cancel</button>
-                          </div>
-                        </div>
-                      </li>
-                      {% endfor %}
-                    </ul>
-                    <div class="new-item-form">
-                      <input type="text" class="new-item-input" placeholder="Enter new dish">
-                      <div class="save-cancel-btns">
-                        <button class="save-btn" onclick="addNewItem(this)">Add</button>
-                        <button class="cancel-btn" onclick="cancelAddItem(this)">Cancel</button>
+                  <ul>
+                    {% for item in day_data.Items[meal_type] %}
+                    <li>
+                      <span class="food-item">{{ item }}</span>
+                      <div class="item-actions">
+                        <button class="action-btn edit-btn" onclick="editItem(this)" title="Edit">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" onclick="deleteItem(this)" title="Delete">
+                          <i class="fas fa-trash"></i>
+                        </button>
                       </div>
+                      <div class="edit-form">
+                        <input type="text" class="edit-input" value="{{ item }}">
+                        <div class="save-cancel-btns">
+                          <button class="save-btn" onclick="saveEdit(this)">Save</button>
+                          <button class="cancel-btn" onclick="cancelEdit(this)">Cancel</button>
+                        </div>
+                      </div>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                  <div class="new-item-form">
+                    <input type="text" class="new-item-input" placeholder="Enter new dish">
+                    <div class="save-cancel-btns">
+                      <button class="save-btn" onclick="addNewItem(this)">Add</button>
+                      <button class="cancel-btn" onclick="cancelAddItem(this)">Cancel</button>
                     </div>
                   </div>
-                  {% endfor %}
                   {% endif %}
                 </td>
                 {% endfor %}

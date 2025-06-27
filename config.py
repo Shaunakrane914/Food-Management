@@ -15,7 +15,7 @@ class Config:
     MYSQL_BOM_HOST = 'localhost'
     MYSQL_BOM_USER = 'root'
     MYSQL_BOM_PASSWORD = '16042006'
-    MYSQL_BOM_DB = 'bom1'
+    MYSQL_BOM_DB = 'bom'
     
     # File Upload Configuration
     UPLOAD_FOLDER = 'uploads'

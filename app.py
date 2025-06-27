@@ -20,13 +20,13 @@ app.secret_key = 'super_secret_key'
 
 mysql = MySQL(app)
 
-# Add a second Flask app and MySQL connection for bom1
+# Add a second Flask app and MySQL connection for bom
 from flask import Flask as FlaskBOM
 app_bom = FlaskBOM(__name__)
 app_bom.config['MYSQL_HOST'] = 'localhost'
 app_bom.config['MYSQL_USER'] = 'root'
 app_bom.config['MYSQL_PASSWORD'] = '16042006'
-app_bom.config['MYSQL_DB'] = 'bom1'
+app_bom.config['MYSQL_DB'] = 'bom'
 mysql_bom = MySQL(app_bom)
 
 # Configure upload folder
@@ -39,7 +39,7 @@ if not os.path.exists(UPLOAD_FOLDER):
 
 # Initialize the model when starting the app
 try:
-    generator.prepare_data('Weekly_Menu_Categorized.xlsx')
+    generator.prepare_data('Final Menu Modified.xlsx')
 except Exception as e:
     print(f"Error initializing menu generator: {e}")
     import traceback
@@ -55,79 +55,20 @@ ATTENDANCE = {
 }
 
 def calculate_bom(menu_data, num_students, dish_filter=None):
-    # menu_data: dict of {date: {Day, Items}}
-    # dish_filter: None or dish name (if only one dish is selected)
     ingredient_totals = {}
     try:
-        # Get MySQL connection properly
         cur = mysql.connection.cursor()
-        
-        # Check if dish_ingredients table exists
+        # Only proceed if dish_ingredients table exists
         cur.execute("SHOW TABLES LIKE 'dish_ingredients'")
         if not cur.fetchone():
-            # print("dish_ingredients table does not exist. Creating sample BOM data.")
-            # Return sample BOM data for now
-            sample_ingredients = [
-                {'ingredient': 'Rice', 'quantity': round(num_students * 0.1, 2), 'unit': 'kg'},
-                {'ingredient': 'Dal', 'quantity': round(num_students * 0.05, 2), 'unit': 'kg'},
-                {'ingredient': 'Vegetables', 'quantity': round(num_students * 0.2, 2), 'unit': 'kg'},
-                {'ingredient': 'Oil', 'quantity': round(num_students * 0.02, 2), 'unit': 'L'},
-                {'ingredient': 'Spices', 'quantity': round(num_students * 0.01, 2), 'unit': 'kg'},
-                {'ingredient': 'Tea', 'quantity': round(num_students * 0.005, 2), 'unit': 'kg'},
-                {'ingredient': 'Milk', 'quantity': round(num_students * 0.1, 2), 'unit': 'L'},
-                {'ingredient': 'Bread', 'quantity': round(num_students * 0.1, 2), 'unit': 'pieces'},
-            ]
             cur.close()
-            return sample_ingredients
-        
-        # Process menu data to calculate BOM
-        for day, day_data in menu_data.items():
-            items = day_data['Items']
-            for meal_type, meal_data in items.items():
-                percent = ATTENDANCE.get(meal_type.lower(), 1)
-                for category, dishes in meal_data.items():
-                    for dish in dishes:
-                        if dish_filter and dish_filter != 'all' and dish != dish_filter:
-                            continue
-                        # For now, use sample calculations since dish_ingredients table doesn't exist
-                        # In a real implementation, you would look up ingredients for each dish
-                        pass
-        
+            return []  # No BOM data if table doesn't exist
+        # Process menu data to calculate BOM (real implementation should go here)
+        # ... (your real logic here) ...
         cur.close()
-        
-        # Return sample BOM data based on menu items and attendance
-        total_meals = 0
-        for day, day_data in menu_data.items():
-            for meal_type in day_data['Items']:
-                total_meals += 1
-        
-        # Calculate sample ingredients based on number of students and meals
-        sample_ingredients = [
-            {'ingredient': 'Rice', 'quantity': round(num_students * 0.1 * total_meals * 0.3, 2), 'unit': 'kg'},
-            {'ingredient': 'Dal', 'quantity': round(num_students * 0.05 * total_meals * 0.3, 2), 'unit': 'kg'},
-            {'ingredient': 'Vegetables', 'quantity': round(num_students * 0.2 * total_meals * 0.3, 2), 'unit': 'kg'},
-            {'ingredient': 'Oil', 'quantity': round(num_students * 0.02 * total_meals * 0.3, 2), 'unit': 'L'},
-            {'ingredient': 'Spices', 'quantity': round(num_students * 0.01 * total_meals * 0.3, 2), 'unit': 'kg'},
-            {'ingredient': 'Tea', 'quantity': round(num_students * 0.005 * total_meals * 0.3, 2), 'unit': 'kg'},
-            {'ingredient': 'Milk', 'quantity': round(num_students * 0.1 * total_meals * 0.3, 2), 'unit': 'L'},
-            {'ingredient': 'Bread', 'quantity': round(num_students * 0.1 * total_meals * 0.3, 2), 'unit': 'pieces'},
-        ]
-        return sample_ingredients
-        
+        return []  # Placeholder for real BOM calculation
     except Exception as e:
-        # print(f"Error in BOM calculation: {e}")
-        # Return sample BOM data as fallback
-        sample_ingredients = [
-            {'ingredient': 'Rice', 'quantity': round(num_students * 0.1, 2), 'unit': 'kg'},
-            {'ingredient': 'Dal', 'quantity': round(num_students * 0.05, 2), 'unit': 'kg'},
-            {'ingredient': 'Vegetables', 'quantity': round(num_students * 0.2, 2), 'unit': 'kg'},
-            {'ingredient': 'Oil', 'quantity': round(num_students * 0.02, 2), 'unit': 'L'},
-            {'ingredient': 'Spices', 'quantity': round(num_students * 0.01, 2), 'unit': 'kg'},
-            {'ingredient': 'Tea', 'quantity': round(num_students * 0.005, 2), 'unit': 'kg'},
-            {'ingredient': 'Milk', 'quantity': round(num_students * 0.1, 2), 'unit': 'L'},
-            {'ingredient': 'Bread', 'quantity': round(num_students * 0.1, 2), 'unit': 'pieces'},
-        ]
-        return sample_ingredients
+        return []
 
 def create_tables():
     with app.app_context():
@@ -213,32 +154,6 @@ def create_tables():
                 ON DUPLICATE KEY UPDATE password = VALUES(password)
             ''', ('admin', 'admin123'))
             
-            # Insert sample dishes if they don't exist
-            sample_dishes = [
-                ('D001', 'Tea', 'Beverages'),
-                ('D002', 'Coffee', 'Beverages'),
-                ('D003', 'Bread', 'Main Course'),
-                ('D004', 'Poha', 'Main Course'),
-                ('D005', 'Chapati', 'Main Course'),
-                ('D006', 'Rice', 'Main Course'),
-                ('D007', 'Dal', 'Side Dish'),
-                ('D008', 'Vegetable Curry', 'Main Course'),
-                ('D009', 'Salad', 'Side Dish'),
-                ('D010', 'Snacks', 'Snacks'),
-                ('D011', 'Aloo Paratha', 'Main Course'),
-                ('D012', 'Paneer Butter Masala', 'Main Course'),
-                ('D013', 'Naan', 'Bread')
-            ]
-            
-            for dish_id, dish_name, category in sample_dishes:
-                cur.execute('''
-                    INSERT INTO dishes (dish_id, dish_name, category)
-                    VALUES (%s, %s, %s)
-                    ON DUPLICATE KEY UPDATE 
-                    dish_name = VALUES(dish_name),
-                    category = VALUES(category)
-                ''', (dish_id, dish_name, category))
-            
             mysql.connection.commit()
             # print("Tables created successfully!")
             
@@ -249,7 +164,7 @@ def create_tables():
             if 'cur' in locals():
                 cur.close()
 
-    # Ensure BOM-related tables are created in bom1 database
+    # Ensure BOM-related tables are created in bom database
     with app_bom.app_context():
         try:
             cur_bom = mysql_bom.connection.cursor()
@@ -616,9 +531,9 @@ def settings():
     dishes = []
     cur = None
     try:
-        # Ensure this route also uses the bom1 database for dishes
+        # Ensure this route also uses the bom database for dishes
         cur = mysql_bom.connection.cursor()
-        cur.execute("USE bom1;") # Explicitly select the bom1 database
+        cur.execute("USE bom;") # Explicitly select the bom database
         
         # Use the correct column name 'Name' instead of 'dish_name'
         cur.execute("SELECT dish_id, Name FROM dishes ORDER BY Name")
@@ -646,9 +561,6 @@ def generate_menu():
         # Get start_date and end_date from form data
         start_date = request.form.get('start_date', '')
         end_date = request.form.get('end_date', '')
-        
-        if not hasattr(generator, 'items_by_category') or not generator.items_by_category:
-            return render_template('menu.html', error='Menu generator not properly initialized')
 
         # Validate and format start and end dates
         try:
@@ -678,30 +590,42 @@ def generate_menu():
         if days <= 0:
             return render_template('menu.html', error='End date must be after or equal to start date')
 
-        # Generate menu for the specified date range
+        # Prepare for random sampling
+        df = generator.menu_data.copy()
+        df['Day'] = df['Day'].astype(str).str.strip().str.capitalize()
+        df['Meal Type'] = df['Meal Type'].astype(str).str.strip().str.capitalize()
+        df['Date'] = df['Date'].astype(str).str.strip()
+        meal_types = ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Brunch']
         menu = {}
         current_date = start_dt
-        for day_num in range(days):
+        for _ in range(days):
             day_name = current_date.strftime('%A')
             day_menu = {}
-            meal_categories = (
-                ['Brunch', 'Snacks', 'Dinner'] if day_name == 'Sunday' 
-                else ['Breakfast', 'Lunch', 'Snacks', 'Dinner']
-            )
-            for category in meal_categories:
-                try:
-                    meal_packet = generator.generate_meal(category, day_name)
-                    day_menu[category] = meal_packet
-                except Exception as e:
-                    print(f"Error generating {category} for {day_name}: {e}")
-                    day_menu[category] = {}
+            if day_name == 'Sunday':
+                meal_categories = ['Brunch', 'Snacks', 'Dinner']
+            else:
+                meal_categories = ['Breakfast', 'Lunch', 'Snacks', 'Dinner']
+            for meal_type in meal_categories:
+                # Randomly select a row for this (day, meal_type)
+                candidates = df[(df['Day'] == day_name) & (df['Meal Type'] == meal_type)]
+                if not candidates.empty:
+                    row = candidates.sample(1).iloc[0]
+                    item_cols = [col for col in candidates.columns if col.lower().replace(' ', '').startswith('item')]
+                    meal_items = []
+                    for col in item_cols:
+                        dish = str(row[col]).strip()
+                        if dish and dish.lower() != 'nan':
+                            meal_items.append(dish)
+                    day_menu[meal_type] = meal_items
+                else:
+                    day_menu[meal_type] = []
             menu[current_date.strftime('%d-%b-%Y')] = {
                 'Date': current_date.strftime('%d-%b-%Y'),
                 'Day': day_name,
                 'Items': day_menu
             }
             current_date += timedelta(days=1)
-        
+
         # Save menu to database
         if save_menu_to_database(menu):
             flash('Menu generated and saved to database successfully!', 'success')
@@ -711,9 +635,7 @@ def generate_menu():
         # Store the generated menu in the generator instance
         generator.current_menu = menu
         
-        # Pass the menu data to the template
         return render_template('menu.html', menu=menu, start_date=start_date, end_date=end_date)
-    
     except Exception as e:
         import traceback
         print(f"Unexpected error in generate_menu: {e}")
@@ -995,8 +917,8 @@ def add_dish():
             return redirect(url_for('settings'))
 
         cur = mysql_bom.connection.cursor()
-        cur.execute("USE bom1;") # Explicitly select the bom1 database
-        # print("Connected to bom1 database")
+        cur.execute("USE bom;") # Explicitly select the bom database
+        # print("Connected to bom database")
 
         # STEP 1: Check if dish already exists (case-insensitive)
         cur.execute("SELECT dish_id, Name FROM dishes WHERE TRIM(LOWER(Name)) = TRIM(LOWER(%s))", (dish_name,))
@@ -1084,7 +1006,7 @@ def update_dish():
         units = request.form.getlist('unit[]')
 
         cur = mysql_bom.connection.cursor()
-        cur.execute("USE bom1;") # Explicitly select the bom1 database
+        cur.execute("USE bom;") # Explicitly select the bom database
 
         # Get the dish_id based on the original_dish_name using correct column name 'Name'
         cur.execute("SELECT dish_id FROM dishes WHERE TRIM(LOWER(Name)) = TRIM(LOWER(%s))", (original_dish_name,))
@@ -1150,7 +1072,7 @@ def delete_dish():
         dish_name_to_delete = request.form['dish_name_to_delete']
 
         cur = mysql_bom.connection.cursor()
-        cur.execute("USE bom1;") # Explicitly select the bom1 database
+        cur.execute("USE bom;") # Explicitly select the bom database
 
         # Get dish_id based on dish name using correct column name 'Name'
         cur.execute("SELECT dish_id FROM dishes WHERE TRIM(LOWER(Name)) = TRIM(LOWER(%s))", (dish_name_to_delete,))
@@ -1201,7 +1123,7 @@ def bom_database():
     dishes_data = []
     try:
         cur = mysql_bom.connection.cursor()
-        cur.execute("USE bom1;")
+        cur.execute("USE bom;")
 
         # Fetch all dishes and their categories
         cur.execute("SELECT dish_id, Name, Meal_Category FROM dishes ORDER BY Name;")
@@ -1210,10 +1132,10 @@ def bom_database():
         for dish_id, dish_name, meal_category in dishes:
             # Fetch ingredients for each dish
             cur.execute("""
-                SELECT i.Ingredient_id, i.Ingredient_name, di.Serving_per_person, di.Unit_of_measure
-                FROM dish_ingredients di
-                JOIN ingredients i ON di.Ingredient_id = i.Ingredient_id
-                WHERE di.dish_id = %s
+                SELECT i.ingredient_id, i.Name, di.Serving_per_person, di.Unit_of_measure 
+                FROM dish_ingredients di 
+                JOIN ingredients i ON di.Ingredient_id = i.Ingredient_id 
+                WHERE di.dish_id=%s
             """, (dish_id,))
             ingredients = cur.fetchall()
 
@@ -1221,7 +1143,7 @@ def bom_database():
             for ing_id, ing_name, serving, unit in ingredients:
                 ingredients_list.append({
                     'id': ing_id,
-                    'name': ing_name,
+                    'ingredient': ing_name,
                     'serving': serving,
                     'unit': unit
                 })
@@ -1246,7 +1168,7 @@ def bom_database():
 def debug_db_schema():
     try:
         cur = mysql_bom.connection.cursor()
-        cur.execute("USE bom1;")
+        cur.execute("USE bom;")
         cur.execute("DESCRIBE dishes;")
         schema = cur.fetchall()
         cur.close()
@@ -1265,7 +1187,7 @@ def update_dish_ingredient():
         new_unit = data.get('new_unit')
 
         cur = mysql_bom.connection.cursor()
-        cur.execute("USE bom1;")
+        cur.execute("USE bom;")
 
         # Update ingredient name in the ingredients table
         cur.execute("UPDATE ingredients SET Ingredient_name = %s WHERE Ingredient_id = %s", (new_name, ingredient_id))
@@ -1295,7 +1217,7 @@ def delete_dish_ingredient():
         ingredient_id = data.get('ingredient_id')
 
         cur = mysql_bom.connection.cursor()
-        cur.execute("USE bom1;")
+        cur.execute("USE bom;")
 
         # Delete the ingredient from the dish_ingredients table
         cur.execute("DELETE FROM dish_ingredients WHERE dish_id = %s AND Ingredient_id = %s", (dish_id, ingredient_id))
@@ -1323,7 +1245,7 @@ def add_dish_ingredient():
         unit = data.get('unit')
 
         cur = mysql_bom.connection.cursor()
-        cur.execute("USE bom1;")
+        cur.execute("USE bom;")
 
         # Check if ingredient exists, if not, add it
         cur.execute("SELECT Ingredient_id FROM ingredients WHERE TRIM(LOWER(Ingredient_name)) = TRIM(LOWER(%s))", (ingredient_name,))
@@ -1445,11 +1367,13 @@ def flatten_menu_data(menu_data):
         day = day_data['Day']
         items = day_data['Items']
         for meal_type, meal_packet in items.items():
-            # meal_packet: {category: [dish1, dish2, ...]}
-            # Flatten all dishes for this meal_type into Dish 1, Dish 2, ...
-            dishes = []
-            for cat_items in meal_packet.values():
-                dishes.extend(cat_items)
+            # meal_packet: can be a list (new) or dict (old)
+            if isinstance(meal_packet, list):
+                dishes = meal_packet
+            else:
+                dishes = []
+                for cat_items in meal_packet.values():
+                    dishes.extend(cat_items)
             # Only keep up to 4 dishes for compatibility
             row = {'Day': day, 'Meal Type': meal_type}
             for i, dish in enumerate(dishes[:4]):
@@ -1479,7 +1403,7 @@ def calculate_detailed_bom(menu_data, num_students):
     """
     with app_bom.app_context():
         cur = mysql_bom.connection.cursor()
-        cur.execute("USE bom1;") # Explicitly select the bom1 database
+        cur.execute("USE bom;") # Explicitly select the bom database
         
         # Debug: Check what columns exist in dishes table
         cur.execute("SHOW COLUMNS FROM dishes")
@@ -1523,7 +1447,7 @@ def calculate_detailed_bom(menu_data, num_students):
                 cur.execute("SELECT dish_id FROM dishes WHERE TRIM(LOWER(Name)) = TRIM(LOWER(%s))", (dish_name,))
                 dish = cur.fetchone()
                 if not dish:
-                    # print(f'WARNING: Dish not found in bom1.dishes: {dish_name}')
+                    # print(f'WARNING: Dish not found in bom.dishes: {dish_name}')
                     # Add dish with empty ingredients list for display
                     detailed_bom[day][meal_type][dish_name] = []
                     continue
@@ -1531,12 +1455,17 @@ def calculate_detailed_bom(menu_data, num_students):
                 dish_id = dish[0]
                 
                 # Get ingredients for this dish
-                cur.execute("""
-                    SELECT i.Ingredient_id, i.Ingredient_name, di.Serving_per_person, di.Unit_of_measure 
-                    FROM dish_ingredients di 
-                    JOIN ingredients i ON di.Ingredient_id = i.Ingredient_id 
-                    WHERE di.dish_id=%s
-                """, (dish_id,))
+                try:
+                    cur.execute("""
+                        SELECT i.ingredient_id, i.Name, di.Serving_per_person, di.Unit_of_measure 
+                        FROM dish_ingredients di 
+                        JOIN ingredients i ON di.Ingredient_id = i.Ingredient_id 
+                        WHERE di.dish_id=%s
+                    """, (dish_id,))
+                except Exception as sql_e:
+                    print(f"SQL error for dish_id={dish_id}, dish_name={dish_name}: {sql_e}")
+                    detailed_bom[day][meal_type][dish_name] = []
+                    continue
                 
                 dish_ingredients = []
                 for ing_id, ing_name, serving, unit in cur.fetchall():
@@ -1554,7 +1483,7 @@ def calculate_detailed_bom(menu_data, num_students):
                     
                     dish_ingredients.append({
                         'id': ing_id,
-                        'name': ing_name,
+                        'ingredient': ing_name,
                         'quantity': display_qty,
                         'unit': display_unit
                     })
@@ -1697,9 +1626,9 @@ def upload_and_calculate_bom():
 def get_dish_details(dish_name):
     cur = None
     try:
-        # Ensure we are using the bom1 database connection
+        # Ensure we are using the bom database connection
         cur = mysql_bom.connection.cursor()
-        cur.execute("USE bom1;") # Explicitly select the bom1 database
+        cur.execute("USE bom;") # Explicitly select the bom database
         
         # First, get the dish details from the 'dishes' table by name using correct column name 'Name'
         cur.execute("SELECT dish_id, Name, Meal_Category FROM dishes WHERE TRIM(LOWER(Name)) = TRIM(LOWER(%s))", (dish_name,))
@@ -1711,14 +1640,14 @@ def get_dish_details(dish_name):
         dish_id, fetched_dish_name, category = dish
 
         # Then, get the ingredients for this dish from 'dish_ingredients' table
-        cur.execute("SELECT i.Ingredient_id, i.Ingredient_name, di.Serving_per_person, di.Unit_of_measure FROM dish_ingredients di JOIN ingredients i ON di.Ingredient_id = i.Ingredient_id WHERE di.dish_id = %s", (dish_id,))
+        cur.execute("SELECT i.ingredient_id, i.Name, di.Serving_per_person, di.Unit_of_measure FROM dish_ingredients di JOIN ingredients i ON di.Ingredient_id = i.Ingredient_id WHERE di.dish_id = %s", (dish_id,))
         ingredients = cur.fetchall()
 
         ingredients_list = []
         for ing_id, ing_name, serving, unit in ingredients:
             ingredients_list.append({
                 'id': ing_id,
-                'name': ing_name,
+                'ingredient': ing_name,
                 'serving': serving,
                 'unit': unit
             })
