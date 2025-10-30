@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BOM Results - REFEEDO</title>
-    <link rel="icon" href="{{ url_for('static', filename='images/logo.png') }}">
+    <link rel="icon" href="{{ request.url_for('static', path='images/logo.png') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
     <style>
@@ -695,6 +695,25 @@
                 font-size: 2rem;
             }
         }
+
+        .styled-section { margin-bottom: 2em; padding: 1em; background: #f8faf7; border-radius: 8px; }
+        .day-header { color: #2d4e2a; margin-bottom: 0.5em; }
+        .meal-header { color: #3b6335; margin-bottom: 0.5em; margin-top: 1em; }
+        .dish-header { color: #4b7c44; margin-bottom: 0.5em; margin-top: 1em; }
+        .ingredient-table { margin-bottom: 1em; }
+        .section-title { margin-top: 1.5em; color: #2d4e2a; }
+        .coming-soon {
+            background: #ffbb55;
+            color: #fff;
+            font-size: 0.62em;
+            padding: 1px 6px;
+            border-radius: 6px;
+            margin-left: 6px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            display: inline-block;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -703,7 +722,7 @@
             <div class="top">
                 <div class="logo">
                     <a href="/dashboard" style="display: flex; gap: 0.8rem; align-items: center; text-decoration: none; color: inherit;">
-                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
+                        <img src="{{ request.url_for('static', path='images/logo.png') }}" alt="">
                         <h2>REF<span class="half">EEDO</span></h2>
                     </a>
                 </div>
@@ -723,22 +742,13 @@
                     <i class="fa-solid fa-paperclip"></i>
                     <h3>BOM</h3>
                 </a>
-                <a href="/studentstaff" class="{% if active_page == 'studentstaff' %}active{% endif %}">
-                    <i class="fa-regular fa-folder-closed"></i>
-                    <h3>Student and Staff</h3>
-                </a>
+                <a href="/studentstaff" class="{% if active_page == 'studentstaff' %}active{% endif %}"><i class="fa-regular fa-folder-closed"></i><h3>Student and Staff <span class="coming-soon">Coming Soon</span></h3></a>
                 <a href="/inventory" class="{% if active_page == 'inventory' %}active{% endif %}">
                     <i class="fa-regular fa-cart-flatbed"></i>
                     <h3>Inventory</h3>
                 </a>
-                <a href="/supplier" class="{% if active_page == 'supplier' %}active{% endif %}">
-                    <i class="fa-solid fa-boxes-packing"></i>
-                    <h3>Supplier</h3>
-                </a>
-                <a href="/analytics" class="{% if active_page == 'analytics' %}active{% endif %}">
-                    <i class="fa-solid fa-chart-line"></i>
-                    <h3>Analytics</h3>
-                </a>
+                <a href="/supplier" class="{% if active_page == 'supplier' %}active{% endif %}"><i class="fa-solid fa-boxes-packing"></i><h3>Supplier <span class="coming-soon">Coming Soon</span></h3></a>
+                <a href="/analytics" class="{% if active_page == 'analytics' %}active{% endif %}"><i class="fa-solid fa-chart-line"></i><h3>Analytics <span class="coming-soon">Coming Soon</span></h3></a>
                 <a href="/pax" class="{% if active_page == 'pax' %}active{% endif %}">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     <h3>Meal Predictor</h3>
@@ -763,8 +773,12 @@
 
             <div class="menu-summary">
                 <h3><i class="fa-solid fa-calendar"></i> Menu Summary</h3>
+                {% if menu_data %}
                 <p><strong>Menu Period:</strong> {{ menu_data.keys()|list|first }} to {{ menu_data.keys()|list|last }}</p>
+                {% endif %}
+                {% if menu_data %}
                 <p><strong>Total Days:</strong> {{ menu_data|length }} days</p>
+                {% endif %}
                 <p><strong>Meals Included:</strong> Breakfast, Lunch, Snacks, Dinner, Brunch (Sunday)</p>
             </div>
 
@@ -772,46 +786,42 @@
             <div class="detailed-bom">
                 <h3><i class="fa-solid fa-list-ul"></i> Detailed Bill of Materials</h3>
                 
-                {% for day, meals in detailed_bom.items() %}
-                <div class="day-section">
-                    <h4 class="day-header">{{ day }}</h4>
-                    
-                    {% for meal_type, dishes in meals.items() %}
-                    <div class="meal-section">
-                        <h5 class="meal-header">{{ meal_type }}</h5>
-                        
-                        {% for dish_name, ingredients in dishes.items() %}
-                        <div class="dish-section">
-                            <h6 class="dish-header">{{ dish_name }}</h6>
-                            
-                            {% if ingredients %}
-                            <table class="ingredient-table">
+                {% if detailed_bom %}
+                  <h3 class="section-title">Day-wise, Meal-wise, and Dish-wise Bill of Materials</h3>
+                  {% for date, meals in detailed_bom.items() %}
+                    <div class="day-section styled-section">
+                      <h4 class="day-header">{{ date }}</h4>
+                      {% for meal_type, dishes in meals.items() %}
+                        <div class="meal-section styled-section">
+                          <h5 class="meal-header">{{ meal_type }}</h5>
+                          {% for dish_name, ingredients in dishes.items() %}
+                            <div class="dish-section styled-section">
+                              <h6 class="dish-header">{{ dish_name }}</h6>
+                              <table class="table table-bordered ingredient-table">
                                 <thead>
-                                    <tr>
-                                        <th>Raw Ingredient</th>
-                                        <th>Quantity</th>
-                                        <th>Unit</th>
-                                    </tr>
+                                  <tr>
+                                    <th>Ingredient</th>
+                                    <th>Quantity</th>
+                                    <th>Unit</th>
+                                  </tr>
                                 </thead>
                                 <tbody>
-                                    {% for ingredient in ingredients %}
+                                  {% for ing in ingredients %}
                                     <tr>
-                                        <td>{{ ingredient.ingredient }}</td>
-                                        <td class="quantity-cell">{{ ingredient.quantity }}</td>
-                                        <td class="unit-cell">{{ ingredient.unit }}</td>
+                                      <td>{{ ing.ingredient }}</td>
+                                      <td>{{ ing.quantity }}</td>
+                                      <td>{{ ing.unit }}</td>
                                     </tr>
-                                    {% endfor %}
+                                  {% endfor %}
                                 </tbody>
-                            </table>
-                            {% else %}
-                            <p class="no-ingredients">No ingredient data available for this dish</p>
-                            {% endif %}
+                              </table>
+                            </div>
+                          {% endfor %}
                         </div>
-                        {% endfor %}
+                      {% endfor %}
                     </div>
-                    {% endfor %}
-                </div>
-                {% endfor %}
+                  {% endfor %}
+                {% endif %}
             </div>
 
             <!-- Total BOM Summary -->
@@ -852,6 +862,9 @@
                 <button onclick="exportToCSV()" class="btn btn-secondary">
                     <i class="fas fa-file-csv"></i> Export to CSV
                 </button>
+                <button onclick="finalizeBOM()" class="btn btn-primary" id="finalize-bom-btn">
+                    <i class="fas fa-check"></i> Finalize this BOM
+                </button>
             </div>
         </main>
         <div class="right">
@@ -863,7 +876,7 @@
                         <small class="text-muted">Admin</small>
                     </div>
                     <div class="profile-photo">
-                        <img src="{{ url_for('static', filename='images/profile2.jpg') }}" alt="profile">
+                        <img src="{{ request.url_for('static', path='images/profile2.jpg') }}" alt="profile">
                     </div>
                 </div>
             </div>
@@ -874,6 +887,9 @@
     <!-- Hidden inputs to store BOM data -->
     <input type="hidden" id="bomData" value='{{ bom_results|tojson }}'>
     <input type="hidden" id="detailedBomData" value='{{ detailed_bom|tojson }}'>
+    {% if inventory %}
+    <input type="hidden" id="inventoryData" value='{{ inventory|tojson }}'>
+    {% endif %}
 
     <script>
         // Set current date
@@ -1080,6 +1096,42 @@
                 btn.disabled = false;
                 
                 alert('Error generating CSV file: ' + error.message);
+            }
+        }
+
+        async function finalizeBOM() {
+            const btn = document.getElementById('finalize-bom-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Finalizing...';
+            try {
+                const bomData = JSON.parse(document.getElementById('bomData').value);
+                // Prepare payload for /bom/finalize using ingredient_name
+                const payload = bomData.map(item => ({
+                    ingredient_name: item.ingredient,
+                    quantity: item.quantity
+                }));
+                if (payload.length === 0) {
+                    alert('No valid ingredients to finalize. Please check your BOM data.');
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-check"></i> Finalize this BOM';
+                    return;
+                }
+                const res = await fetch('/bom/finalize', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    alert('BOM finalized and inventory updated!');
+                } else {
+                    const err = await res.text();
+                    alert('Failed to finalize BOM: ' + err);
+                }
+            } catch (e) {
+                alert('Error finalizing BOM: ' + e.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-check"></i> Finalize this BOM';
             }
         }
     </script>

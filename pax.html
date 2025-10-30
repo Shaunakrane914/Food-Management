@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen Pax Predictor</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="icon" href="{{ request.url_for('static', path='images/logo.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <a href="/dashboard" style="display: flex; gap: 0.8rem; align-items: center; text-decoration: none; color: inherit;">
+                        <img src="{{ request.url_for('static', path='images/logo.png') }}" alt="">
+                        <h2>REF<span class="half">EEDO</span></h2>
+                    </a>
+                </div>
+                <div class="close-btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+            <div class="sidebar">
+                <a href="/dashboard" class="{% if active_page == 'dashboard' %}active{% endif %}"><i class="fa-solid fa-table-columns"></i><h3>DashBoard</h3></a>
+                <a href="/menu" class="{% if active_page == 'menu' %}active{% endif %}"><i class="fa-solid fa-plate-wheat"></i><h3>Menu Management</h3></a>
+                <a href="/bom" class="{% if active_page == 'bom' %}active{% endif %}"><i class="fa-solid fa-paperclip"></i><h3>BOM</h3></a>
+                <a href="/studentstaff" class="{% if active_page == 'studentstaff' %}active{% endif %}"><i class="fa-regular fa-folder-closed"></i><h3>Student and Staff</h3></a>
+                <a href="/inventory" class="{% if active_page == 'inventory' %}active{% endif %}"><i class="fa-regular fa-cart-flatbed"></i><h3>Inventory</h3></a>
+                <a href="/supplier" class="{% if active_page == 'supplier' %}active{% endif %}"><i class="fa-solid fa-boxes-packing"></i><h3>Supplier</h3></a>
+                <a href="/analytics" class="{% if active_page == 'analytics' %}active{% endif %}"><i class="fa-solid fa-chart-line"></i><h3>Analytics</h3></a>
+                <a href="/pax" class="active"><i class="fa-solid fa-arrow-right-from-bracket"></i><h3>Meal Predictor</h3></a>
+                <a href="/settings" class="{% if active_page == 'settings' %}active{% endif %}"><i class="fa-solid fa-gear"></i><h3>Settings</h3></a>
+                <a href="/logout"><i class="fa-solid fa-arrow-right-from-bracket"></i><h3>Log Out</h3></a>
+            </div>
+        </aside>
+        <main>
+            <div class="card">
+                <h1>Canteen Pax Predictor</h1>
+                <a href="/pax_settings" target="_blank" style="margin-bottom:1.5em;display:block;">
+                    <button type="button" class="btn-submit" style="width:100%;margin-bottom:1.5em;">Pax Settings</button>
+                </a>
+                <form id="predict-form">
+                    <div class="form-group">
+                        <label for="total_present">Total Present Students:</label>
+                        <input type="number" id="total_present" name="total_present" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <button type="submit" class="btn-submit" style="width:100%;">Predict</button>
+                </form>
+                <div id="result" class="result"></div>
+            </div>
+        </main>
+        <div class="right">
+            <div class="top">
+                <button id="menu-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="profile">
+                    <div class="info">
+                        <p>Hey,</p>
+                        <small class="text-muted">Admin</small>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="{{ request.url_for('static', path='images/profile2.jpg') }}" alt="profile">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/static/js/script.js"></script>
+</body>
+</html> 

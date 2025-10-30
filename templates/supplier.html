@@ -741,7 +741,7 @@
             <div class="top">
                 <div class="logo">
                     <a href="/dashboard" style="display: flex; gap: 0.8rem; align-items: center; text-decoration: none; color: inherit;">
-                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
+                        <img src="{{ request.url_for('static', path='images/logo.png') }}" alt="">
                         <h2>REF<span class="half">EEDO</span></h2>
                     </a>
                 </div>
@@ -879,7 +879,7 @@
                         <small class="text-muted">Admin</small>
                     </div>
                     <div class="profile-photo">
-                        <img src="{{ url_for('static', filename='images/profile2.jpg') }}" alt="profile">
+                        <img src="{{ request.url_for('static', path='images/profile2.jpg') }}" alt="profile">
                     </div>
                 </div>
             </div>

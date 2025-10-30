@@ -1,4 +1,34 @@
+from pydantic import BaseSettings
 import os
+
+class FastAPIConfig(BaseSettings):
+    SECRET_KEY: str = os.environ.get('SECRET_KEY', 'your-secret-key-here')
+    DEBUG: bool = False
+    MYSQL_HOST: str = 'localhost'
+    MYSQL_USER: str = 'root'
+    MYSQL_PASSWORD: str = '16042006'
+    MYSQL_DB: str = 'menu_db'
+    MYSQL_BOM_HOST: str = 'localhost'
+    MYSQL_BOM_USER: str = 'root'
+    MYSQL_BOM_PASSWORD: str = '16042006'
+    MYSQL_BOM_DB: str = 'bom'
+    UPLOAD_FOLDER: str = 'uploads'
+    MAX_CONTENT_LENGTH: int = 16 * 1024 * 1024
+    ALLOWED_EXTENSIONS: set = {'xlsx', 'xls'}
+    CACHE_TYPE: str = 'simple'
+    CACHE_DEFAULT_TIMEOUT: int = 300
+    CACHE_THRESHOLD: int = 1000
+    PERMANENT_SESSION_LIFETIME: int = 3600
+    SESSION_COOKIE_SECURE: bool = False
+    SESSION_COOKIE_HTTPONLY: bool = True
+    SESSION_COOKIE_SAMESITE: str = 'Lax'
+    LOG_LEVEL: str = 'WARNING'
+    LOG_TO_STDOUT: bool = False
+    JSON_SORT_KEYS: bool = False
+    JSONIFY_PRETTYPRINT_REGULAR: bool = False
+
+    class Config:
+        env_file = ".env"
 
 class Config:
     # Flask Configuration
@@ -15,7 +45,7 @@ class Config:
     MYSQL_BOM_HOST = 'localhost'
     MYSQL_BOM_USER = 'root'
     MYSQL_BOM_PASSWORD = '16042006'
-    MYSQL_BOM_DB = 'bom1'
+    MYSQL_BOM_DB = 'bom'
     
     # File Upload Configuration
     UPLOAD_FOLDER = 'uploads'

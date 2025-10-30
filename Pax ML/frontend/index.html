@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Canteen Pax Predictor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Canteen Pax Predictor</h1>
+        <form id="predict-form">
+            <label for="total_present">Total Present Students:</label>
+            <input type="number" id="total_present" name="total_present" required>
+            <label for="date">Date:</label>
+            <input type="date" id="date" name="date" required>
+            <button type="submit">Predict</button>
+        </form>
+        <button id="mealwise-btn" style="margin-top:10px;">Show Meal-wise Pax</button>
+        <div id="result" class="result"></div>
+        <div id="mealwise-result" class="result"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

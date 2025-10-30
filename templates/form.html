@@ -468,33 +468,20 @@
     <div class="container">
         <!-- Images Container -->
         <div class="image-container">
-            <img src="{{ url_for('static', filename='images/Unknown-4-removebg-preview.png') }}" alt="Image 1" class="clock-image" id="image1">
-            <img src="{{ url_for('static', filename='images/Unknown-5-removebg-preview.png') }}" alt="Image 2" class="clock-image" id="image2">
-            <img src="{{ url_for('static', filename='images/Unknown-6-removebg-preview.png') }}" alt="Image 3" class="clock-image" id="image3">
-            <img src="{{ url_for('static', filename='images/Unknown-7-removebg-preview.png') }}" alt="Image 4" class="clock-image" id="image4">
-            <img src="{{ url_for('static', filename='images/Unknown-8-removebg-preview.png') }}" alt="Image 5" class="clock-image" id="image5">
-            <img src="{{ url_for('static', filename='images/_-2-removebg-preview.png') }}" alt="Center Image" class="center-image" id="center-image">
-            <img src="{{ url_for('static', filename='images/Unknown-9-removebg-preview.png') }}" alt="Image 6" class="clock-image" id="image6">
+            <img src="{{ request.url_for('static', path='images/Unknown-4-removebg-preview.png') }}" alt="Image 1" class="clock-image" id="image1">
+            <img src="{{ request.url_for('static', path='images/Unknown-5-removebg-preview.png') }}" alt="Image 2" class="clock-image" id="image2">
+            <img src="{{ request.url_for('static', path='images/Unknown-6-removebg-preview.png') }}" alt="Image 3" class="clock-image" id="image3">
+            <img src="{{ request.url_for('static', path='images/Unknown-7-removebg-preview.png') }}" alt="Image 4" class="clock-image" id="image4">
+            <img src="{{ request.url_for('static', path='images/Unknown-8-removebg-preview.png') }}" alt="Image 5" class="clock-image" id="image5">
+            <img src="{{ request.url_for('static', path='images/_-2-removebg-preview.png') }}" alt="Center Image" class="center-image" id="center-image">
+            <img src="{{ request.url_for('static', path='images/Unknown-9-removebg-preview.png') }}" alt="Image 6" class="clock-image" id="image6">
         </div>
 
         <!-- Login Form -->
         <div class="login-form">
             <h2>Welcome Back</h2>
-            <form id="loginForm" action="{{ url_for('login') }}" method="POST">
+            <form id="loginForm" action="/login" method="POST">
                 <input type="text" id="username" name="username" placeholder="Username" required>
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            {% if category == 'danger' %}
-                                <div class="error-message" style="display: block; color: #ff3333; background: rgba(255, 51, 51, 0.1); padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 3px solid #ff3333;">{{ message }}</div>
-                            {% elif category == 'warning' %}
-                                <div class="error-message" style="display: block; color: #ffa500; background: rgba(255, 165, 0, 0.1); padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 3px solid #ffa500;">{{ message }}</div>
-                            {% else %}
-                                <div class="error-message" style="display: block; color: #084516; background: rgba(8, 69, 22, 0.1); padding: 10px; border-radius: 5px; margin: 10px 0; border-left: 3px solid #084516;">{{ message }}</div>
-                            {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
                 <input type="password" id="password" name="password" placeholder="Password" required>
                 <button type="submit">Login</button>
             </form>

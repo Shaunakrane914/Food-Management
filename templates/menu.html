@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Menu Management</title>
-  <link rel="icon" href="logo.png" />
+  <link rel="icon" href="{{ request.url_for('static', path='images/logo.png') }}" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
   <style>
@@ -55,7 +55,7 @@
       font-family: 'montserrat';
     }
 
-    .container{
+    .container {
       display: grid;
       width: 96%;
       margin: 0 auto;
@@ -223,7 +223,8 @@
     }
 
     main {
-      margin-top: 4rem;
+      margin-top: 2rem;
+      width: 100%;
     }
 
     .button {
@@ -318,6 +319,8 @@
 
     table {
       width: 100%;
+      max-width: 1800px;
+      margin: 0 auto;
       border-collapse: collapse;
       text-align: center;
       table-layout: fixed;
@@ -356,34 +359,38 @@
     }
 
     .date-day-cell {
-      background-color: var(--color-primary);
-      color: white;
-      padding: 12px;
-      border-radius: 8px;
+      background: var(--color-primary);
+      color: #fff;
+      border-radius: 12px;
+      padding: 1.2rem 0.5rem 1.2rem 0.5rem;
       text-align: center;
       min-width: 150px;
       word-wrap: break-word;
       white-space: normal;
+      /* Remove flex and height for classic box look */
     }
-
     .date-day-cell .date {
-      font-weight: bold;
-      font-size: 1.1em;
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.1rem;
+      color: #fff;
     }
-
     .date-day-cell .day {
-      font-size: 0.9em;
-      opacity: 0.9;
+      font-size: 1rem;
+      font-weight: 400;
+      color: #e6e6e6;
+      letter-spacing: 0.5px;
     }
 
     .meal-cell {
       background-color: white;
-      padding: 12px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      padding: 16px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
       vertical-align: top;
       text-align: left;
-      min-width: 150px;
+      min-width: 220px;
+      max-width: 350px;
     }
 
     .meal-title {
@@ -527,11 +534,28 @@
     }
 
     .menu-table th {
-      background-color: var(--color-primary);
-      color: white;
-      padding: 12px;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 0.8rem 0.5rem;
+      border: none;
+      letter-spacing: 1px;
       text-align: center;
-      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+      position: relative;
+    }
+    .menu-table th:first-child {
+      border-radius: 14px 0 0 0;
+    }
+    .menu-table th:last-child {
+      border-radius: 0 14px 0 0;
+    }
+    .menu-table th + th {
+      border-left: 2px solid #4d6b4a;
+    }
+    .menu-table th:not(:first-child) {
+      margin-left: 8px;
     }
 
     .brunch-cell {
@@ -749,8 +773,9 @@
     /* Add new styles for menu display */
     .menu-container {
       padding: 20px;
-      max-width: 1200px;
+      max-width: 100%;
       margin: 0 auto;
+      overflow-x: auto;
     }
 
     .menu-grid {
@@ -1216,6 +1241,273 @@
     .right .top .profile .info small {
       color: var(--color-info-dark);
     }
+
+    .menu-table {
+      min-width: 900px;
+    }
+
+    /* Editable Dish Input Styles */
+    .dish-input-container {
+      position: relative;
+      flex: 1;
+    }
+
+    .dish-input {
+      min-width: 120px;
+      width: 100%;
+      max-width: 350px;
+      padding: 0 2px;
+      border: none;
+      border-radius: 0;
+      font-size: 13px;
+      background: transparent;
+      transition: border-color 0.3s ease;
+      overflow-x: auto;
+      white-space: nowrap;
+      box-sizing: border-box;
+      outline: none;
+      border-bottom: 1px solid transparent;
+    }
+    .dish-input:focus {
+      border-bottom: 1.5px solid var(--color-primary);
+      background: #f5f8f5;
+    }
+
+    .dish-suggestions {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1000;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .dish-suggestion-item {
+      padding: 10px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background-color 0.2s ease;
+    }
+
+    .dish-suggestion-item:hover {
+      background-color: #f8f9fa;
+    }
+
+    .dish-suggestion-item:last-child {
+      border-bottom: none;
+    }
+
+    .dish-suggestion-item.selected {
+      background-color: var(--color-primary);
+      color: white;
+    }
+
+    .dish-suggestion-name {
+      font-weight: 500;
+      display: block;
+    }
+
+    .dish-suggestion-category {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 2px;
+    }
+
+    /* Update food-item layout for editable inputs */
+    .food-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0.5rem;
+      border-bottom: 1px solid #e9ecef;
+      color: #495057;
+    }
+
+    .food-item:last-child {
+      border-bottom: none;
+    }
+
+    .food-item .dish-input-container {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .food-item .item-actions {
+      display: flex;
+      gap: 5px;
+      flex-shrink: 0;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .food-item:hover .item-actions {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* Add New Dish Button */
+    .add-dish-btn {
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .add-dish-btn:hover {
+      background: var(--color-primary-variant);
+    }
+
+    .add-dish-btn i {
+      font-size: 12px;
+    }
+
+    /* New Item Form Styles */
+    .new-item-form {
+      margin-top: 10px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 4px;
+      border: 1px solid #e9ecef;
+    }
+
+    .new-item-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .new-item-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px rgba(66, 96, 59, 0.1);
+    }
+
+    .save-cancel-btns {
+      display: flex;
+      gap: 10px;
+    }
+
+    .save-btn, .cancel-btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    .save-btn {
+      background: var(--color-primary);
+      color: white;
+    }
+
+    .save-btn:hover {
+      background: var(--color-primary-variant);
+    }
+
+    .cancel-btn {
+      background: #6c757d;
+      color: white;
+    }
+
+    .cancel-btn:hover {
+      background: #5a6268;
+    }
+
+    /* Edit Form Styles */
+    .edit-form {
+      display: none;
+      margin-top: 10px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 4px;
+      border: 1px solid #e9ecef;
+    }
+
+    .edit-input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .edit-input:focus {
+      outline: none;
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px rgba(66, 96, 59, 0.1);
+    }
+
+    .menu-container {
+      padding: 20px;
+      max-width: 100%;
+      margin: 0 auto;
+      overflow-x: auto;
+    }
+
+    .menu-table {
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    .menu-table th,
+    .menu-table td {
+      text-align: center;
+      vertical-align: top;
+      padding: 0;
+    }
+
+    .meal-cell {
+      min-width: 220px;
+      width: 1%;
+      padding: 0 10px 20px 10px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.06);
+      border: 1px solid #e9ecef;
+    }
+
+    .meal-title {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #2c3e50;
+      padding: 1rem 0 1rem 0;
+      background: #e9ecef;
+      border-radius: 8px 8px 0 0;
+      margin-bottom: 10px;
+    }
+
+    .coming-soon {
+      background: #ffbb55;
+      color: #fff;
+      font-size: 0.62em;
+      padding: 1px 6px;
+      border-radius: 6px;
+      margin-left: 6px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      display: inline-block;
+      vertical-align: middle;
+    }
   </style>
 </head>
 <body>
@@ -1224,7 +1516,7 @@
       <div class="top">
         <div class="logo">
           <a href="/dashboard" style="display: flex; gap: 0.8rem; align-items: center; text-decoration: none; color: inherit;">
-            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
+            <img src="{{ request.url_for('static', path='images/logo.png') }}" alt="">
             <h2>REF<span class="half">EEDO</span></h2>
           </a>
         </div>
@@ -1246,7 +1538,7 @@
         </a>
         <a href="/studentstaff" class="{% if active_page == 'studentstaff' %}active{% endif %}">
           <i class="fa-regular fa-folder-closed"></i>
-          <h3>Student and Staff</h3>
+          <h3>Student and Staff <span class="coming-soon">Coming Soon</span></h3>
         </a>
         <a href="/inventory" class="{% if active_page == 'inventory' %}active{% endif %}">
           <i class="fa-regular fa-cart-flatbed"></i>
@@ -1254,11 +1546,11 @@
         </a>
         <a href="/supplier" class="{% if active_page == 'supplier' %}active{% endif %}">
           <i class="fa-solid fa-boxes-packing"></i>
-          <h3>Supplier</h3>
+          <h3>Supplier <span class="coming-soon">Coming Soon</span></h3>
         </a>
         <a href="/analytics" class="{% if active_page == 'analytics' %}active{% endif %}">
           <i class="fa-solid fa-chart-line"></i>
-          <h3>Analytics</h3>
+          <h3>Analytics <span class="coming-soon">Coming Soon</span></h3>
         </a>
         <a href="/pax" class="{% if active_page == 'pax' %}active{% endif %}">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -1303,54 +1595,50 @@
         </form>
 
         {% if menu %}
-        <!-- Generate BOM button - only shows after menu is generated -->
-        <div style="margin: 1rem 0; text-align: center;">
-          <button type="button" class="generate-btn" onclick="showBomPopup()">
-            <i class="fa-solid fa-calculator"></i>
-            Generate BOM
-          </button>
-        </div>
+          <input type="hidden" id="menuDataJson" value='{{ menu|tojson }}'>
+          <!-- Generate BOM button - only shows after menu is generated -->
+          <div style="margin: 1rem 0; text-align: center;">
+            <button type="button" class="generate-btn" onclick="showBomPopup()">
+              <i class="fa-solid fa-calculator"></i>
+              Generate BOM
+            </button>
+          </div>
 
-        {% if error %}
-        <div class="error-message">
-          {{ error }}
-        </div>
-        {% endif %}
+          {% if error %}
+          <div class="error-message">
+            {{ error }}
+          </div>
+          {% endif %}
 
-        <table class="menu-table">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Breakfast</th>
-              <th>Lunch</th>
-              <th>Snacks</th>
-              <th>Dinner</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for date, day_data in menu.items() %}
-            <tr>
-              <td class="date-day-cell">
-                <div class="date">{{ day_data.Date }}</div>
-                <div class="day">{{ day_data.Day }}</div>
-              </td>
-              {% if day_data.Day == 'Sunday' %}
-                {# Handle Sunday Brunch #}
-                <td class="meal-cell brunch-cell" colspan="2">
-                  {% if 'Brunch' in day_data.Items %}
-                  <div class="meal-title">Brunch</div>
-                  {% for subcategory, items in day_data.Items['Brunch'].items() %}
-                  <div class="meal-section" data-category="Brunch" data-subcat="{{ subcategory }}">
-                    <b>
-                      {{ subcategory }}
-                      <button class="add-item-btn" onclick="showAddItemForm(this)">
-                        <i class="fas fa-plus"></i>
-                      </button>
-                    </b>
+          <table class="menu-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Breakfast</th>
+                <th>Lunch</th>
+                <th>Snacks</th>
+                <th>Dinner</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for date, day_data in menu.items() %}
+              <tr>
+                <td class="date-day-cell">
+                  <div class="date">{{ day_data.Date }}</div>
+                  <div class="day">{{ day_data.Day }}</div>
+                </td>
+                {% if day_data.Day == 'Sunday' %}
+                  {# Handle Sunday Brunch #}
+                  <td class="meal-cell brunch-cell" colspan="2">
+                    {% if 'Brunch' in day_data.Items %}
+                    <div class="meal-title">Brunch <span class="pax-count" data-date="{{ day_data.Date }}" data-day="{{ day_data.Day }}" data-meal="Brunch" data-dish=""></span></div>
                     <ul>
-                      {% for item in items %}
-                      <li>
-                        <span class="food-item">{{ item }}</span>
+                      {% for item in day_data.Items['Brunch'] %}
+                      <li class="food-item">
+                        <div class="dish-input-container">
+                          <input type="text" class="dish-input" value="{{ item }}" placeholder="Enter dish name" autocomplete="off">
+                          <div class="dish-suggestions" style="display: none;"></div>
+                        </div>
                         <div class="item-actions">
                           <button class="action-btn edit-btn" onclick="editItem(this)" title="Edit">
                             <i class="fas fa-edit"></i>
@@ -1369,34 +1657,30 @@
                       </li>
                       {% endfor %}
                     </ul>
-                    <div class="new-item-form">
+                    <button class="add-dish-btn" onclick="showAddDishForm(this)">
+                      <i class="fas fa-plus"></i> Add New Dish
+                    </button>
+                    <div class="new-item-form" style="display: none;">
                       <input type="text" class="new-item-input" placeholder="Enter new dish">
                       <div class="save-cancel-btns">
                         <button class="save-btn" onclick="addNewItem(this)">Add</button>
                         <button class="cancel-btn" onclick="cancelAddItem(this)">Cancel</button>
                       </div>
                     </div>
-                  </div>
-                  {% endfor %}
-                  {% endif %}
-                </td>
-                {# Continue with Snacks and Dinner for Sunday #}
-                {% for meal_type in ['Snacks', 'Dinner'] %}
-                <td class="meal-cell">
-                  {% if meal_type in day_data.Items %}
-                  <div class="meal-title">{{ meal_type }}</div>
-                  {% for subcategory, items in day_data.Items[meal_type].items() %}
-                  <div class="meal-section" data-category="{{ meal_type }}" data-subcat="{{ subcategory }}">
-                    <b>
-                      {{ subcategory }}
-                      <button class="add-item-btn" onclick="showAddItemForm(this)">
-                        <i class="fas fa-plus"></i>
-                      </button>
-                    </b>
+                    {% endif %}
+                  </td>
+                  {# Continue with Snacks and Dinner for Sunday #}
+                  {% for meal_type in ['Snacks', 'Dinner'] %}
+                  <td class="meal-cell">
+                    {% if meal_type in day_data.Items %}
+                    <div class="meal-title">{{ meal_type }} <span class="pax-count" data-date="{{ day_data.Date }}" data-day="{{ day_data.Day }}" data-meal="{{ meal_type }}" data-dish=""></span></div>
                     <ul>
-                      {% for item in items %}
-                      <li>
-                        <span class="food-item">{{ item }}</span>
+                      {% for item in day_data.Items[meal_type] %}
+                      <li class="food-item">
+                        <div class="dish-input-container">
+                          <input type="text" class="dish-input" value="{{ item }}" placeholder="Enter dish name" autocomplete="off">
+                          <div class="dish-suggestions" style="display: none;"></div>
+                        </div>
                         <div class="item-actions">
                           <button class="action-btn edit-btn" onclick="editItem(this)" title="Edit">
                             <i class="fas fa-edit"></i>
@@ -1415,36 +1699,32 @@
                       </li>
                       {% endfor %}
                     </ul>
-                    <div class="new-item-form">
+                    <button class="add-dish-btn" onclick="showAddDishForm(this)">
+                      <i class="fas fa-plus"></i> Add New Dish
+                    </button>
+                    <div class="new-item-form" style="display: none;">
                       <input type="text" class="new-item-input" placeholder="Enter new dish">
                       <div class="save-cancel-btns">
                         <button class="save-btn" onclick="addNewItem(this)">Add</button>
                         <button class="cancel-btn" onclick="cancelAddItem(this)">Cancel</button>
                       </div>
                     </div>
-                  </div>
+                    {% endif %}
+                  </td>
                   {% endfor %}
-                  {% endif %}
-                </td>
-                {% endfor %}
-              {% else %}
-                {# Handle regular days (Monday-Saturday) #}
-                {% for meal_type in ['Breakfast', 'Lunch', 'Snacks', 'Dinner'] %}
-                <td class="meal-cell">
-                  {% if meal_type in day_data.Items %}
-                  <div class="meal-title">{{ meal_type }}</div>
-                  {% for subcategory, items in day_data.Items[meal_type].items() %}
-                  <div class="meal-section" data-category="{{ meal_type }}" data-subcat="{{ subcategory }}">
-                    <b>
-                      {{ subcategory }}
-                      <button class="add-item-btn" onclick="showAddItemForm(this)">
-                        <i class="fas fa-plus"></i>
-                      </button>
-                    </b>
+                {% else %}
+                  {# Handle regular days (Monday-Saturday) #}
+                  {% for meal_type in ['Breakfast', 'Lunch', 'Snacks', 'Dinner'] %}
+                  <td class="meal-cell">
+                    {% if meal_type in day_data.Items %}
+                    <div class="meal-title">{{ meal_type }} <span class="pax-count" data-date="{{ day_data.Date }}" data-day="{{ day_data.Day }}" data-meal="{{ meal_type }}" data-dish=""></span></div>
                     <ul>
-                      {% for item in items %}
-                      <li>
-                        <span class="food-item">{{ item }}</span>
+                      {% for item in day_data.Items[meal_type] %}
+                      <li class="food-item">
+                        <div class="dish-input-container">
+                          <input type="text" class="dish-input" value="{{ item }}" placeholder="Enter dish name" autocomplete="off">
+                          <div class="dish-suggestions" style="display: none;"></div>
+                        </div>
                         <div class="item-actions">
                           <button class="action-btn edit-btn" onclick="editItem(this)" title="Edit">
                             <i class="fas fa-edit"></i>
@@ -1463,26 +1743,28 @@
                       </li>
                       {% endfor %}
                     </ul>
-                    <div class="new-item-form">
+                    <button class="add-dish-btn" onclick="showAddDishForm(this)">
+                      <i class="fas fa-plus"></i> Add New Dish
+                    </button>
+                    <div class="new-item-form" style="display: none;">
                       <input type="text" class="new-item-input" placeholder="Enter new dish">
                       <div class="save-cancel-btns">
                         <button class="save-btn" onclick="addNewItem(this)">Add</button>
                         <button class="cancel-btn" onclick="cancelAddItem(this)">Cancel</button>
                       </div>
                     </div>
-                  </div>
+                    {% endif %}
+                  </td>
                   {% endfor %}
-                  {% endif %}
-                </td>
-                {% endfor %}
-              {% endif %}
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-        <div class="button">
-          <button type="button" class="main-button" id="saveMenuBtn"><i class="fa-solid fa-file-excel"></i> Save Menu as Excel</button>
-        </div>
+                {% endif %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <div class="button">
+            <button type="button" class="main-button" id="saveMenuBtn"><i class="fa-solid fa-file-excel"></i> Save Menu as Excel</button>
+            <button type="button" class="main-button" id="showPaxBtn"><i class="fa-solid fa-users"></i> Show No. of Pax</button>
+          </div>
         {% else %}
         <div class="no-menu-message">
           <p>No menu generated yet. Please select dates and generate a menu.</p>
@@ -1500,7 +1782,7 @@
             <small class="text-muted">Admin</small>
           </div>
           <div class="profile-photo">
-            <img src="{{ url_for('static', filename='images/profile2.jpg') }}" alt="profile">
+            <img src="{{ request.url_for('static', path='images/profile2.jpg') }}" alt="profile">
           </div>
         </div>
       </div>
@@ -1529,9 +1811,53 @@
                   style="padding: 0.8rem 1.5rem; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer;">
             Cancel
           </button>
+          <button type="button" id="customizeAttendanceBtn"
+                  style="padding: 0.8rem 1.5rem; background: #f39c12; color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Customize
+          </button>
           <button type="submit" 
                   style="padding: 0.8rem 1.5rem; background: var(--color-primary); color: white; border: none; border-radius: 4px; cursor: pointer;">
             Generate BOM
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Custom Attendance Modal -->
+  <div id="customAttendanceModal" class="modal" style="display: none;">
+    <div class="modal-content" style="background: white; padding: 2rem; border-radius: 8px; max-width: 900px; margin: 5% auto; max-height: 80vh; overflow-y: auto;">
+      <div class="modal-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h3 style="color: var(--color-primary); margin: 0;">Customize Attendance Per Meal</h3>
+        <button onclick="closeCustomAttendanceModal()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #666;">&times;</button>
+      </div>
+      <form id="customAttendanceForm">
+        <div style="overflow-x: auto;">
+          <table id="customAttendanceTable" style="width: 100%; border-collapse: collapse;">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Day</th>
+                <th>Breakfast</th>
+                <th>Lunch</th>
+                <th>Snacks</th>
+                <th>Dinner</th>
+                <th>Brunch</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Rows will be filled by JS -->
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+          <button type="button" onclick="closeCustomAttendanceModal()" 
+                  style="padding: 0.8rem 1.5rem; border: 1px solid #ddd; background: white; border-radius: 4px; cursor: pointer;">
+            Cancel
+          </button>
+          <button type="submit" 
+                  style="padding: 0.8rem 1.5rem; background: var(--color-primary); color: white; border: none; border-radius: 4px; cursor: pointer;">
+            Calculate BOM
           </button>
         </div>
       </form>
@@ -1576,7 +1902,7 @@
         dayCell.textContent = day.Day;
         row.appendChild(dayCell);
         // Meal cells
-        ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Brunch'].forEach(meal => { // Includes Brunch here
+        ['Breakfast', 'Lunch', 'Snacks', 'Dinner'].forEach(meal => { // Excludes Brunch here
           const mealCell = document.createElement('td');
           if (day.Items && day.Items[meal]) {
             const packet = day.Items[meal];
@@ -1638,343 +1964,128 @@
       // document.getElementById('manualMenuContainer').style.display = 'none';
     });
 
-    function editItem(btn) {
-      const li = btn.closest('li');
-      const foodItem = li.querySelector('.food-item');
+    function editItem(button) {
+      const li = button.closest('.food-item');
+      const dishInput = li.querySelector('.dish-input');
       const editForm = li.querySelector('.edit-form');
       const editInput = editForm.querySelector('.edit-input');
       
-      // Hide the food item and action buttons
-      foodItem.style.display = 'none';
-      // Check if item-actions element exists before trying to access its style
-      const itemActions = li.querySelector('.item-actions');
-      if (itemActions) {
-        itemActions.style.display = 'none';
-      }
-      
-      // Show and focus the edit form
-      editForm.classList.add('active');
-      editInput.value = foodItem.textContent;
+      // Hide the main input and show edit form
+      dishInput.parentElement.style.display = 'none';
+      editForm.style.display = 'block';
+      editInput.value = dishInput.value;
       editInput.focus();
     }
 
-    function saveEdit(btn) {
-      const li = btn.closest('li');
-      const foodItem = li.querySelector('.food-item');
+    function saveEdit(button) {
+      const li = button.closest('.food-item');
+      const dishInput = li.querySelector('.dish-input');
       const editForm = li.querySelector('.edit-form');
       const editInput = editForm.querySelector('.edit-input');
-      const itemActions = li.querySelector('.item-actions');
-      const mealSection = li.closest('.meal-section');
-      
-      // Find the date cell correctly - traverse up to the row, then find the specific cell
-      const row = li.closest('tr');
-      let dateCellText = '';
-      if (row) {
-        const dateDayCell = row.querySelector('.date-day-cell');
-        if (dateDayCell) {
-          const dateElement = dateDayCell.querySelector('.date');
-          if (dateElement) {
-             dateCellText = dateElement.textContent;
-          }
-        }
-      }
-      const dateCell = dateCellText; // Use the extracted date string
-
       const newValue = editInput.value.trim();
+      
       if (newValue) {
-        const oldValue = foodItem.textContent;
-        
-        // Make API call to update the backend
-        updateMenuItem(
-          mealSection.dataset.category, // This gets the category from the data-category attribute
-          mealSection.dataset.subcat,   // This gets the subcategory from the data-subcat attribute
-          oldValue,
-          newValue,
-          dateCell // Pass the extracted date string
-        );
-        
-        // Update UI optimistically
-        foodItem.textContent = newValue;
+        dishInput.value = newValue;
+        dishInput.parentElement.style.display = 'block';
+        editForm.style.display = 'none';
       }
-      
-      // Reset the display
-      foodItem.style.display = 'inline';
-      // Check if item-actions element exists
-      if (itemActions) {
-        itemActions.style.display = 'none';
-      }
-      editForm.classList.remove('active');
     }
 
-    function cancelEdit(btn) {
-      const li = btn.closest('li');
-      const foodItem = li.querySelector('.food-item');
+    function cancelEdit(button) {
+      const li = button.closest('.food-item');
+      const dishInput = li.querySelector('.dish-input');
       const editForm = li.querySelector('.edit-form');
-      const itemActions = li.querySelector('.item-actions');
       
-      // Reset the display
-      foodItem.style.display = 'inline';
-       // Check if item-actions element exists
-      if (itemActions) {
-        itemActions.style.display = 'none';
-      }
-      editForm.classList.remove('active');
+      dishInput.parentElement.style.display = 'block';
+      editForm.style.display = 'none';
     }
 
-    function deleteItem(btn) {
-      if (confirm('Are you sure you want to delete this item?')) {
-        const li = btn.closest('li');
-        const foodItem = li.querySelector('.food-item');
-        const mealSection = li.closest('.meal-section');
-        
-         // Find the date cell correctly - traverse up to the row, then find the specific cell
-        const row = li.closest('tr');
-        let dateCellText = '';
-        if (row) {
-          const dateDayCell = row.querySelector('.date-day-cell');
-           if (dateDayCell) {
-            const dateElement = dateDayCell.querySelector('.date');
-            if (dateElement) {
-               dateCellText = dateElement.textContent;
-            }
-          }
-        }
-        const dateCell = dateCellText; // Use the extracted date string
-        
-        // Store the item details before deletion
-        const itemDetails = {
-          category: mealSection.dataset.category, // Get category
-          subcat: mealSection.dataset.subcat,   // Get subcategory
-          value: foodItem.textContent,
-          date: dateCell // Use the extracted date string
-        };
-        
-        // Make API call to delete from backend
-        deleteMenuItem(itemDetails, li);
-      }
+    function deleteItem(button) {
+      const li = button.closest('.food-item');
+      li.remove();
     }
 
-    function deleteMenuItem(itemDetails, li) {
-      fetch('/delete_menu_item', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(itemDetails)
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          alert('Error deleting menu item: ' + data.error);
-        } else {
-          // Remove the item from UI
-          if (li && li.parentNode) {
-            li.parentNode.removeChild(li);
-          }
-        }
-      })
-      .catch(error => {
-        alert('Error deleting menu item. Please try again.');
-      });
+    function cancelAddItem(button) {
+      const form = button.closest('.new-item-form');
+      const input = form.querySelector('.new-item-input');
+      input.value = '';
+      form.style.display = 'none';
     }
 
-    function updateMenuItem(category, subcat, oldValue, newValue, date) {
-      fetch('/update_menu_item', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          category: category,
-          subcat: subcat,
-          oldValue: oldValue,
-          newValue: newValue,
-          date: date
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          alert('Error updating menu item: ' + data.error);
-        }
-      })
-      .catch(error => {
-        alert('Error updating menu item. Please try again.');
-      });
-    }
-
-    function showAddItemForm(btn) {
-      const mealSection = btn.closest('.meal-section');
-      const newItemForm = mealSection.querySelector('.new-item-form');
+    function showAddDishForm(button) {
+      const mealCell = button.closest('.meal-cell');
+      const newItemForm = mealCell.querySelector('.new-item-form');
       const input = newItemForm.querySelector('.new-item-input');
       
       // Hide all other open forms first
-      document.querySelectorAll('.new-item-form.active').forEach(form => {
+      document.querySelectorAll('.new-item-form').forEach(form => {
         if (form !== newItemForm) {
-          form.classList.remove('active');
+          form.style.display = 'none';
           form.querySelector('.new-item-input').value = '';
         }
       });
       
       // Show this form
-      newItemForm.classList.add('active');
+      newItemForm.style.display = 'block';
       input.value = '';
       input.focus();
+      
+      // Setup autocomplete for the new input
+      setupDishAutocomplete(input);
     }
 
-    function cancelAddItem(btn) {
-      const form = btn.closest('.new-item-form');
-      const input = form.querySelector('.new-item-input');
-      input.value = '';
-      form.classList.remove('active');
-    }
-
-    function addNewItem(btn) {
-      const form = btn.closest('.new-item-form');
-      const mealSection = form.closest('.meal-section');
+    function addNewItem(button) {
+      const form = button.closest('.new-item-form');
       const input = form.querySelector('.new-item-input');
       const newValue = input.value.trim();
       
-      // Find the date cell correctly
-      const row = mealSection.closest('tr');
-      let dateCellText = '';
-      if (row) {
-        const dateDayCell = row.querySelector('.date-day-cell');
-         if (dateDayCell) {
-          const dateElement = dateDayCell.querySelector('.date');
-          if (dateElement) {
-             dateCellText = dateElement.textContent;
-          }
-        }
-      }
-      const dateCell = dateCellText; // Use the extracted date string
-      
-      if (!newValue) {
-        alert('Please enter a dish name');
-        return;
-      }
-
-      // Disable the form while processing
-      const saveBtn = form.querySelector('.save-btn');
-      const cancelBtn = form.querySelector('.cancel-btn');
-      saveBtn.disabled = true;
-      cancelBtn.disabled = true;
-      input.disabled = true;
-
-      // Create new list item optimistically
-      const ul = mealSection.querySelector('ul');
-      const li = document.createElement('li');
-      li.innerHTML = `
-        <span class="food-item">${newValue}</span>
-        <div class="item-actions">
-          <button class="action-btn edit-btn" onclick="editItem(this)" title="Edit">
-            <i class="fas fa-edit"></i>
-          </button>
-          <button class="action-btn delete-btn" onclick="deleteItem(this)" title="Delete">
-            <i class="fas fa-trash"></i>
-          </button>
-        </div>
-        <div class="edit-form">
-          <input type="text" class="edit-input" value="${newValue}">
-          <div class="save-cancel-btns">
-            <button class="save-btn" onclick="saveEdit(this)">Save</button>
-            <button class="cancel-btn" onclick="cancelEdit(this)">Cancel</button>
+      if (newValue) {
+        const ul = form.closest('.meal-cell').querySelector('ul');
+        const li = document.createElement('li');
+        li.className = 'food-item';
+        li.innerHTML = `
+          <div class="dish-input-container">
+            <input type="text" class="dish-input" value="${newValue}" placeholder="Enter dish name" autocomplete="off">
+            <div class="dish-suggestions" style="display: none;"></div>
           </div>
-        </div>
-      `;
-      ul.appendChild(li);
-
-      // Make API call to add the new item
-      fetch('/add_menu_item', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          category: mealSection.dataset.category, // Get category
-          subcat: mealSection.dataset.subcat,   // Get subcategory
-          value: newValue,
-          date: dateCell // Use the extracted date string
-        })
-      })
-      .then(response => {
-        if (!response.ok) {
-          // If the response is not ok, try to read the error message from the body
-          return response.json().then(data => { throw new Error(data.error || `HTTP error! status: ${response.status}`); });
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data.error) {
-           throw new Error(data.error); // Throw if there's an error key in the JSON
-        }
-        // Clear and hide the form
+          <div class="item-actions">
+            <button class="action-btn edit-btn" onclick="editItem(this)" title="Edit">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="action-btn delete-btn" onclick="deleteItem(this)" title="Delete">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <div class="edit-form">
+            <input type="text" class="edit-input" value="${newValue}">
+            <div class="save-cancel-btns">
+              <button class="save-btn" onclick="saveEdit(this)">Save</button>
+              <button class="cancel-btn" onclick="cancelEdit(this)">Cancel</button>
+            </div>
+          </div>
+        `;
+        
+        ul.appendChild(li);
         input.value = '';
-        form.classList.remove('active');
-      })
-      .catch(error => {
-        alert('Error adding menu item: ' + error.message);
-        // Remove the item from UI if there was an error
-        li.remove();
-      })
-      .finally(() => {
-        // Re-enable the form
-        saveBtn.disabled = false;
-        cancelBtn.disabled = false;
-        input.disabled = false;
-      });
+        form.style.display = 'none';
+        
+        // Setup autocomplete for the new input
+        const newInput = li.querySelector('.dish-input');
+        setupDishAutocomplete(newInput);
+      }
     }
 
     function regenerateMenu() {
-      // Get the current date range
-      const startDateInput = document.getElementById('start_date');
-      const endDateInput = document.getElementById('end_date');
-
-      const startDate = startDateInput ? startDateInput.value : null;
-      const endDate = endDateInput ? endDateInput.value : null;
+      const startDate = document.getElementById('start_date').value;
+      const endDate = document.getElementById('end_date').value;
       
       if (!startDate || !endDate) {
         alert('Please select both start and end dates');
         return;
       }
-
-      // Submit the form to regenerate the menu
-      // Find the existing form or create a new one if necessary
-      let form = document.querySelector('form.date-form');
-      if (!form) {
-          form = document.createElement('form');
-          form.method = 'POST';
-          form.action = '/generate';
-          // Append to body temporarily to submit
-          document.body.appendChild(form);
-      }
-
-      // Ensure start_date and end_date inputs exist in the form
-      let startInput = form.querySelector('input[name="start_date"]');
-      if (!startInput) {
-          startInput = document.createElement('input');
-          startInput.type = 'hidden';
-          startInput.name = 'start_date';
-          form.appendChild(startInput);
-      }
-      startInput.value = startDate;
-
-      let endInput = form.querySelector('input[name="end_date"]');
-      if (!endInput) {
-          endInput = document.createElement('input');
-          endInput.type = 'hidden';
-          endInput.name = 'end_date';
-          form.appendChild(endInput);
-      }
-      endInput.value = endDate;
-
-      // Submit the form
-      form.submit();
-       // If we created a temporary form, remove it after submission (though not strictly necessary as page navigates)
-       if (!document.querySelector('form.date-form')) {
-           // Small delay before removal if needed, but generally not for navigation
-           // setTimeout(() => form.remove(), 100);
-       }
+      
+      // Submit the form to regenerate menu
+      document.querySelector('.date-form').submit();
     }
 
     // Add event listener for the Save button
@@ -2088,9 +2199,260 @@
     closeBtn.addEventListener('click', () => {
       sideMenu.style.display = 'none';
     });
+
+    // Custom Attendance Modal Logic
+    const customizeAttendanceBtn = document.getElementById('customizeAttendanceBtn');
+    const customAttendanceModal = document.getElementById('customAttendanceModal');
+    const customAttendanceForm = document.getElementById('customAttendanceForm');
+    const customAttendanceTable = document.getElementById('customAttendanceTable').querySelector('tbody');
+    let customAttendanceMenuData = null;
+
+    if (customizeAttendanceBtn) {
+      customizeAttendanceBtn.addEventListener('click', function() {
+        // Get number of students
+        const numStudents = parseInt(document.getElementById('num_students').value) || 0;
+        if (!numStudents || numStudents <= 0) {
+          alert('Please enter a valid number of students first.');
+          return;
+        }
+        // Fetch menu data from a hidden input or window variable (set by backend)
+        const menuData = window.menuData || JSON.parse(document.getElementById('menuDataJson').value);
+        customAttendanceMenuData = menuData;
+        // Fill the table
+        fillCustomAttendanceTable(menuData, numStudents);
+        // Show modal
+        customAttendanceModal.style.display = 'flex';
+        closeBomModal();
+      });
+    }
+
+    function fillCustomAttendanceTable(menu, numStudents) {
+      // Attendance rules
+      const ATTENDANCE = { Breakfast: 0.5, Snacks: 0.5, Lunch: 0.85, Dinner: 0.85, Brunch: 0.85 };
+      customAttendanceTable.innerHTML = '';
+      Object.entries(menu).forEach(([date, dayData]) => {
+        const tr = document.createElement('tr');
+        // Date
+        const tdDate = document.createElement('td');
+        tdDate.textContent = dayData.Date;
+        tr.appendChild(tdDate);
+        // Day
+        const tdDay = document.createElement('td');
+        tdDay.textContent = dayData.Day;
+        tr.appendChild(tdDay);
+        // Meals
+        ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Brunch'].forEach(meal => {
+          const td = document.createElement('td');
+          // Only show Brunch for Sunday, others for Mon-Sat
+          if ((meal === 'Brunch' && dayData.Day !== 'Sunday') || (meal !== 'Brunch' && dayData.Day === 'Sunday' && meal !== 'Snacks' && meal !== 'Dinner')) {
+            td.innerHTML = '-';
+            tr.appendChild(td);
+            return;
+          }
+          const defaultVal = Math.round(numStudents * (ATTENDANCE[meal] || 1));
+          td.innerHTML = `<input type="number" name="attendance_${date}_${meal}" value="${defaultVal}" min="0" style="width: 70px;">`;
+          tr.appendChild(td);
+        });
+        customAttendanceTable.appendChild(tr);
+      });
+    }
+
+    function closeCustomAttendanceModal() {
+      customAttendanceModal.style.display = 'none';
+    }
+
+    // Submit custom attendance form
+    if (customAttendanceForm) {
+      customAttendanceForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        // Gather attendance data
+        const attendance = [];
+        for (const row of customAttendanceTable.querySelectorAll('tr')) {
+          const tds = row.querySelectorAll('td');
+          const date = tds[0].textContent;
+          const day = tds[1].textContent;
+          const meals = {};
+          ['Breakfast', 'Lunch', 'Snacks', 'Dinner', 'Brunch'].forEach((meal, idx) => {
+            const input = tds[idx+2].querySelector('input');
+            if (input) {
+              meals[meal] = parseInt(input.value) || 0;
+            }
+          });
+          attendance.push({ date, day, meals });
+        }
+        // POST to backend
+        fetch('/generate_custom_bom', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ attendance })
+        })
+        .then(res => res.text())
+        .then(html => {
+          // Replace page with BOM results
+          document.open();
+          document.write(html);
+          document.close();
+        });
+      });
+    }
+
+    // Initialize dish autocomplete functionality
+    function initializeDishAutocomplete() {
+      const dishInputs = document.querySelectorAll('.dish-input');
+      dishInputs.forEach(input => {
+        setupDishAutocomplete(input);
+      });
+    }
+
+    // Setup autocomplete for a single dish input
+    function setupDishAutocomplete(input) {
+      let suggestionsContainer = input.parentElement.querySelector('.dish-suggestions');
+      let selectedIndex = -1;
+      let suggestions = [];
+
+      // Handle input changes
+      input.addEventListener('input', async function() {
+        const query = this.value.trim();
+        
+        if (query.length < 1) {
+          hideSuggestions();
+          return;
+        }
+
+        try {
+          const response = await fetch(`/get_dish_recommendations?query=${encodeURIComponent(query)}`);
+          const data = await response.json();
+          
+          if (data.recommendations) {
+            suggestions = data.recommendations;
+            showSuggestions(suggestions);
+          }
+        } catch (error) {
+          console.error('Error fetching dish recommendations:', error);
+        }
+      });
+
+      // Handle keyboard navigation
+      input.addEventListener('keydown', function(e) {
+        if (!suggestionsContainer || suggestionsContainer.style.display === 'none') {
+          return;
+        }
+
+        switch(e.key) {
+          case 'ArrowDown':
+            e.preventDefault();
+            selectedIndex = Math.min(selectedIndex + 1, suggestions.length - 1);
+            updateSelection();
+            break;
+          case 'ArrowUp':
+            e.preventDefault();
+            selectedIndex = Math.max(selectedIndex - 1, -1);
+            updateSelection();
+            break;
+          case 'Enter':
+            e.preventDefault();
+            if (selectedIndex >= 0 && suggestions[selectedIndex]) {
+              selectSuggestion(suggestions[selectedIndex]);
+            }
+            break;
+          case 'Escape':
+            hideSuggestions();
+            break;
+        }
+      });
+
+      // Handle focus/blur
+      input.addEventListener('focus', function() {
+        if (this.value.trim().length >= 1 && suggestions.length > 0) {
+          showSuggestions(suggestions);
+        }
+      });
+
+      input.addEventListener('blur', function() {
+        // Delay hiding to allow for clicks on suggestions
+        setTimeout(() => {
+          hideSuggestions();
+        }, 200);
+      });
+
+      // Show suggestions dropdown
+      function showSuggestions(suggestions) {
+        if (!suggestionsContainer) return;
+        
+        suggestionsContainer.innerHTML = '';
+        selectedIndex = -1;
+
+        if (suggestions.length === 0) {
+          suggestionsContainer.innerHTML = '<div class="dish-suggestion-item">No dishes found</div>';
+        } else {
+          suggestions.forEach((suggestion, index) => {
+            const item = document.createElement('div');
+            item.className = 'dish-suggestion-item';
+            item.innerHTML = `
+              <div class="dish-suggestion-name">${suggestion.name}</div>
+              <div class="dish-suggestion-category">${suggestion.category}</div>
+            `;
+            
+            item.addEventListener('click', () => {
+              selectSuggestion(suggestion);
+            });
+            
+            item.addEventListener('mouseenter', () => {
+              selectedIndex = index;
+              updateSelection();
+            });
+            
+            suggestionsContainer.appendChild(item);
+          });
+        }
+        
+        suggestionsContainer.style.display = 'block';
+      }
+
+      // Hide suggestions dropdown
+      function hideSuggestions() {
+        if (suggestionsContainer) {
+          suggestionsContainer.style.display = 'none';
+        }
+        selectedIndex = -1;
+      }
+
+      // Update visual selection
+      function updateSelection() {
+        const items = suggestionsContainer.querySelectorAll('.dish-suggestion-item');
+        items.forEach((item, index) => {
+          item.classList.toggle('selected', index === selectedIndex);
+        });
+      }
+
+      // Select a suggestion
+      function selectSuggestion(suggestion) {
+        input.value = suggestion.name;
+        hideSuggestions();
+        input.focus();
+        
+        // Trigger change event for any listeners
+        const event = new Event('change', { bubbles: true });
+        input.dispatchEvent(event);
+      }
+    }
+
+    // Initialize autocomplete when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeDishAutocomplete();
+    });
+
+    // Re-initialize autocomplete after menu generation
+    if (document.getElementById('menuDataJson')) {
+      // Menu has been generated, initialize autocomplete
+      setTimeout(() => {
+        initializeDishAutocomplete();
+      }, 500);
+    }
   </script>
   <!-- Add SheetJS library -->
   <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
+  <script src="{{ url_for('static', path='js/script.js') }}"></script>
 </body>
 </html>
 

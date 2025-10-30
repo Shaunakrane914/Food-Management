@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventory</title>
-    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}">
+    <link rel="icon" href="{{ request.url_for('static', path='logo.png') }}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="stylesheet" href="{{ request.url_for('static', path='dashboard.css') }}">
     <style>
         :root{
     /* --color-primary: #7380ec; */
@@ -419,6 +419,18 @@ main{
         font-size: 2rem;
     }
   }
+.coming-soon {
+    background: #ffbb55;
+    color: #fff;
+    font-size: 0.62em;
+    padding: 1px 6px;
+    border-radius: 6px;
+    margin-left: 6px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    display: inline-block;
+    vertical-align: middle;
+}
 </style>
 </head>
 <body>
@@ -427,7 +439,7 @@ main{
             <div class="top">
                 <div class="logo">
                     <a href="/dashboard" style="display: flex; gap: 0.8rem; align-items: center; text-decoration: none; color: inherit;">
-                        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="">
+                        <img src="{{ request.url_for('static', path='images/logo.png') }}" alt="">
                         <h2>REF<span class="half">EEDO</span></h2>
                     </a>
                 </div>
@@ -449,7 +461,7 @@ main{
                 </a>
                 <a href="/studentstaff" class="{% if active_page == 'studentstaff' %}active{% endif %}">
                     <i class="fa-regular fa-folder-closed"></i>
-                    <h3>Student and Staff</h3>
+                    <h3>Student and Staff <span class="coming-soon">Coming Soon</span></h3>
                 </a>
                 <a href="/inventory" class="{% if active_page == 'inventory' %}active{% endif %}">
                     <i class="fa-regular fa-cart-flatbed"></i>
@@ -457,11 +469,11 @@ main{
                 </a>
                 <a href="/supplier" class="{% if active_page == 'supplier' %}active{% endif %}">
                     <i class="fa-solid fa-boxes-packing"></i>
-                    <h3>Supplier</h3>
+                    <h3>Supplier <span class="coming-soon">Coming Soon</span></h3>
                 </a>
                 <a href="/analytics" class="{% if active_page == 'analytics' %}active{% endif %}">
                     <i class="fa-solid fa-chart-line"></i>
-                    <h3>Analytics</h3>
+                    <h3>Analytics <span class="coming-soon">Coming Soon</span></h3>
                 </a>
                 <a href="/pax" class="{% if active_page == 'pax' %}active{% endif %}">
                     <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -480,115 +492,57 @@ main{
         <main>
             <h1>Inventory</h1>
             <div class="btn">
-                <button class="btn2" onclick="btn2()">Stock Tracking</button>
-                <button class="btn3" onclick="btn3()">Stock In/Out</button>
+                <button class="btn2" onclick="showInventory()">Stock Tracking</button>
+                <button class="btn3" onclick="showActivity()">Activity Log</button>
                 <div class="button-1">
                     <label for="excelUpload">Upload Excel or CSV File</label>
                     <input type="file" id="excelUpload" name="b1" accept=".xls,.xlsx,.csv" />
                   </div>
             </div>
             <div class="table1">
-            <table>
+            <table id="inventory-table">
                 <thead>
-                    <th>Ingredient Id</th>
-                    <th>Ingredient Name</th>
-                    <th>Quantity</th>
-                    <th>Threshold</th>
+                    <tr>
+                        <th>Ingredient Id</th>
+                        <th>Ingredient Name</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Edit</th>
+                    </tr>
                 </thead>
                 <tbody>
+                    {% for item in inventory %}
                     <tr>
-                        <td>ING001</td>
-                        <td>Rice</td>
-                        <td>120 kg</td>
-                        <td>50 kg</td>
+                        <td>{{ item.ingredient_id }}</td>
+                        <td>{{ item.ingredient_name }}</td>
+                        <form method="post" action="/inventory/update">
+                            <td>
+                                <input type="number" name="new_quantity" value="{{ item.quantity }}" min="0" step="0.01" style="width:80px;">
+                                <input type="hidden" name="ingredient_id" value="{{ item.ingredient_id }}">
+                            </td>
+                            <td>{{ item.unit }}</td>
+                            <td>
+                                <button type="submit">Save</button>
+                            </td>
+                        </form>
                     </tr>
-                    <tr>
-                        <td>ING002</td>
-                        <td>Wheat Flour</td>
-                        <td>80 kg</td>
-                        <td>30 kg</td>
-                    </tr>
-                    <tr>
-                        <td>ING003</td>
-                        <td>Cooking Oil</td>
-                        <td>40 L</td>
-                        <td>15 L</td>
-                    </tr>
-                    <tr>
-                        <td>ING004</td>
-                        <td>Dal (Lentils)</td>
-                        <td>60 kg</td>
-                        <td>25 kg</td>
-                    </tr>
-                    <tr>
-                        <td>ING005</td>
-                        <td>Sugar</td>
-                        <td>45 kg</td>
-                        <td>20 kg</td>
-                    </tr>
-                    <tr>
-                        <td>ING006</td>
-                        <td>Salt</td>
-                        <td>30 kg</td>
-                        <td>10 kg</td>
-                    </tr>
-                </tbody>                
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
         <div class="table2">
-            <table>
+            <table id="activity-table">
                 <thead>
                     <tr>
-                        <th>Date</th>
-                        <th>Ingredient Name</th>
-                        <th>Stock In</th>
-                        <th>Stock Out</th>
-                        <th>Remaining Stock</th>
+                        <th>Date/Time</th>
+                        <th>Ingredient Id</th>
+                        <th>Change Amount</th>
+                        <th>Action</th>
+                        <th>Note</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <td>2025-04-25</td>
-                        <td>Rice</td>
-                        <td>50 kg</td>
-                        <td>30 kg</td>
-                        <td>120 kg</td>
-                    </tr>
-                    <tr>
-                        <td>2025-04-25</td>
-                        <td>Wheat Flour</td>
-                        <td>20 kg</td>
-                        <td>15 kg</td>
-                        <td>80 kg</td>
-                    </tr>
-                    <tr>
-                        <td>2025-04-25</td>
-                        <td>Cooking Oil</td>
-                        <td>10 L</td>
-                        <td>5 L</td>
-                        <td>40 L</td>
-                    </tr>
-                    <tr>
-                        <td>2025-04-25</td>
-                        <td>Dal (Lentils)</td>
-                        <td>25 kg</td>
-                        <td>20 kg</td>
-                        <td>60 kg</td>
-                    </tr>
-                    <tr>
-                        <td>2025-04-25</td>
-                        <td>Sugar</td>
-                        <td>15 kg</td>
-                        <td>10 kg</td>
-                        <td>45 kg</td>
-                    </tr>
-                    <tr>
-                        <td>2025-04-25</td>
-                        <td>Salt</td>
-                        <td>10 kg</td>
-                        <td>5 kg</td>
-                        <td>30 kg</td>
-                    </tr>
+                <tbody id="activity-body">
+                    <!-- Activity data will be inserted here -->
                 </tbody>                
             </table>
         </div>        
@@ -602,7 +556,7 @@ main{
                         <small class="text-muted">Admin</small>
                     </div>
                     <div class="profile-photo">
-                        <img src="{{ url_for('static', filename='images/profile2.jpg') }}" alt="profile">
+                        <img src="{{ request.url_for('static', path='images/profile2.jpg') }}" alt="profile">
                     </div>
                 </div>
             </div>
@@ -610,14 +564,38 @@ main{
         </div>
     </div>
     <script>
-        function btn2(){
+        function showInventory(){
             document.querySelector('.table1').style.display = 'block';
             document.querySelector('.table2').style.display = 'none';
         }
-        function btn3(){
+        function showActivity(){
             document.querySelector(".table2").style.display = 'block';
             document.querySelector('.table1').style.display = 'none';
         }
+
+        // Fetch and display activity log
+        async function loadActivity() {
+            const res = await fetch('/inventory/activity');
+            const data = await res.json();
+            const tbody = document.getElementById('activity-body');
+            tbody.innerHTML = '';
+            data.forEach(item => {
+                tbody.innerHTML += `
+                <tr>
+                    <td>${item.timestamp}</td>
+                    <td>${item.ingredient_id}</td>
+                    <td>${item.change_amount}</td>
+                    <td>${item.action}</td>
+                    <td>${item.note || ''}</td>
+                </tr>`;
+            });
+        }
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            showInventory();
+            loadActivity();
+        });
 
         // Handle sidebar menu
         const sideMenu = document.querySelector("aside");
