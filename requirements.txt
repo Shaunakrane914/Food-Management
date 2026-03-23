@@ -10,4 +10,5 @@ scikit-learn
 pymysql
 openpyxl
 xlrd
-httpx 
+httpx
+jinja2
