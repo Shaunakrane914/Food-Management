@@ -1,0 +1,6 @@
+.env
+__pycache__/
+*.pyc
+pax_settings.db
+Pax ML/backend/pax_predictor.pkl
+dist/

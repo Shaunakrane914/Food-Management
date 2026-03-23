@@ -7,6 +7,9 @@ import psycopg2
 import psycopg2.extras
 from datetime import datetime, timedelta
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
 from tempfile import NamedTemporaryFile
 import pandas as pd
 from menu_generator import IndianMenuGenerator
@@ -33,7 +36,7 @@ templates = Jinja2Templates(directory="templates")
 
 # Database connection helper (sync for now)
 def get_mysql_connection():
-    return psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+    return psycopg2.connect(os.environ.get("DATABASE_URL"))
 
 generator = IndianMenuGenerator()
 
@@ -127,7 +130,7 @@ class DeleteDishRequest(BaseModel):
 # Helper for BOM DB connection
 
 def get_bom_connection():
-    return psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+    return psycopg2.connect(os.environ.get("DATABASE_URL"))
 
 @app.get("/")
 async def home(request: Request):
@@ -181,7 +184,7 @@ async def dashboard(request: Request):
         message = 'Please log in to access the dashboard.'
         return RedirectResponse(url="/login", status_code=303)
     # Fetch dynamic data for dashboard
-    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres", cursor_factory=psycopg2.extras.DictCursor)
+    conn = psycopg2.connect(os.environ.get("DATABASE_URL"), cursor_factory=psycopg2.extras.DictCursor)
     cursor = conn.cursor()
     # Total ingredients
     cursor.execute("SELECT COUNT(*) as total FROM ingredient_inventory")
@@ -272,7 +275,7 @@ async def settings(request: Request):
     dishes = []
     conn = None
     try:
-        conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+        conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
         cur = conn.cursor()
         cur.execute("SELECT dish_id, Name FROM dishes ORDER BY Name")
         dish_tuples = cur.fetchall()
@@ -382,7 +385,7 @@ async def bom_database(request: Request):
     dishes_data = []
     conn = None
     try:
-        conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+        conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
         cur = conn.cursor()
         cur.execute("SELECT dish_id, Name, Meal_Category FROM dishes ORDER BY Name;")
         dishes = cur.fetchall()
@@ -419,7 +422,7 @@ async def bom_database(request: Request):
 @app.get("/debug_db_schema")
 async def debug_db_schema():
     try:
-        conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+        conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
         cur = conn.cursor()
         cur.execute("DESCRIBE dishes;")
         schema = cur.fetchall()
@@ -660,7 +663,7 @@ async def upload_and_calculate_bom(request: Request, excel_file: UploadFile = Fi
 async def get_dish_details(dish_name: str):
     conn = None
     try:
-        conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+        conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
         cur = conn.cursor()
         cur.execute("SELECT dish_id, Name, Meal_Category FROM dishes WHERE TRIM(LOWER(Name)) = TRIM(LOWER(%s))", (dish_name,))
         dish = cur.fetchone()
@@ -691,7 +694,7 @@ async def get_dish_details(dish_name: str):
 
 def create_app_tables():
     # Main DB (now bom)
-    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+    conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
     try:
         cur = conn.cursor()
         cur.execute('''
@@ -767,7 +770,7 @@ def create_app_tables():
         conn.close()
 
     # BOM DB
-    conn_bom = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+    conn_bom = psycopg2.connect(os.environ.get("DATABASE_URL"))
     try:
         cur_bom = conn_bom.cursor()
         cur_bom.execute("SHOW TABLES LIKE 'dishes'")
@@ -793,7 +796,7 @@ def create_app_tables():
 
 def save_menu_to_database(menu_data):
     try:
-        conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+        conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
         cur = conn.cursor()
         for date_str, day_data in menu_data.items():
             try:
@@ -845,7 +848,7 @@ def save_menu_to_database(menu_data):
 
 # --- Ensure Database and Tables Exist on Startup ---
 def create_database_if_not_exists():
-    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+    conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
     cursor = conn.cursor()
     cursor.execute("CREATE DATABASE IF NOT EXISTS rafeedo")
     cursor.execute("CREATE DATABASE IF NOT EXISTS bom")
@@ -853,7 +856,7 @@ def create_database_if_not_exists():
     conn.close()
 
 def create_inventory_tables():
-    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+    conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
     cursor = conn.cursor()
     # Ingredient Inventory Table
     cursor.execute("""
@@ -1531,7 +1534,7 @@ async def get_dish_recommendations(query: str):
     
     conn = None
     try:
-        conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+        conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
         cur = conn.cursor()
         
         # Search for dishes that start with the query (case-insensitive)
@@ -1865,7 +1868,7 @@ async def inventory(request: Request):
     if not request.session.get('user_id'):
         return RedirectResponse(url="/login", status_code=303)
     # Fetch inventory from DB
-    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres", cursor_factory=psycopg2.extras.DictCursor)
+    conn = psycopg2.connect(os.environ.get("DATABASE_URL"), cursor_factory=psycopg2.extras.DictCursor)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM ingredient_inventory")
     inventory = cursor.fetchall()
@@ -1878,7 +1881,7 @@ async def inventory(request: Request):
 
 @app.post("/inventory/update")
 async def update_inventory_form(request: Request, ingredient_id: str = Form(...), new_quantity: float = Form(...)):
-    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+    conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
     cursor = conn.cursor()
     cursor.execute("SELECT quantity FROM ingredient_inventory WHERE ingredient_id = %s", (ingredient_id,))
     old_qty = cursor.fetchone()
@@ -1899,7 +1902,7 @@ async def update_inventory_form(request: Request, ingredient_id: str = Form(...)
 
 @app.post("/bom/finalize")
 def finalize_bom_api(bom: list[BOMItem] = Body(...)):
-    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
+    conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
     cursor = conn.cursor()
     for item in bom:
         # Look up ingredient_id by name
@@ -1926,7 +1929,7 @@ def finalize_bom_api(bom: list[BOMItem] = Body(...)):
 
 @app.get("/inventory/activity")
 def get_inventory_activity_api():
-    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres", cursor_factory=psycopg2.extras.DictCursor)
+    conn = psycopg2.connect(os.environ.get("DATABASE_URL"), cursor_factory=psycopg2.extras.DictCursor)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM inventory_activity ORDER BY timestamp DESC")
     activity = cursor.fetchall()
