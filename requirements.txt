@@ -13,3 +13,5 @@ xlrd
 httpx
 jinja2
 python-dotenv
+itsdangerous
+aiofiles
