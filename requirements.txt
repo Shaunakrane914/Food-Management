@@ -2,11 +2,11 @@ fastapi
 uvicorn
 pydantic
 python-multipart
-pandas
+pandas==2.3.3
 numpy
 sqlalchemy
 joblib
-scikit-learn
+scikit-learn==1.7.1
 psycopg2-binary
 openpyxl
 xlrd
