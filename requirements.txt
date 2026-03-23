@@ -7,7 +7,7 @@ numpy
 sqlalchemy
 joblib
 scikit-learn
-pymysql
+psycopg2-binary
 openpyxl
 xlrd
 httpx

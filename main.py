@@ -3,7 +3,8 @@ from fastapi.responses import RedirectResponse, JSONResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from starlette.middleware.sessions import SessionMiddleware
-import pymysql
+import psycopg2
+import psycopg2.extras
 from datetime import datetime, timedelta
 import os
 from tempfile import NamedTemporaryFile
@@ -32,13 +33,7 @@ templates = Jinja2Templates(directory="templates")
 
 # Database connection helper (sync for now)
 def get_mysql_connection():
-    return pymysql.connect(
-        host='localhost',
-        user='root',
-        password='mysql',
-        db='bom',
-        cursorclass=pymysql.cursors.Cursor
-    )
+    return psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
 
 generator = IndianMenuGenerator()
 
@@ -132,13 +127,7 @@ class DeleteDishRequest(BaseModel):
 # Helper for BOM DB connection
 
 def get_bom_connection():
-    return pymysql.connect(
-        host='localhost',
-        user='root',
-        password='mysql',
-        db='bom',
-        cursorclass=pymysql.cursors.Cursor
-    )
+    return psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
 
 @app.get("/")
 async def home(request: Request):
@@ -164,7 +153,7 @@ async def login_post(request: Request, username: str = Form(...), password: str 
         user = cur.fetchone()
         if user:
             # Update the login attempt to successful
-            cur.execute("UPDATE user_logins_bak SET success = TRUE WHERE id = LAST_INSERT_ID()")
+            cur.execute("UPDATE user_logins_bak SET success = TRUE WHERE id = lastval()")
             conn.commit()
             # Store user info in session
             request.session['user_id'] = user[0]
@@ -192,13 +181,7 @@ async def dashboard(request: Request):
         message = 'Please log in to access the dashboard.'
         return RedirectResponse(url="/login", status_code=303)
     # Fetch dynamic data for dashboard
-    conn = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="mysql",
-        db="bom",
-        cursorclass=pymysql.cursors.DictCursor
-    )
+    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres", cursor_factory=psycopg2.extras.DictCursor)
     cursor = conn.cursor()
     # Total ingredients
     cursor.execute("SELECT COUNT(*) as total FROM ingredient_inventory")
@@ -289,13 +272,7 @@ async def settings(request: Request):
     dishes = []
     conn = None
     try:
-        conn = pymysql.connect(
-            host='localhost',
-            user='root',
-            password='mysql',
-            db='bom',
-            cursorclass=pymysql.cursors.Cursor
-        )
+        conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
         cur = conn.cursor()
         cur.execute("SELECT dish_id, Name FROM dishes ORDER BY Name")
         dish_tuples = cur.fetchall()
@@ -405,13 +382,7 @@ async def bom_database(request: Request):
     dishes_data = []
     conn = None
     try:
-        conn = pymysql.connect(
-            host='localhost',
-            user='root',
-            password='mysql',
-            db='bom',
-            cursorclass=pymysql.cursors.Cursor
-        )
+        conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
         cur = conn.cursor()
         cur.execute("SELECT dish_id, Name, Meal_Category FROM dishes ORDER BY Name;")
         dishes = cur.fetchall()
@@ -448,13 +419,7 @@ async def bom_database(request: Request):
 @app.get("/debug_db_schema")
 async def debug_db_schema():
     try:
-        conn = pymysql.connect(
-            host='localhost',
-            user='root',
-            password='mysql',
-            db='bom',
-            cursorclass=pymysql.cursors.Cursor
-        )
+        conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
         cur = conn.cursor()
         cur.execute("DESCRIBE dishes;")
         schema = cur.fetchall()
@@ -695,13 +660,7 @@ async def upload_and_calculate_bom(request: Request, excel_file: UploadFile = Fi
 async def get_dish_details(dish_name: str):
     conn = None
     try:
-        conn = pymysql.connect(
-            host='localhost',
-            user='root',
-            password='mysql',
-            db='bom',
-            cursorclass=pymysql.cursors.Cursor
-        )
+        conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
         cur = conn.cursor()
         cur.execute("SELECT dish_id, Name, Meal_Category FROM dishes WHERE TRIM(LOWER(Name)) = TRIM(LOWER(%s))", (dish_name,))
         dish = cur.fetchone()
@@ -732,18 +691,12 @@ async def get_dish_details(dish_name: str):
 
 def create_app_tables():
     # Main DB (now bom)
-    conn = pymysql.connect(
-        host='localhost',
-        user='root',
-        password='mysql',
-        db='bom',
-        cursorclass=pymysql.cursors.Cursor
-    )
+    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
     try:
         cur = conn.cursor()
         cur.execute('''
             CREATE TABLE IF NOT EXISTS users_bak (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 username VARCHAR(50) UNIQUE NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -751,7 +704,7 @@ def create_app_tables():
         ''')
         cur.execute('''
             CREATE TABLE IF NOT EXISTS user_logins_bak (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 username VARCHAR(50) NOT NULL,
                 password VARCHAR(255) NOT NULL,
                 login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -768,7 +721,7 @@ def create_app_tables():
         ''')
         cur.execute('''
             CREATE TABLE IF NOT EXISTS menu_variations (
-                variation_id INT AUTO_INCREMENT PRIMARY KEY,
+                variation_id SERIAL PRIMARY KEY,
                 variation_name VARCHAR(100) NOT NULL,
                 week_number INT NOT NULL,
                 year INT NOT NULL,
@@ -779,24 +732,24 @@ def create_app_tables():
         ''')
         cur.execute('''
             CREATE TABLE IF NOT EXISTS menu_days (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 menu_date DATE NOT NULL,
                 day_name VARCHAR(20) NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 UNIQUE KEY unique_menu_date (menu_date)
             )
         ''')
         cur.execute('''
             CREATE TABLE IF NOT EXISTS menu_items (
-                id INT AUTO_INCREMENT PRIMARY KEY,
+                id SERIAL PRIMARY KEY,
                 menu_day_id INT NOT NULL,
                 meal_category VARCHAR(50) NOT NULL,
                 item_category VARCHAR(100) NOT NULL,
                 item_name VARCHAR(255) NOT NULL,
                 item_order INT DEFAULT 0,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (menu_day_id) REFERENCES menu_days(id) ON DELETE CASCADE,
                 INDEX idx_menu_day_meal (menu_day_id, meal_category)
             )
@@ -814,13 +767,7 @@ def create_app_tables():
         conn.close()
 
     # BOM DB
-    conn_bom = pymysql.connect(
-        host='localhost',
-        user='root',
-        password='mysql',
-        db='bom',
-        cursorclass=pymysql.cursors.Cursor
-    )
+    conn_bom = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
     try:
         cur_bom = conn_bom.cursor()
         cur_bom.execute("SHOW TABLES LIKE 'dishes'")
@@ -846,13 +793,7 @@ def create_app_tables():
 
 def save_menu_to_database(menu_data):
     try:
-        conn = pymysql.connect(
-            host='localhost',
-            user='root',
-            password='mysql',
-            db='bom',
-            cursorclass=pymysql.cursors.Cursor
-        )
+        conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
         cur = conn.cursor()
         for date_str, day_data in menu_data.items():
             try:
@@ -904,12 +845,7 @@ def save_menu_to_database(menu_data):
 
 # --- Ensure Database and Tables Exist on Startup ---
 def create_database_if_not_exists():
-    conn = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="mysql",
-        cursorclass=pymysql.cursors.Cursor
-    )
+    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
     cursor = conn.cursor()
     cursor.execute("CREATE DATABASE IF NOT EXISTS rafeedo")
     cursor.execute("CREATE DATABASE IF NOT EXISTS bom")
@@ -917,18 +853,12 @@ def create_database_if_not_exists():
     conn.close()
 
 def create_inventory_tables():
-    conn = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="mysql",
-        db="bom",
-        cursorclass=pymysql.cursors.Cursor
-    )
+    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
     cursor = conn.cursor()
     # Ingredient Inventory Table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS ingredient_inventory (
-            ingredient_id INT AUTO_INCREMENT PRIMARY KEY,
+            ingredient_id SERIAL PRIMARY KEY,
             ingredient_name VARCHAR(255) UNIQUE,
             quantity FLOAT,
             unit VARCHAR(50)
@@ -937,7 +867,7 @@ def create_inventory_tables():
     # Inventory Activity Table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS inventory_activity (
-            id INT AUTO_INCREMENT PRIMARY KEY,
+            id SERIAL PRIMARY KEY,
             ingredient_id INT,
             change_amount FLOAT,
             action VARCHAR(50),
@@ -1601,13 +1531,7 @@ async def get_dish_recommendations(query: str):
     
     conn = None
     try:
-        conn = pymysql.connect(
-            host='localhost',
-            user='root',
-            password='mysql',
-            db='bom',
-            cursorclass=pymysql.cursors.Cursor
-        )
+        conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
         cur = conn.cursor()
         
         # Search for dishes that start with the query (case-insensitive)
@@ -1941,13 +1865,7 @@ async def inventory(request: Request):
     if not request.session.get('user_id'):
         return RedirectResponse(url="/login", status_code=303)
     # Fetch inventory from DB
-    conn = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="mysql",
-        db="bom",
-        cursorclass=pymysql.cursors.DictCursor
-    )
+    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres", cursor_factory=psycopg2.extras.DictCursor)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM ingredient_inventory")
     inventory = cursor.fetchall()
@@ -1960,13 +1878,7 @@ async def inventory(request: Request):
 
 @app.post("/inventory/update")
 async def update_inventory_form(request: Request, ingredient_id: str = Form(...), new_quantity: float = Form(...)):
-    conn = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="mysql",
-        db="bom",
-        cursorclass=pymysql.cursors.Cursor
-    )
+    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
     cursor = conn.cursor()
     cursor.execute("SELECT quantity FROM ingredient_inventory WHERE ingredient_id = %s", (ingredient_id,))
     old_qty = cursor.fetchone()
@@ -1987,13 +1899,7 @@ async def update_inventory_form(request: Request, ingredient_id: str = Form(...)
 
 @app.post("/bom/finalize")
 def finalize_bom_api(bom: list[BOMItem] = Body(...)):
-    conn = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="mysql",
-        db="bom",
-        cursorclass=pymysql.cursors.Cursor
-    )
+    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres")
     cursor = conn.cursor()
     for item in bom:
         # Look up ingredient_id by name
@@ -2020,13 +1926,7 @@ def finalize_bom_api(bom: list[BOMItem] = Body(...)):
 
 @app.get("/inventory/activity")
 def get_inventory_activity_api():
-    conn = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="mysql",
-        db="bom",
-        cursorclass=pymysql.cursors.DictCursor
-    )
+    conn = psycopg2.connect("postgresql://postgres.qjcpaoxhueijqkqjmhph:shaunak43rane@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres", cursor_factory=psycopg2.extras.DictCursor)
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM inventory_activity ORDER BY timestamp DESC")
     activity = cursor.fetchall()
