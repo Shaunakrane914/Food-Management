@@ -1,0 +1,365 @@
+﻿Reflected MySQL schema. Tables found: dict_keys(['bom_calculations', 'bom_ingredients', 'dish_ingredients', 'dishes', 'ingredients', 'dishes_bak', 'ingredient_inventory', 'inventory_activity', 'menu_days', 'menu_items', 'menu_variations', 'user_logins_bak', 'users_bak'])
+python : Traceback 
+(most recent call 
+last):
+At line:1 char:1
++ python migrate_db.py 
+> migrate2.log 2>&1 ; 
+python -c 
+"open('error2.tx ...
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Traceback (mo   
+ st recent call las    
+t)::String) [], Re    
+moteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\base.py", line 
+1963, in 
+_exec_single_context
+    self.dialect.do_exe
+cute(
+    ~~~~~~~~~~~~~~~~~~~
+~~~~^
+        cursor, 
+str_statement, 
+effective_parameters, 
+context
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^
+    )
+    ^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\default.py", 
+line 943, in do_execute
+    cursor.execute(stat
+ement, parameters)
+    ~~~~~~~~~~~~~~^^^^^
+^^^^^^^^^^^^^^^^^^
+psycopg2.errors.Undefin
+edObject: type 
+"datetime" does not 
+exist
+LINE 5:  
+calculation_date 
+DATETIME NOT NULL, 
+                       
+   ^
+
+
+The above exception 
+was the direct cause 
+of the following 
+exception:
+
+Traceback (most recent 
+call last):
+  File 
+"C:\Users\Shaunak Rane\
+Desktop\Food-Management
+\migrate_db.py", line 
+69, in <module>
+    migrate()
+    ~~~~~~~^^
+  File 
+"C:\Users\Shaunak Rane\
+Desktop\Food-Management
+\migrate_db.py", line 
+28, in migrate
+    meta.create_all(bin
+d=dest_engine)
+    ~~~~~~~~~~~~~~~^^^^
+^^^^^^^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\schema.py", line 
+5924, in create_all
+    
+bind._run_ddl_visitor(
+    
+~~~~~~~~~~~~~~~~~~~~~^
+        
+ddl.SchemaGenerator, 
+self, 
+checkfirst=checkfirst, 
+tables=tables
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^
+    )
+    ^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\base.py", line 
+3248, in 
+_run_ddl_visitor
+    conn._run_ddl_visit
+or(visitorcallable, 
+element, **kwargs)
+    ~~~~~~~~~~~~~~~~~~~
+~~^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\base.py", line 
+2455, in 
+_run_ddl_visitor
+    ).traverse_single(e
+lement)
+      ~~~~~~~~~~~~~~~^^
+^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\visitors.py", line 
+664, in traverse_single
+    return meth(obj, 
+**kw)
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\ddl.py", line 982, 
+in visit_metadata
+    
+self.traverse_single(
+    
+~~~~~~~~~~~~~~~~~~~~^
+        table,
+        ^^^^^^
+    ...<2 lines>...
+        _is_metadata_op
+eration=True,
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^
+    )
+    ^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\visitors.py", line 
+664, in traverse_single
+    return meth(obj, 
+**kw)
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\ddl.py", line 
+1020, in visit_table
+    )._invoke_with(self
+.connection)
+      ~~~~~~~~~~~~^^^^^
+^^^^^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\ddl.py", line 321, 
+in _invoke_with
+    return 
+bind.execute(self)
+           
+~~~~~~~~~~~~^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\base.py", line 
+1415, in execute
+    return meth(
+        self,
+        
+distilled_parameters,
+        
+execution_options or 
+NO_OPTIONS,
+    )
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\ddl.py", line 187, 
+in 
+_execute_on_connection
+    return connection._
+execute_ddl(
+           ~~~~~~~~~~~~
+~~~~~~~~~~~^
+        self, 
+distilled_params, 
+execution_options
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^
+    )
+    ^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\base.py", line 
+1526, in _execute_ddl
+    ret = 
+self._execute_context(
+        dialect,
+    ...<4 lines>...
+        compiled,
+    )
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\base.py", line 
+1842, in 
+_execute_context
+    return self._exec_s
+ingle_context(
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~^
+        dialect, 
+context, statement, 
+parameters
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^
+    )
+    ^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\base.py", line 
+1982, in 
+_exec_single_context
+    self._handle_dbapi_
+exception(
+    ~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~^
+        e, 
+str_statement, 
+effective_parameters, 
+cursor, context
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\base.py", line 
+2351, in 
+_handle_dbapi_exception
+    raise sqlalchemy_ex
+ception.with_traceback(
+exc_info[2]) from e
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\base.py", line 
+1963, in 
+_exec_single_context
+    self.dialect.do_exe
+cute(
+    ~~~~~~~~~~~~~~~~~~~
+~~~~^
+        cursor, 
+str_statement, 
+effective_parameters, 
+context
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^
+    )
+    ^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\default.py", 
+line 943, in do_execute
+    cursor.execute(stat
+ement, parameters)
+    ~~~~~~~~~~~~~~^^^^^
+^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.Programm
+ingError: (psycopg2.err
+ors.UndefinedObject) 
+type "datetime" does 
+not exist
+LINE 5:  
+calculation_date 
+DATETIME NOT NULL, 
+                       
+   ^
+
+[SQL: 
+CREATE TABLE 
+bom_calculations (
+	id SERIAL NOT NULL, 
+	filename VARCHAR(255) 
+NOT NULL, 
+	calculation_date 
+DATETIME NOT NULL, 
+	num_students INTEGER 
+NOT NULL, 
+	total_cost 
+DECIMAL(10, 2) NOT 
+NULL, 
+	per_student_cost 
+DECIMAL(10, 2) NOT 
+NULL, 
+	created_at TIMESTAMP 
+WITHOUT TIME ZONE 
+DEFAULT 
+CURRENT_TIMESTAMP, 
+	PRIMARY KEY (id)
+)
+
+]
+(Background on this 
+error at: https://sqlal
+che.me/e/20/f405)

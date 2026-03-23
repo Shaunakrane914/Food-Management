@@ -1,0 +1,134 @@
+pymysql.connect(
+        host='localhost',
+        user='root',
+        password='mysql',
+        db='bom',
+        cursorclass=pymysql.cursors.Cursor
+    )
+---
+pymysql.connect(
+        host='localhost',
+        user='root',
+        password='mysql',
+        db='bom',
+        cursorclass=pymysql.cursors.Cursor
+    )
+---
+pymysql.connect(
+        host="localhost",
+        user="root",
+        password="mysql",
+        db="bom",
+        cursorclass=pymysql.cursors.DictCursor
+    )
+---
+pymysql.connect(
+            host='localhost',
+            user='root',
+            password='mysql',
+            db='bom',
+            cursorclass=pymysql.cursors.Cursor
+        )
+---
+pymysql.connect(
+            host='localhost',
+            user='root',
+            password='mysql',
+            db='bom',
+            cursorclass=pymysql.cursors.Cursor
+        )
+---
+pymysql.connect(
+            host='localhost',
+            user='root',
+            password='mysql',
+            db='bom',
+            cursorclass=pymysql.cursors.Cursor
+        )
+---
+pymysql.connect(
+            host='localhost',
+            user='root',
+            password='mysql',
+            db='bom',
+            cursorclass=pymysql.cursors.Cursor
+        )
+---
+pymysql.connect(
+        host='localhost',
+        user='root',
+        password='mysql',
+        db='bom',
+        cursorclass=pymysql.cursors.Cursor
+    )
+---
+pymysql.connect(
+        host='localhost',
+        user='root',
+        password='mysql',
+        db='bom',
+        cursorclass=pymysql.cursors.Cursor
+    )
+---
+pymysql.connect(
+            host='localhost',
+            user='root',
+            password='mysql',
+            db='bom',
+            cursorclass=pymysql.cursors.Cursor
+        )
+---
+pymysql.connect(
+        host="localhost",
+        user="root",
+        password="mysql",
+        cursorclass=pymysql.cursors.Cursor
+    )
+---
+pymysql.connect(
+        host="localhost",
+        user="root",
+        password="mysql",
+        db="bom",
+        cursorclass=pymysql.cursors.Cursor
+    )
+---
+pymysql.connect(
+            host='localhost',
+            user='root',
+            password='mysql',
+            db='bom',
+            cursorclass=pymysql.cursors.Cursor
+        )
+---
+pymysql.connect(
+        host="localhost",
+        user="root",
+        password="mysql",
+        db="bom",
+        cursorclass=pymysql.cursors.DictCursor
+    )
+---
+pymysql.connect(
+        host="localhost",
+        user="root",
+        password="mysql",
+        db="bom",
+        cursorclass=pymysql.cursors.Cursor
+    )
+---
+pymysql.connect(
+        host="localhost",
+        user="root",
+        password="mysql",
+        db="bom",
+        cursorclass=pymysql.cursors.Cursor
+    )
+---
+pymysql.connect(
+        host="localhost",
+        user="root",
+        password="mysql",
+        db="bom",
+        cursorclass=pymysql.cursors.DictCursor
+    )

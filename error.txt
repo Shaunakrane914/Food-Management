@@ -1,0 +1,286 @@
+﻿Reflected MySQL schema. Tables found: dict_keys(['bom_calculations', 'bom_ingredients', 'dish_ingredients', 'dishes', 'ingredients', 'dishes_bak', 'ingredient_inventory', 'inventory_activity', 'menu_days', 'menu_items', 'menu_variations', 'user_logins_bak', 'users_bak'])
+python : Traceback 
+(most recent call 
+last):
+At line:1 char:1
++ python migrate_db.py 
+> migrate.log 2>&1 ; 
+type migrate.log
++ ~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
+    + CategoryInfo     
+         : NotSpecifi  
+  ed: (Traceback (mo   
+ st recent call las    
+t)::String) [], Re    
+moteException
+    + FullyQualifiedEr 
+   rorId : NativeComm  
+  andError
+ 
+  File 
+"C:\Users\Shaunak Rane\
+Desktop\Food-Management
+\migrate_db.py", line 
+63, in <module>
+    migrate()
+    ~~~~~~~^^
+  File 
+"C:\Users\Shaunak Rane\
+Desktop\Food-Management
+\migrate_db.py", line 
+21, in migrate
+    meta.drop_all(bind=
+dest_engine)
+    ~~~~~~~~~~~~~^^^^^^
+^^^^^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\schema.py", line 
+5952, in drop_all
+    
+bind._run_ddl_visitor(
+    
+~~~~~~~~~~~~~~~~~~~~~^
+        
+ddl.SchemaDropper, 
+self, 
+checkfirst=checkfirst, 
+tables=tables
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\base.py", line 
+3248, in 
+_run_ddl_visitor
+    conn._run_ddl_visit
+or(visitorcallable, 
+element, **kwargs)
+    ~~~~~~~~~~~~~~~~~~~
+~~^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\base.py", line 
+2455, in 
+_run_ddl_visitor
+    ).traverse_single(e
+lement)
+      ~~~~~~~~~~~~~~~^^
+^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\visitors.py", line 
+664, in traverse_single
+    return meth(obj, 
+**kw)
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\ddl.py", line 
+1133, in visit_metadata
+    with 
+self.with_ddl_events(
+         
+~~~~~~~~~~~~~~~~~~~~^
+        metadata,
+        ^^^^^^^^^
+        tables=event_co
+llection,
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^
+        checkfirst=self
+.checkfirst,
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^
+    ):
+    ^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\co
+ntextlib.py", line 
+148, in __exit__
+    next(self.gen)
+    ~~~~^^^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\ddl.py", line 905, 
+in with_ddl_events
+    target.dispatch.aft
+er_drop(
+    ~~~~~~~~~~~~~~~~~~~
+~~~~~~~^
+        target, 
+self.connection, 
+_ddl_runner=self, **kw
+        ^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^
+    )
+    ^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+event\attr.py", line 
+497, in __call__
+    fn(*args, **kw)
+    ~~^^^^^^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+util\langhelpers.py", 
+line 937, in __call__
+    return 
+getattr(self.target, 
+self.name)(*arg, **kw)
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~^^^^
+^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\sqltypes.py", line 
+1177, in 
+_on_metadata_drop
+    t = self.dialect_im
+pl(bind.dialect)
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\type_api.py", line 
+880, in dialect_impl
+    return self._dialec
+t_info(dialect)["impl"]
+           ~~~~~~~~~~~~
+~~~~~~^^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\type_api.py", line 
+977, in _dialect_info
+    impl = self._gen_di
+alect_impl(dialect)
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\type_api.py", line 
+992, in 
+_gen_dialect_impl
+    return dialect.type
+_descriptor(self)
+           ~~~~~~~~~~~~
+~~~~~~~~~~~^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+engine\default.py", 
+line 598, in 
+type_descriptor
+    return type_api.ada
+pt_type(typeobj, 
+self.colspecs)
+           ~~~~~~~~~~~~
+~~~~~~~^^^^^^^^^^^^^^^^
+^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\type_api.py", line 
+2362, in adapt_type
+    return 
+typeobj.adapt(impltype)
+           
+~~~~~~~~~~~~~^^^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\sqltypes.py", line 
+1761, in adapt
+    return 
+super().adapt(cls, 
+**kw)
+           ~~~~~~~~~~~~
+~^^^^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\sqltypes.py", line 
+1125, in adapt
+    return 
+super().adapt(cls, 
+**kw)
+           ~~~~~~~~~~~~
+~^^^^^^^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+sql\type_api.py", line 
+1450, in adapt
+    return cls.adapt_em
+ulated_to_native(self, 
+**kw)
+           ~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~^^^^^^^
+^^^^^
+  File 
+"C:\Users\Shaunak Rane\
+AppData\Local\Programs\
+Python\Python313\Lib\si
+te-packages\sqlalchemy\
+dialects\postgresql\nam
+ed_types.py", line 
+346, in adapt_emulated_
+to_native
+    kw.setdefault("crea
+te_type", 
+impl.create_type)
+                       
+          
+^^^^^^^^^^^^^^^^
+AttributeError: 'ENUM' 
+object has no 
+attribute 'create_type'
