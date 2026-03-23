@@ -35,7 +35,7 @@ def get_mysql_connection():
     return pymysql.connect(
         host='localhost',
         user='root',
-        password='16042006',
+        password='mysql',
         db='bom',
         cursorclass=pymysql.cursors.Cursor
     )
@@ -135,7 +135,7 @@ def get_bom_connection():
     return pymysql.connect(
         host='localhost',
         user='root',
-        password='16042006',
+        password='mysql',
         db='bom',
         cursorclass=pymysql.cursors.Cursor
     )
@@ -195,7 +195,7 @@ async def dashboard(request: Request):
     conn = pymysql.connect(
         host="localhost",
         user="root",
-        password="16042006",
+        password="mysql",
         db="bom",
         cursorclass=pymysql.cursors.DictCursor
     )
@@ -292,7 +292,7 @@ async def settings(request: Request):
         conn = pymysql.connect(
             host='localhost',
             user='root',
-            password='16042006',
+            password='mysql',
             db='bom',
             cursorclass=pymysql.cursors.Cursor
         )
@@ -408,7 +408,7 @@ async def bom_database(request: Request):
         conn = pymysql.connect(
             host='localhost',
             user='root',
-            password='16042006',
+            password='mysql',
             db='bom',
             cursorclass=pymysql.cursors.Cursor
         )
@@ -451,7 +451,7 @@ async def debug_db_schema():
         conn = pymysql.connect(
             host='localhost',
             user='root',
-            password='16042006',
+            password='mysql',
             db='bom',
             cursorclass=pymysql.cursors.Cursor
         )
@@ -698,7 +698,7 @@ async def get_dish_details(dish_name: str):
         conn = pymysql.connect(
             host='localhost',
             user='root',
-            password='16042006',
+            password='mysql',
             db='bom',
             cursorclass=pymysql.cursors.Cursor
         )
@@ -730,12 +730,12 @@ async def get_dish_details(dish_name: str):
         if conn:
             conn.close()
 
-def create_tables():
+def create_app_tables():
     # Main DB (now bom)
     conn = pymysql.connect(
         host='localhost',
         user='root',
-        password='16042006',
+        password='mysql',
         db='bom',
         cursorclass=pymysql.cursors.Cursor
     )
@@ -817,7 +817,7 @@ def create_tables():
     conn_bom = pymysql.connect(
         host='localhost',
         user='root',
-        password='16042006',
+        password='mysql',
         db='bom',
         cursorclass=pymysql.cursors.Cursor
     )
@@ -849,7 +849,7 @@ def save_menu_to_database(menu_data):
         conn = pymysql.connect(
             host='localhost',
             user='root',
-            password='16042006',
+            password='mysql',
             db='bom',
             cursorclass=pymysql.cursors.Cursor
         )
@@ -907,7 +907,7 @@ def create_database_if_not_exists():
     conn = pymysql.connect(
         host="localhost",
         user="root",
-        password="16042006",
+        password="mysql",
         cursorclass=pymysql.cursors.Cursor
     )
     cursor = conn.cursor()
@@ -916,11 +916,11 @@ def create_database_if_not_exists():
     cursor.close()
     conn.close()
 
-def create_tables():
+def create_inventory_tables():
     conn = pymysql.connect(
         host="localhost",
         user="root",
-        password="16042006",
+        password="mysql",
         db="bom",
         cursorclass=pymysql.cursors.Cursor
     )
@@ -949,6 +949,10 @@ def create_tables():
     conn.commit()
     cursor.close()
     conn.close()
+
+def create_tables():
+    create_app_tables()
+    create_inventory_tables()
 
 @app.on_event("startup")
 def startup_event():
@@ -1600,7 +1604,7 @@ async def get_dish_recommendations(query: str):
         conn = pymysql.connect(
             host='localhost',
             user='root',
-            password='16042006',
+            password='mysql',
             db='bom',
             cursorclass=pymysql.cursors.Cursor
         )
@@ -1940,7 +1944,7 @@ async def inventory(request: Request):
     conn = pymysql.connect(
         host="localhost",
         user="root",
-        password="16042006",
+        password="mysql",
         db="bom",
         cursorclass=pymysql.cursors.DictCursor
     )
@@ -1959,7 +1963,7 @@ async def update_inventory_form(request: Request, ingredient_id: str = Form(...)
     conn = pymysql.connect(
         host="localhost",
         user="root",
-        password="16042006",
+        password="mysql",
         db="bom",
         cursorclass=pymysql.cursors.Cursor
     )
@@ -1986,7 +1990,7 @@ def finalize_bom_api(bom: list[BOMItem] = Body(...)):
     conn = pymysql.connect(
         host="localhost",
         user="root",
-        password="16042006",
+        password="mysql",
         db="bom",
         cursorclass=pymysql.cursors.Cursor
     )
@@ -2019,7 +2023,7 @@ def get_inventory_activity_api():
     conn = pymysql.connect(
         host="localhost",
         user="root",
-        password="16042006",
+        password="mysql",
         db="bom",
         cursorclass=pymysql.cursors.DictCursor
     )

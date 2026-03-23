@@ -6,11 +6,11 @@ class FastAPIConfig(BaseSettings):
     DEBUG: bool = False
     MYSQL_HOST: str = 'localhost'
     MYSQL_USER: str = 'root'
-    MYSQL_PASSWORD: str = '16042006'
+    MYSQL_PASSWORD: str = 'mysql'
     MYSQL_DB: str = 'menu_db'
     MYSQL_BOM_HOST: str = 'localhost'
     MYSQL_BOM_USER: str = 'root'
-    MYSQL_BOM_PASSWORD: str = '16042006'
+    MYSQL_BOM_PASSWORD: str = 'mysql'
     MYSQL_BOM_DB: str = 'bom'
     UPLOAD_FOLDER: str = 'uploads'
     MAX_CONTENT_LENGTH: int = 16 * 1024 * 1024
@@ -38,13 +38,13 @@ class Config:
     # Database Configuration
     MYSQL_HOST = 'localhost'
     MYSQL_USER = 'root'
-    MYSQL_PASSWORD = '16042006'
+    MYSQL_PASSWORD = 'mysql'
     MYSQL_DB = 'menu_db'
     
     # BOM Database Configuration
     MYSQL_BOM_HOST = 'localhost'
     MYSQL_BOM_USER = 'root'
-    MYSQL_BOM_PASSWORD = '16042006'
+    MYSQL_BOM_PASSWORD = 'mysql'
     MYSQL_BOM_DB = 'bom'
     
     # File Upload Configuration

@@ -326,7 +326,7 @@ def get_inventory_db_connection():
     return mysql.connector.connect(
         host="localhost",
         user="root",
-        password="16042006",
+        password="mysql",
         database="bom"
     )
 
