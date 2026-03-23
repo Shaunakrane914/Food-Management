@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="icon" href="/static/logo.png">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Smooch+Sans:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/dashboard.css">
+    <style>
+        /* Copy the same style block as inventory.html for consistency */
+        :root{
+            --color-primary: #42603b;
+            --color-half:#a8c69e;
+            --color-success: #41f1b6;
+            --color-warning:#ffbb55;
+            --color-white: #fff;
+            --color-info-dark:#7d8da1;
+            --color-info-light: #dce1eb;
+            --color-dark:#363949;
+            --color-light: rgba(132,139,200,0.18);
+            --color-primary-variant:#111e88;
+            --color-dark-variant: #677483;
+            --color-background:#ffffff;
+            --card-border-radius: 2rem;
+            --border-radius-1: 0.4rem;
+            --border-radius-2: 0.8rem;
+            --border-radius-3: 1.2rem;
+            --card-padding: 1.8rem;
+            --padding-1: 1.2rem;
+            --box-shadow: 0 1rem 2rem var(--color-light);
+        }
+        *{
+            margin: 0;
+            padding: 0;
+            outline: 0;
+            appearance: none;
+            border: 0;
+            text-decoration: none;
+            list-style: none;
+            box-sizing: border-box;
+            font-family: 'montserrat';
+        }
+        html{ font-size: 14px; }
+        body{
+            width: 100vw;
+            height: 100vh;
+            font-size: 0.88rem;
+            background: var(--color-background);
+            user-select: none;
+            overflow-x: hidden;
+        }
+        .container{
+            display: grid;
+            width: 96%;
+            margin: 0 auto;
+            gap: 1.8rem;
+            grid-template-columns: 14rem auto 23rem;
+        }
+        a{ color: var(--color-dark); }
+        img{ display: block; width: 100%; }
+        h1{ font-weight: 800; font-size: 1.8rem; }
+        h2{ font-size: 1.4rem; }
+        h3{ font-size: 0.8rem; }
+        h5{ font-size: 0.7rem; }
+        small{ font-size: 0.75rem; }
+        .profile-photo{ width: 2.8rem; height: 2.8rem; border-radius: 50%; overflow: hidden; }
+        .text-muted{ color: var(--color-info-dark); }
+        p{ color: var(--color-dark-variant); }
+        b{ color: var(--color-dark); }
+        .primary{ color: var(--color-primary); }
+        .half{ color: var(--color-half); }
+        .success{ color: var(--color-success); }
+        .warning{ color: var(--color-warning); }
+        aside{ height: 100vh; }
+        aside .top{ display: flex; align-items: center; justify-content: space-between; margin-top: 1.4rem; padding: 0 1rem; }
+        aside h2{ margin: 0; font-size: 1.4rem; font-weight: 600; }
+        aside .logo{ display: flex; gap: 0.8rem; align-items: center; }
+        aside .logo img{ width: 2rem; height: 2rem; }
+        aside .close-btn{ display: none; font-size: 2rem; }
+        aside .sidebar{ display: flex; flex-direction: column; height: 86vh; position: relative; top: 3rem; }
+        aside h3{ font-weight: 500; }
+        aside .sidebar a{ display: flex; color: var(--color-info-dark); margin-left: 2rem; gap: 1rem; align-items: center; position: relative; height: 3.7rem; transition: all 300ms ease; }
+        aside .sidebar a i{ font-size: 1.6rem; transition: all 300ms ease; }
+        aside .sidebar a:last-child{ position: absolute; bottom: 2rem; width: 100%; }
+        aside .sidebar a.active{ background: var(--color-light); color: var(--color-primary); margin-left: 0; }
+        aside .sidebar a.active:before{ content: ''; width: 6px; height: 100%; background: var(--color-primary); }
+        aside .sidebar a.active span{ color: var(--color-primary); margin-left: calc(1rem - 3px); }
+        aside .sidebar a:hover{ color: var(--color-primary); }
+        aside .sidebar a:hover i{ margin-left: 1rem; }
+        main{ background-color: var(--color-background); padding-top: 50px; }
+        .right{ margin-top: 1.4rem; }
+        .right .top{ display: flex; justify-content: end; gap: 2rem; }
+        .right .top button{ display: none; }
+        .right .top .profile{ display: flex; text-align: right; gap: 0.5rem; }
+        @media screen and (max-width:1200px) {
+            .container{ width: 94%; grid-template-columns: 7rem auto 23rem; }
+            aside .logo h2{ display: none; }
+            aside .sidebar h3{ display: none; }
+            aside .sidebar a:last-child{ position: relative; margin-top: 1.8rem; }
+        }
+        @media screen and (max-width:768px) {
+            .container{ width: 100%; grid-template-columns: 1fr; }
+            aside{ position: fixed; left: -100%; background: var(--color-white); width: 18rem; z-index: 3; box-shadow: 1rem 3rem 4rem var(--color-light); height: 100vh; padding: var(--card-padding); display: none; animation: showMenu 400ms ease forwards; }
+            @keyframes showMenu{ to{ left: 0; } }
+            aside .logo{ margin-left: 1rem; display: flex; justify-content: space-between; align-items: center; width: 100%; }
+            aside .logo h2{ display: inline; margin: 0; }
+            aside .sidebar h3{ display: inline; }
+            aside .sidebar a{ width: 100%; height: 3.4rem; }
+            aside .sidebar a:last-child{ position: absolute; bottom: 5rem; }
+            aside .close-btn{ display: inline-block; cursor: pointer; margin: 0; font-size: 1.5rem; }
+            main{ margin-top: 8rem; padding: 0 1rem; }
+            .right{ width: 94%; margin: 0 auto 4rem; }
+            .right .top{ position: fixed; top: 0; left: 0; align-items: center; padding: 0 0.8rem; height: 4.6rem; background: var(--color-white); width: 100%; margin: 0; z-index: 2; box-shadow: 0 1rem 1rem var(--color-light); }
+            .right .profile .info{ display: none; }
+            .right .top button{ display: inline-block; background: transparent; cursor: pointer; color: var(--color-dark); position: absolute; left: 1rem; }
+            .right .top button span{ font-size: 2rem; }
+        }
+        /* --- Dashboard Redesign Styles --- */
+        .dashboard-cards {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-bottom: 2rem;
+        }
+        .dashboard-card {
+            flex: 1;
+            min-width: 220px;
+            background: var(--color-white);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 2rem 1.5rem 1.5rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-6px) scale(1.03);
+            box-shadow: 0 2rem 3rem var(--color-light);
+        }
+        .dashboard-card i {
+            margin-bottom: 0.7rem;
+            font-size: 2.2rem;
+        }
+        .dashboard-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+        .dashboard-card h2 {
+            font-size: 2.2rem;
+            margin-bottom: 0.2rem;
+            font-weight: 800;
+        }
+        .dashboard-card small {
+            color: var(--color-info-dark);
+        }
+        .dashboard-row {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        .dashboard-table-card {
+            flex: 1;
+            min-width: 350px;
+            background: var(--color-white);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem 1.5rem 1.5rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .dashboard-table-card h2 {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        .dashboard-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 0.4rem;
+        }
+        .dashboard-table th, .dashboard-table td {
+            padding: 0.6rem 1rem;
+            text-align: left;
+        }
+        .dashboard-table th {
+            background: var(--color-light);
+            font-weight: 700;
+        }
+        .dashboard-table tbody tr {
+            background: var(--color-background);
+            border-radius: var(--border-radius-2);
+            box-shadow: 0 1px 4px var(--color-light);
+        }
+        .dashboard-table tbody tr:nth-child(even) {
+            background: #f7faf7;
+        }
+        .dashboard-alerts-row {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+        .dashboard-alert-card {
+            flex: 1;
+            min-width: 350px;
+            background: var(--color-white);
+            border-radius: var(--card-border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+        }
+        .dashboard-alert-card h2 {
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+        .dashboard-alert-card .warning {
+            color: var(--color-warning);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .dashboard-alert-card .success {
+            color: var(--color-success);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .dashboard-quicklinks {
+            margin-top: 2rem;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .dashboard-quicklinks a {
+            background: var(--color-primary);
+            color: #fff;
+            padding: 0.8rem 1.8rem;
+            border-radius: var(--border-radius-2);
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px var(--color-light);
+        }
+        .dashboard-quicklinks a:hover {
+            background: var(--color-half);
+            color: var(--color-dark);
+        }
+        @media (max-width: 900px) {
+            .dashboard-cards, .dashboard-row, .dashboard-alerts-row {
+                flex-direction: column;
+            }
+        }
+        .coming-soon {
+            background: #ffbb55;
+            color: #fff;
+            font-size: 0.62em;
+            padding: 1px 6px;
+            border-radius: 6px;
+            margin-left: 6px;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside>
+            <div class="top">
+                <div class="logo">
+                    <a href="/dashboard" style="display: flex; gap: 0.8rem; align-items: center; text-decoration: none; color: inherit;">
+                        <img src="/static/images/logo.png" alt="">
+                        <h2>REF<span class="half">EEDO</span></h2>
+                    </a>
+                </div>
+                <div class="close-btn"><i class="fa-solid fa-xmark"></i></div>
+            </div>
+            <div class="sidebar">
+                <a href="/dashboard" class="active">
+                    <i class="fa-solid fa-table-columns"></i>
+                    <h3>DashBoard</h3>
+                </a>
+                <a href="/menu" class="">
+                    <i class="fa-solid fa-plate-wheat"></i>
+                    <h3>Menu Management</h3>
+                </a>
+                <a href="/bom" class="">
+                    <i class="fa-solid fa-paperclip"></i>
+                    <h3>BOM</h3>
+                </a>
+                <a href="/studentstaff" class="">
+                    <i class="fa-regular fa-folder-closed"></i>
+                    <h3>Student and Staff <span class="coming-soon">Coming Soon</span></h3>
+                </a>
+                <a href="/inventory" class="">
+                    <i class="fa-regular fa-cart-flatbed"></i>
+                    <h3>Inventory</h3>
+                </a>
+                <a href="/supplier" class="">
+                    <i class="fa-solid fa-boxes-packing"></i>
+                    <h3>Supplier <span class="coming-soon">Coming Soon</span></h3>
+                </a>
+                <a href="/analytics" class="">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <h3>Analytics <span class="coming-soon">Coming Soon</span></h3>
+                </a>
+                <a href="/pax" class="">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <h3>Meal Predictor</h3>
+                </a>
+                <a href="/settings" class="">
+                    <i class="fa-solid fa-gear"></i>
+                    <h3>Settings</h3>
+                </a>
+                <a href="/logout">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    <h3>Log Out</h3>
+                </a>
+            </div>
+        </aside>
+        <main>
+            <h1>Dashboard</h1>
+            <div class="dashboard-cards">
+                <div class="dashboard-card">
+                    <i class="fa-solid fa-boxes-packing primary"></i>
+                    <h3>Total Ingredients</h3>
+                    <h2>128</h2>
+                    <small>Total unique ingredients in inventory</small>
+                </div>
+                <div class="dashboard-card">
+                    <i class="fa-solid fa-triangle-exclamation warning"></i>
+                    <h3>Low Stock Items</h3>
+                    <h2>7</h2>
+                    <small>Below threshold (100 units)</small>
+                </div>
+                <div class="dashboard-card">
+                    <i class="fa-solid fa-clipboard-check primary"></i>
+                    <h3>Recent BOM Finalizations</h3>
+                    <h2>5</h2>
+                    <small>Last 7 days</small>
+                </div>
+                <div class="dashboard-card">
+                    <i class="fa-solid fa-truck-field primary"></i>
+                    <h3>Suppliers</h3>
+                    <h2>12</h2>
+                    <small>Active suppliers</small>
+                </div>
+            </div>
+            <div class="dashboard-row">
+                <div class="dashboard-table-card">
+                    <h2>Low Stock Ingredients</h2>
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Ingredient</th>
+                                <th>Quantity</th>
+                                <th>Unit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>Tomatoes</td><td>12</td><td>kg</td></tr>
+                            <tr><td>Rice</td><td>8</td><td>kg</td></tr>
+                            <tr><td>Milk</td><td>5</td><td>L</td></tr>
+                            <tr><td>Chicken</td><td>15</td><td>kg</td></tr>
+                            <tr><td>Cheese</td><td>3</td><td>kg</td></tr>
+                            <tr><td>Eggs</td><td>20</td><td>pcs</td></tr>
+                            <tr><td>Spinach</td><td>7</td><td>kg</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="dashboard-table-card">
+                    <h2>Recent Inventory Activity</h2>
+                    <table class="dashboard-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Ingredient</th>
+                                <th>Change</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>2024-06-01 09:12</td><td>Tomatoes</td><td>-5</td><td>Used in BOM</td></tr>
+                            <tr><td>2024-06-01 08:45</td><td>Rice</td><td>+20</td><td>Restocked</td></tr>
+                            <tr><td>2024-05-31 17:30</td><td>Milk</td><td>-2</td><td>Used in BOM</td></tr>
+                            <tr><td>2024-05-31 15:10</td><td>Chicken</td><td>-3</td><td>Used in BOM</td></tr>
+                            <tr><td>2024-05-31 14:00</td><td>Eggs</td><td>+30</td><td>Restocked</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="dashboard-alerts-row">
+                <div class="dashboard-alert-card">
+                    <h2>Alerts</h2>
+                    <div class="warning"><i class="fa-solid fa-triangle-exclamation"></i> <b>Low Inventory</b> Some items are below threshold.</div>
+                </div>
+                <div class="dashboard-alert-card">
+                    <h2>Recent Updates</h2>
+                    <div><i class="fa-solid fa-user"></i> <b>System</b> New menu items added for this week! <small>2 minutes ago</small></div>
+                    <div><i class="fa-solid fa-user"></i> <b>Admin</b> Inventory updated successfully. <small>10 minutes ago</small></div>
+                </div>
+            </div>
+            <div class="dashboard-quicklinks">
+                <a href="/menu">Go to Menu</a>
+                <a href="/bom">Go to BOM</a>
+                <a href="/inventory">Go to Inventory</a>
+                <a href="/settings">Settings</a>
+            </div>
+            <div class="dashboard-coming-soon" style="margin: 2rem 0; padding: 1rem; background: #fff3cd; color: #856404; border: 1px solid #ffeeba; border-radius: 6px; text-align: center; font-size: 1.2rem;">
+                <strong>Coming Soon:</strong> More dashboard features and analytics will be available in future updates!
+            </div>
+        </main>
+        <div class="right">
+            <div class="top">
+                <button id="menu-btn"><i class="fa-solid fa-bars"></i></button>
+                <div class="profile">
+                    <div class="info">
+                        <p>Hey,</p>
+                        <small class="text-muted">Admin</small>
+                    </div>
+                    <div class="profile-photo">
+                        <img src="/static/images/profile2.jpg" alt="profile">
+                    </div>
+                </div>
+            </div>
+            <!---END OF TOP-->
+        </div>
+    </div>
+</body>
+</html>
