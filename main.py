@@ -889,8 +889,6 @@ def create_tables():
 
 @app.on_event("startup")
 def startup_event():
-    create_database_if_not_exists()
-    create_tables()
     global generator
     generator.prepare_data('Final Menu Modified.xlsx')
 
