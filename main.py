@@ -134,11 +134,11 @@ def get_bom_connection():
 
 @app.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse("landing.html", {"request": request})
+    return templates.TemplateResponse(request, "landing.html", {"request": request})
 
 @app.get("/login")
 async def login_get(request: Request):
-    return templates.TemplateResponse("form.html", {"request": request, "message": None})
+    return templates.TemplateResponse(request, "form.html", {"request": request, "message": None})
 
 @app.post("/login")
 async def login_post(request: Request, username: str = Form(...), password: str = Form(...)):
@@ -164,11 +164,11 @@ async def login_post(request: Request, username: str = Form(...), password: str 
             return RedirectResponse(url="/menu", status_code=303)
         else:
             message = 'Invalid credentials'
-            return templates.TemplateResponse("form.html", {"request": request, "message": message})
+            return templates.TemplateResponse(request, "form.html", {"request": request, "message": message})
     except Exception as e:
         conn.rollback()
         message = 'Database error occurred'
-        return templates.TemplateResponse("form.html", {"request": request, "message": message})
+        return templates.TemplateResponse(request, "form.html", {"request": request, "message": message})
     finally:
         cur.close()
         conn.close()
@@ -203,8 +203,7 @@ async def dashboard(request: Request):
     recent_activity = cursor.fetchall()
     cursor.close()
     conn.close()
-    return templates.TemplateResponse(
-        "dashboard.html",
+    return templates.TemplateResponse(request, "dashboard.html",
         {
             "request": request,
             "active_page": "dashboard",
@@ -218,13 +217,13 @@ async def dashboard(request: Request):
 
 @app.get("/form")
 async def form(request: Request):
-    return templates.TemplateResponse("form.html", {"request": request})
+    return templates.TemplateResponse(request, "form.html", {"request": request})
 
 @app.get("/menu")
 async def menu_get(request: Request):
     if not request.session.get('user_id'):
         return RedirectResponse(url="/login", status_code=303)
-    return templates.TemplateResponse("menu.html", {"request": request, "active_page": "menu"})
+    return templates.TemplateResponse(request, "menu.html", {"request": request, "active_page": "menu"})
 
 @app.post("/menu")
 async def menu_post(request: Request):
@@ -232,41 +231,41 @@ async def menu_post(request: Request):
         return RedirectResponse(url="/login", status_code=303)
     # Call the generate_menu logic here (to be implemented)
     # For now, just render the menu page
-    return templates.TemplateResponse("menu.html", {"request": request, "active_page": "menu"})
+    return templates.TemplateResponse(request, "menu.html", {"request": request, "active_page": "menu"})
 
 @app.get("/studentstaff")
 async def studentstaff(request: Request):
     if not request.session.get('user_id'):
         return RedirectResponse(url="/login", status_code=303)
-    return templates.TemplateResponse("studentstaff.html", {"request": request, "active_page": "studentstaff"})
+    return templates.TemplateResponse(request, "studentstaff.html", {"request": request, "active_page": "studentstaff"})
 
 @app.get("/supplier")
 async def supplier(request: Request):
     if not request.session.get('user_id'):
         return RedirectResponse(url="/login", status_code=303)
-    return templates.TemplateResponse("supplier.html", {"request": request, "active_page": "supplier"})
+    return templates.TemplateResponse(request, "supplier.html", {"request": request, "active_page": "supplier"})
 
 @app.get("/analytics")
 async def analytics(request: Request):
     if not request.session.get('user_id'):
         return RedirectResponse(url="/login", status_code=303)
-    return templates.TemplateResponse("analytics.html", {"request": request, "active_page": "analytics"})
+    return templates.TemplateResponse(request, "analytics.html", {"request": request, "active_page": "analytics"})
 
 @app.get("/index")
 async def index(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse(request, "index.html", {"request": request})
 
 @app.get("/pax")
 async def pax(request: Request):
     if not request.session.get('user_id'):
         return RedirectResponse(url="/login", status_code=303)
-    return templates.TemplateResponse("pax.html", {"request": request, "active_page": "pax"})
+    return templates.TemplateResponse(request, "pax.html", {"request": request, "active_page": "pax"})
 
 @app.get("/pax_settings")
 async def pax_settings(request: Request):
     if not request.session.get('user_id'):
         return RedirectResponse(url="/login", status_code=303)
-    return templates.TemplateResponse("pax_settings.html", {"request": request, "active_page": "pax_settings"})
+    return templates.TemplateResponse(request, "pax_settings.html", {"request": request, "active_page": "pax_settings"})
 
 @app.get("/settings")
 async def settings(request: Request):
@@ -290,7 +289,7 @@ async def settings(request: Request):
     finally:
         if conn:
             conn.close()
-    return templates.TemplateResponse("settings.html", {"request": request, "active_page": "settings", "dishes": dishes})
+    return templates.TemplateResponse(request, "settings.html", {"request": request, "active_page": "settings", "dishes": dishes})
 
 # Example root endpoint (to be replaced with routers)
 @app.get("/")
@@ -308,7 +307,7 @@ async def generate_menu(request: Request):
         # Validate and format start and end dates
         if not start_date or not end_date:
             error = 'Both start and end dates are required'
-            return templates.TemplateResponse("menu.html", {"request": request, "error": error})
+            return templates.TemplateResponse(request, "menu.html", {"request": request, "error": error})
         try:
             try:
                 start_dt = datetime.strptime(start_date, '%Y-%m-%d')
@@ -320,11 +319,11 @@ async def generate_menu(request: Request):
                 end_dt = datetime.strptime(end_date, '%d-%m-%Y')
         except ValueError:
             error = 'Invalid date format. Use YYYY-MM-DD or DD-MM-YYYY'
-            return templates.TemplateResponse("menu.html", {"request": request, "error": error})
+            return templates.TemplateResponse(request, "menu.html", {"request": request, "error": error})
         days = (end_dt - start_dt).days + 1
         if days <= 0:
             error = 'End date must be after or equal to start date'
-            return templates.TemplateResponse("menu.html", {"request": request, "error": error})
+            return templates.TemplateResponse(request, "menu.html", {"request": request, "error": error})
         df = generator.menu_data.copy()
         df['Day'] = df['Day'].astype(str).str.strip().str.capitalize()
         df['Meal Type'] = df['Meal Type'].astype(str).str.strip().str.capitalize()
@@ -365,18 +364,18 @@ async def generate_menu(request: Request):
         else:
             error = 'Menu generated but failed to save to database!'
         generator.current_menu = menu
-        return templates.TemplateResponse("menu.html", {"request": request, "menu": menu, "start_date": start_date, "end_date": end_date, "error": error})
+        return templates.TemplateResponse(request, "menu.html", {"request": request, "menu": menu, "start_date": start_date, "end_date": end_date, "error": error})
     except Exception as e:
         import traceback
         traceback.print_exc()
         error = 'An unexpected error occurred'
-        return templates.TemplateResponse("menu.html", {"request": request, "error": error})
+        return templates.TemplateResponse(request, "menu.html", {"request": request, "error": error})
 
 @app.get("/bom")
 async def bom(request: Request):
     if not request.session.get('user_id'):
         return RedirectResponse(url="/login", status_code=303)
-    return templates.TemplateResponse("bom.html", {"request": request, "active_page": "bom"})
+    return templates.TemplateResponse(request, "bom.html", {"request": request, "active_page": "bom"})
 
 @app.get("/bom_database")
 async def bom_database(request: Request):
@@ -417,7 +416,7 @@ async def bom_database(request: Request):
     finally:
         if conn:
             conn.close()
-    return templates.TemplateResponse("bom_database.html", {"request": request, "active_page": "bom", "dishes_data": dishes_data})
+    return templates.TemplateResponse(request, "bom_database.html", {"request": request, "active_page": "bom", "dishes_data": dishes_data})
 
 @app.get("/debug_db_schema")
 async def debug_db_schema():
@@ -509,14 +508,14 @@ async def generate_bom(request: Request):
             end_date = today
         menu_data = get_menu_from_database(start_date.strftime('%Y-%m-%d'), end_date.strftime('%Y-%m-%d'))
         if not menu_data:
-            return templates.TemplateResponse("bom.html", {"request": request, "bom_results": None, "error": "No menu data found for the selected period."})
+            return templates.TemplateResponse(request, "bom.html", {"request": request, "bom_results": None, "error": "No menu data found for the selected period."})
         flat_menu = flatten_menu_data(menu_data)
         # Dish filter logic (optional, not implemented in original detailed BOM)
         if dish and dish != 'all':
             # Only keep rows where any Dish X matches the selected dish
             flat_menu = [row for row in flat_menu if dish in [row.get(f'Dish {i+1}', '') for i in range(4)]]
         bom_results = calculate_detailed_bom(flat_menu, num_students)
-        return templates.TemplateResponse("bom.html", {
+        return templates.TemplateResponse(request, "bom.html", {
             "request": request,
             "bom_results": bom_results['total'],
             "detailed_bom": bom_results['detailed'],
@@ -525,7 +524,7 @@ async def generate_bom(request: Request):
             "end_date": end_date.strftime('%Y-%m-%d'),
             "error": None
         })
-    return templates.TemplateResponse("bom.html", {"request": request, "bom_results": None, "error": None})
+    return templates.TemplateResponse(request, "bom.html", {"request": request, "bom_results": None, "error": None})
 
 @app.post("/generate_bom_from_menu")
 async def generate_bom_from_menu(request: Request):
@@ -579,7 +578,7 @@ async def generate_bom_from_menu(request: Request):
             error = 'No menu data found. Please generate a menu first.'
             menu_data = None
     if not menu_data:
-        return templates.TemplateResponse("bom_results.html", {
+        return templates.TemplateResponse(request, "bom_results.html", {
             "request": request,
             "bom_results": None,
             "detailed_bom": None,
@@ -589,7 +588,7 @@ async def generate_bom_from_menu(request: Request):
         })
     flat_menu = flatten_menu_data(menu_data)
     bom_results = calculate_detailed_bom(flat_menu, num_students)
-    return templates.TemplateResponse("bom_results.html", {
+    return templates.TemplateResponse(request, "bom_results.html", {
         "request": request,
         "bom_results": bom_results['total'],
         "detailed_bom": bom_results['detailed'],
@@ -651,7 +650,7 @@ async def upload_and_calculate_bom(request: Request, excel_file: UploadFile = Fi
         for col in excel_item_cols:
             if pd.notna(row[col]):
                 uploaded_menu_summary[day]['Items'][meal_type][category_key].append(row[col])
-    return templates.TemplateResponse("bom_results.html", {
+    return templates.TemplateResponse(request, "bom_results.html", {
         "request": request,
         "bom_results": bom_results['total'],
         "detailed_bom": bom_results['detailed'],
@@ -1373,10 +1372,10 @@ async def dish_wise_bom(request: Request):
     menu_data = getattr(generator, 'current_menu', None)
     num_students = request.session.get('num_students', 100)  # Default to 100 if not set
     if not menu_data:
-        return templates.TemplateResponse("dish_wise_bom.html", {"request": request, "dish_wise_bom": {}, "error": "No menu data found. Please generate a menu first."})
+        return templates.TemplateResponse(request, "dish_wise_bom.html", {"request": request, "dish_wise_bom": {}, "error": "No menu data found. Please generate a menu first."})
     flat_menu = flatten_menu_data(menu_data)
     dish_bom = calculate_dish_wise_bom(flat_menu, num_students)
-    return templates.TemplateResponse("dish_wise_bom.html", {"request": request, "dish_wise_bom": dish_bom, "error": None})
+    return templates.TemplateResponse(request, "dish_wise_bom.html", {"request": request, "dish_wise_bom": dish_bom, "error": None})
 
 @app.get("/debug_menu_mismatches")
 async def debug_menu_mismatches():
@@ -1493,7 +1492,7 @@ async def generate_custom_bom(request: Request):
         {"ingredient": name, "quantity": data["qty"], "unit": data["unit"]}
         for name, data in ingredient_totals.items()
     ]
-    return templates.TemplateResponse("bom_results.html", {
+    return templates.TemplateResponse(request, "bom_results.html", {
         "request": request,
         "bom_results": bom_results_list,
         "detailed_bom": detailed_bom,
@@ -1872,8 +1871,7 @@ async def inventory(request: Request):
     inventory = cursor.fetchall()
     cursor.close()
     conn.close()
-    return templates.TemplateResponse(
-        "inventory.html",
+    return templates.TemplateResponse(request, "inventory.html",
         {"request": request, "active_page": "inventory", "inventory": inventory}
     )
 
